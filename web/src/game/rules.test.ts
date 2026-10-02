@@ -202,11 +202,11 @@ describe('player names and target', () => {
     expect(validateNewPlayerName('New', ten.slice(0, 9))).toBeNull();
   });
 
-  it('validates the target range 3–20', () => {
+  it('validates the target range 3–30', () => {
     expect(isValidTarget(3)).toBe(true);
-    expect(isValidTarget(20)).toBe(true);
+    expect(isValidTarget(30)).toBe(true);
     expect(isValidTarget(2)).toBe(false);
-    expect(isValidTarget(21)).toBe(false);
+    expect(isValidTarget(31)).toBe(false);
     expect(isValidTarget(5.5)).toBe(false);
     expect(isValidTarget(Number.NaN)).toBe(false);
   });

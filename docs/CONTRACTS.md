@@ -94,7 +94,7 @@ Classes:
 Single-page app, no router required (screen state in a store). Pass-and-play on one device. Language: Hebrew (RTL, `<html dir="rtl" lang="he">`) or English (LTR); **default English**; persisted in `localStorage` key `hitster.lang`. The timeline is always chronological left→right (`dir="ltr"` on `.timeline`) in both languages.
 
 Game rules (implemented as pure functions in `web/src/game/`, unit-tested):
-- 1–10 players, names unique & non-empty; target score 3–20, default 10.
+- 1–10 players, names unique & non-empty; target score 3–30, default 10.
 - Start: each player receives one revealed song (via `/api/songs/next` with all ids/artists used so far excluded).
 - Turn: fetch next song (excluding all ids used in the game and preferring unused artists), play its preview, player selects a slot, presses Reveal.
 - Slot index `i` (0…n) = insert before the player's i-th card (cards sorted by year ascending); `n` = after the last card.

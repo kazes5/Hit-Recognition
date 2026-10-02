@@ -114,15 +114,15 @@ test('starting a game deals one revealed card to each player', async ({ page }) 
   await expect(cards.first()).toHaveAttribute('data-year', '1980');
 });
 
-test('target score outside 3–20 cannot start a game', async ({ page }) => {
+test('target score outside 3–30 cannot start a game', async ({ page }) => {
   await tid(page, 'btn-new-game').click();
   await addPlayer(page, 'Alice');
-  for (const bad of [2, 21]) {
+  for (const bad of [2, 31]) {
     await setTargetScore(page, bad);
     const value = Number(await tid(page, 'input-target-score').inputValue());
     // Either the value is clamped into range, or starting is blocked.
     if (value === bad) await expect(tid(page, 'btn-start-game'), `target ${bad}`).toBeDisabled();
-    else expect(value).toBeGreaterThanOrEqual(3), expect(value).toBeLessThanOrEqual(20);
+    else expect(value).toBeGreaterThanOrEqual(3), expect(value).toBeLessThanOrEqual(30);
   }
   await setTargetScore(page, 5);
   await expect(tid(page, 'btn-start-game')).toBeEnabled();

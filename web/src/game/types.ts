@@ -49,7 +49,7 @@ export interface GameState {
 export const MIN_PLAYERS = 1;
 export const MAX_PLAYERS = 10;
 export const MIN_TARGET = 3;
-export const MAX_TARGET = 20;
+export const MAX_TARGET = 30;
 export const DEFAULT_TARGET = 10;
 export const CLIP_SECONDS = 30;
 export const DECK_CODE = 'IL01';

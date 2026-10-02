@@ -58,7 +58,7 @@ describe('SetupScreen', () => {
     expect(screen.getByTestId('input-player-name')).toBeDisabled();
   });
 
-  it('validates the target score (3–20)', async () => {
+  it('validates the target score (3–30)', async () => {
     const { user, onStart } = setup({ initialNames: ['A'] });
     const input = screen.getByTestId('input-target-score');
     expect(input).toHaveValue(10);
@@ -66,7 +66,7 @@ describe('SetupScreen', () => {
     await user.type(input, '2');
     expect(screen.getByTestId('btn-start-game')).toBeDisabled();
     await user.clear(input);
-    await user.type(input, '21');
+    await user.type(input, '31');
     expect(screen.getByTestId('btn-start-game')).toBeDisabled();
     await user.clear(input);
     await user.type(input, '5');

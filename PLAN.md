@@ -139,7 +139,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 ### 9.1 More songs (+300)
 
 - **Goal:** grow the list from 367 to about 670 songs.
-- **Why:** with a target of 30 cards (9.2), a 10-player game needs at least 300 songs, and wrong guesses use up more. A bigger list also means fewer repeats across games.
+- **Why:** with a target of 30 cards, a 10-player game needs at least 300 songs, and wrong guesses use up more. A bigger list also means fewer repeats across games.
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.
   - The year is the original release year, and every year is checked against a source before adding.
@@ -148,15 +148,12 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 - **Work:** add songs to `songs.json` with new ids, raise the minimum counts in the catalog test, and rerun all tests.
 - **Done when:** about 670 songs, the catalog test passes, and the 67 end-to-end tests still pass.
 
-### 9.2 Winner at up to 30 cards
+### 9.2 Winner at up to 30 cards ✅ Done
 
-- **Goal:** let the host set the target score anywhere from 3 to 30 cards. Today the limit is 20. The default stays 10.
-- **Work:**
-  - Raise the limit from 20 to 30 in the game rules, the Setup screen and the contract (docs/CONTRACTS.md, §6).
-  - Make sure a timeline of 30 cards is still easy to scroll and choose a slot on a phone.
-  - Check the song list lasts for a long game (see 9.1).
-  - Update the unit and Playwright tests that use the 3–20 range.
-- **Done when:** a game can be set to 30 and played to a win, and the tests pass.
+- The host can now set the target score from 3 to 30 cards (it was 3 to 20). The default stays 10.
+- Changed the limit in the game rules, the Setup screen labels (they follow the limit automatically), the contract and the tests.
+- Checked: web unit tests (112) and the Setup end-to-end tests (20) pass. A full 30-card game was not played through.
+- **Watch for:** a long game with many players can use up the song list, because wrong guesses use songs too. The app then shows "no songs left" with an *End game* button. Step 9.1 (more songs) fixes this.
 
 ### 9.3 Cover picture on reveal
 
@@ -173,6 +170,6 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 
 ### Suggested order
 
-1. 9.2 (small change) and 9.1 (content), because 30-card games depend on the bigger list.
+1. 9.1 (content), because long 30-card games depend on the bigger list. (9.2 is done.)
 2. 9.3 (cover pictures).
 3. Then milestone 8, Spotify and Apple Music.
