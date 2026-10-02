@@ -219,6 +219,15 @@ body {
   filter: drop-shadow(0 0 6px rgb(255 47 179 / 0.8)) drop-shadow(0 0 16px rgb(255 47 179 / 0.45));
 }
 
+/* Hebrew logo line: HTML text so browsers apply right-to-left layout */
+.logo-hebrew {
+  display: block;
+  margin-block-start: var(--space-2);
+  font-size: clamp(2.4rem, 13vw, 3.4rem);
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
 /* ---------- 5. Buttons ---------- */
 .btn {
   display: inline-flex;

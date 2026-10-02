@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { song } from '../test/fixtures';
 import { I18nProvider } from '../i18n/I18nProvider';
+import { Logo } from './Logo';
 import { Scoreboard } from './Scoreboard';
 import { decadeClass, HiddenCard, SongCard } from './SongCard';
 import { Timeline } from './Timeline';
@@ -114,5 +115,15 @@ describe('Scoreboard', () => {
     expect(onClose).toHaveBeenCalled();
     await userEvent.click(screen.getByTestId('btn-end-game'));
     expect(onEnd).toHaveBeenCalled();
+  });
+});
+
+describe('Logo', () => {
+  it('renders the Hebrew name as right-to-left HTML text, not inside the SVG', () => {
+    render(<Logo />);
+    const hebrew = screen.getByText('היטסטר');
+    expect(hebrew.tagName).toBe('SPAN');
+    expect(hebrew).toHaveAttribute('dir', 'rtl');
+    expect(hebrew).toHaveAttribute('lang', 'he');
   });
 });

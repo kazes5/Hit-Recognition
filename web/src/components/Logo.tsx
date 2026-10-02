@@ -10,7 +10,11 @@ export function Logo() {
   if (logoUrl) {
     return (
       <h1 className="logo-heading">
-        <img src={logoUrl} alt="HITSTER — היטסטר" className="logo" />
+        <img src={logoUrl} alt="HITSTER" className="logo" />
+        {/* HTML text, not SVG, so every browser lays the Hebrew out right-to-left. */}
+        <span className="neon-title logo-hebrew" dir="rtl" lang="he">
+          היטסטר
+        </span>
       </h1>
     );
   }
