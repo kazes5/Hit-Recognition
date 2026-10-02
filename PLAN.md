@@ -1,12 +1,12 @@
 # Hitster — Song Timeline Game: Plan
 
-A party game for one shared phone, based on the Hitster board game. The app plays 30 seconds of a well-known song. The current player places it on their timeline of songs, then reveals the artist, year and title to see whether they placed it correctly.
+A party game for one shared phone (web app), based on the Hitster board game. The app plays 30 seconds of a well-known song. The current player places it on their timeline of songs, then reveals the artist, year and title to see whether they placed it correctly.
 
 ---
 
 ## 1. How the game works
 
-1. **Setup:** enter the player names (2–10 players) and choose the target score (default: 10 cards).
+1. **Setup:** enter the player names (1–10 players, 2 or more recommended) and choose the target score (default: 10 cards).
 2. **Starting card:** each player gets one random song card, already revealed. It starts their timeline.
 3. **A turn:**
    1. The app plays a 30-second clip of a new random song. Artist, year and title stay hidden.
@@ -78,13 +78,16 @@ The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is
 
 ## 5. Tech stack
 
-- **App:** React Native + Expo (TypeScript), one codebase for iOS and Android.
-- **Audio:** `expo-av` for the previews; Spotify iOS/Android SDK and MusicKit for phase 2.
-- **State:** a small local game store (Zustand). No server is needed for the MVP.
-- **Storage:** an unfinished game is saved on the phone so it can be resumed.
-- **Tests:** Jest for the game logic (placement checks, picking songs without repeats).
+The app is a mobile-first web app hosted on Railway, opened in any phone browser.
 
----
+- **Frontend (`web/`):** React + Vite (TypeScript). The game logic lives here as pure functions with unit tests.
+- **Backend (`server/`):** Node + Express (TypeScript). It serves the song list, picks the next song without repeats, finds 30-second previews through the iTunes Search API (cached), and serves the built frontend.
+- **Container:** one Docker image that runs the backend and serves the frontend.
+- **Hosting:** Railway, deployed from the Dockerfile, with a health check on `/api/health`.
+- **Tests:** unit tests with Vitest in `server/` and `web/`, and end-to-end tests with Playwright in `e2e/`.
+- **Storage:** an unfinished game is saved in the browser so it can be resumed.
+
+The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRACTS.md).
 
 ## 6. Screens
 
@@ -100,13 +103,14 @@ The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is
 
 ## 7. Milestones
 
-1. **Setup:** Expo project, theme (colors and fonts), Hebrew/English text, RTL support.
+1. **Setup:** web + server projects, theme (colors and fonts), Hebrew/English text, RTL support.
 2. **Song list:** `songs.json` with about 300 songs, the check script, and preview links.
 3. **Game logic:** players, turns, song picking without repeats, placement check, score, winner, all with tests.
 4. **UI:** the screens from section 6, the card component, and the timeline.
 5. **Audio:** play a 30-second preview, replay, and handle errors (skip to another song if a preview fails).
-6. **Polish:** animations, save and resume, testing on real phones.
-7. **Phase 2:** Spotify and Apple Music login and playback.
+6. **Ship:** Docker image, Railway deployment, Playwright end-to-end tests.
+7. **Polish:** animations, save and resume, testing on real phones.
+8. **Phase 2:** Spotify and Apple Music login and playback.
 
 ---
 

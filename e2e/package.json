@@ -1,0 +1,19 @@
+{
+  "name": "hitster-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright end-to-end tests for Hitster",
+  "scripts": {
+    "e2e:prepare": "npm --prefix ../server ci && npm --prefix ../server run build && npm --prefix ../web ci && npm --prefix ../web run build",
+    "test": "playwright test",
+    "test:mobile": "playwright test --project=mobile-chromium",
+    "test:desktop": "playwright test --project=desktop-chromium",
+    "report": "playwright show-report playwright-report",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/node": "^22.18.8",
+    "typescript": "^5.9.3"
+  }
+}

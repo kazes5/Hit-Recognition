@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hitster Theme Preview</title>
+  <link rel="stylesheet" href="./theme.css">
+  <style>
+    .pv-section { width: 100%; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .pv-label { align-self: flex-start; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--color-text-muted); }
+    .pv-grid { display: grid; grid-template-columns: repeat(2, auto); gap: 12px; justify-content: center; }
+    .pv-grid .song-card { --card-size: 150px; }
+    .pv-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <main class="screen">
+    <header class="screen__header">
+      <button class="btn btn--icon btn--ghost" aria-label="Settings">⚙</button>
+      <span class="player-badge">Dana <span class="player-badge__score">4</span></span>
+      <button class="btn btn--icon btn--outline" aria-label="Scoreboard">☰</button>
+    </header>
+
+    <div class="screen__body">
+      <section class="pv-section">
+        <img class="logo" src="./logo.svg" alt="HITSTER היטסטר">
+        <h1 class="neon-title">HITSTER</h1>
+        <div class="neon-frame" dir="rtl">משחק מסיבת מוזיקה</div>
+      </section>
+
+      <section class="pv-section">
+        <span class="pv-label">Turn — hidden card + speaker</span>
+        <div class="row">
+          <div class="song-card song-card--hidden song-card--small" style="--card-size:130px"></div>
+          <div class="speaker speaker--playing" style="--speaker-size:150px"></div>
+        </div>
+        <button class="btn btn--outline">▶ Replay</button>
+      </section>
+
+      <section class="pv-section">
+        <span class="pv-label">Timeline (slot 1 selected)</span>
+        <div class="timeline">
+          <button class="timeline-slot" aria-label="Before 1965"></button>
+          <div class="song-card song-card--small song-card--d1960">
+            <div class="song-card__artist">James Brown</div>
+            <div class="song-card__year">1965</div>
+            <div class="song-card__title">I Got You (I Feel Good)</div>
+            <span class="song-card__deck">IL01</span><span class="song-card__number">227</span>
+          </div>
+          <button class="timeline-slot timeline-slot--selected" aria-label="Between 1965 and 2003"></button>
+          <div class="song-card song-card--small song-card--d2000">
+            <div class="song-card__artist">O-Zone</div>
+            <div class="song-card__year">2003</div>
+            <div class="song-card__title">Dragostea Din Tei</div>
+            <span class="song-card__deck">IL01</span><span class="song-card__number">215</span>
+          </div>
+          <button class="timeline-slot" aria-label="Between 2003 and 2010"></button>
+          <div class="song-card song-card--small song-card--d2010">
+            <div class="song-card__artist">אייל גולן</div>
+            <div class="song-card__year">2010</div>
+            <div class="song-card__title">מי שמאמין</div>
+            <span class="song-card__deck">IL01</span><span class="song-card__number">183</span>
+          </div>
+          <button class="timeline-slot" aria-label="After 2010"></button>
+        </div>
+      </section>
+
+      <section class="pv-section">
+        <span class="pv-label">Result</span>
+        <div class="song-card song-card--d1960 song-card--correct">
+          <div class="song-card__artist">James Brown</div>
+          <div class="song-card__year">1965</div>
+          <div class="song-card__title">I Got You (I Feel Good)</div>
+          <span class="song-card__deck">IL01</span><span class="song-card__number">227</span>
+        </div>
+        <div class="pv-row">
+          <span class="result--correct">Correct!</span>
+          <span class="result--wrong">Wrong, it was 2003</span>
+        </div>
+      </section>
+
+      <section class="pv-section">
+        <span class="pv-label">Decades</span>
+        <div class="pv-grid">
+          <div class="song-card song-card--d1950"><div class="song-card__artist">Elvis Presley</div><div class="song-card__year">1956</div><div class="song-card__title">Hound Dog</div><span class="song-card__deck">IL01</span><span class="song-card__number">12</span></div>
+          <div class="song-card song-card--d1960"><div class="song-card__artist">The Beatles</div><div class="song-card__year">1965</div><div class="song-card__title">Help!</div><span class="song-card__deck">IL01</span><span class="song-card__number">31</span></div>
+          <div class="song-card song-card--d1970"><div class="song-card__artist">ABBA</div><div class="song-card__year">1976</div><div class="song-card__title">Dancing Queen</div><span class="song-card__deck">IL01</span><span class="song-card__number">58</span></div>
+          <div class="song-card song-card--d1980"><div class="song-card__artist">אריק איינשטיין</div><div class="song-card__year">1985</div><div class="song-card__title">אני ואתה</div><span class="song-card__deck">IL01</span><span class="song-card__number">77</span></div>
+          <div class="song-card song-card--d1990"><div class="song-card__artist">Oasis</div><div class="song-card__year">1995</div><div class="song-card__title">Wonderwall</div><span class="song-card__deck">IL01</span><span class="song-card__number">104</span></div>
+          <div class="song-card song-card--d2000"><div class="song-card__artist">O-Zone</div><div class="song-card__year">2003</div><div class="song-card__title">Dragostea Din Tei</div><span class="song-card__deck">IL01</span><span class="song-card__number">215</span></div>
+          <div class="song-card song-card--d2010"><div class="song-card__artist">אייל גולן</div><div class="song-card__year">2010</div><div class="song-card__title">מי שמאמין</div><span class="song-card__deck">IL01</span><span class="song-card__number">183</span></div>
+          <div class="song-card song-card--d2020"><div class="song-card__artist">נועה קירל</div><div class="song-card__year">2023</div><div class="song-card__title">Unicorn</div><span class="song-card__deck">IL01</span><span class="song-card__number">290</span></div>
+        </div>
+        <div class="song-card song-card--d2000 song-card--wrong" style="--card-size:150px"><div class="song-card__artist">O-Zone</div><div class="song-card__year">2003</div><div class="song-card__title">Dragostea Din Tei</div><span class="song-card__deck">IL01</span><span class="song-card__number">215</span></div>
+      </section>
+
+      <section class="pv-section">
+        <span class="pv-label">Forms</span>
+        <div class="field">
+          <label for="pn">Player name</label>
+          <div class="field__row">
+            <input id="pn" class="input" placeholder="Add a player">
+            <button class="btn btn--outline">Add</button>
+          </div>
+        </div>
+        <ul class="player-list">
+          <li>Dana <button class="btn btn--icon btn--ghost" aria-label="Remove">✕</button></li>
+          <li>יוסי <button class="btn btn--icon btn--ghost" aria-label="Remove">✕</button></li>
+        </ul>
+        <div class="chip-group">
+          <button class="chip">עברית</button>
+          <button class="chip">English</button>
+          <button class="chip chip--active">Both</button>
+        </div>
+        <div class="error-banner">Server unreachable. Check your connection.</div>
+      </section>
+
+      <section class="pv-section">
+        <span class="pv-label">Buttons</span>
+        <div class="pv-row">
+          <button class="btn btn--primary">Reveal</button>
+          <button class="btn btn--outline">Settings</button>
+          <button class="btn btn--ghost">Back</button>
+          <button class="btn btn--primary" disabled>Disabled</button>
+        </div>
+      </section>
+    </div>
+
+    <footer class="screen__footer">
+      <button class="btn btn--primary btn--block">New Game</button>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

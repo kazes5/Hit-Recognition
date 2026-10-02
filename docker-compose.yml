@@ -1,0 +1,16 @@
+# Local run of the production image: http://localhost:3000
+#   docker compose up --build
+#   PREVIEW_PROVIDER=mock docker compose up --build   # offline / no iTunes
+services:
+  hitster:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hitster:local
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      PORT: "3000"
+      PREVIEW_PROVIDER: "${PREVIEW_PROVIDER:-itunes}"
+      ITUNES_COUNTRY: "${ITUNES_COUNTRY:-IL}"
+    restart: unless-stopped

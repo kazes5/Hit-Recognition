@@ -1,0 +1,12 @@
+{
+  "name": "hitster",
+  "private": true,
+  "description": "Hitster song timeline party game",
+  "scripts": {
+    "install:all": "npm --prefix server ci && npm --prefix web ci && npm --prefix e2e ci",
+    "build": "npm --prefix web run build && npm --prefix server run build",
+    "test": "npm --prefix server test && npm --prefix web test",
+    "lint": "npm --prefix server run lint && npm --prefix web run lint",
+    "test:e2e": "npm --prefix e2e test"
+  }
+}
