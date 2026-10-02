@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const dir = new URL('../dist-demo/', import.meta.url).pathname;
-let html = readFileSync(join(dir, 'index.html'), 'utf8');
+let html = readFileSync(join(dir, 'demo.html'), 'utf8');
 
 html = html.replace(/<link rel="stylesheet"[^>]*href="\.\/(assets\/[^"]+\.css)"[^>]*>/g, (_, file) => {
   return `<style>\n${readFileSync(join(dir, file), 'utf8')}\n</style>`;
