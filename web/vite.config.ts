@@ -13,6 +13,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    // The demo build is published as one self-contained page, so keep it to a single JS chunk.
+    rollupOptions: process.env.VITE_DEMO === 'true' ? { output: { inlineDynamicImports: true } } : {},
   },
   test: {
     environment: 'jsdom',
