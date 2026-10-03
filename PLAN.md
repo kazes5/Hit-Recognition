@@ -115,7 +115,12 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 131 server unit tests, 116 web unit tests, 82 Playwright end-to-end tests (phone and desktop sizes). All pass.
+**Tests today:** 142 server unit tests, 120 web unit tests, 83 Playwright end-to-end tests (phone and desktop sizes), all passing on branch `artist-limits`. Branch `prod-smoke` adds 8 smoke tests (section 9.5). On `main` (without these branches): 131 server, 116 web, 82 end-to-end.
+
+**Branches waiting to be merged** (pushed, no PR yet, held back by the owner):
+- `artist-limits`: per-performer limits, section 9.4.
+- `prod-smoke`: smoke tests for the live site, section 9.5.
+The two branches change different files, so they can be merged in either order.
 
 **Open checks:**
 - Play a song on the live Railway site on a phone. This confirms the real 30-second previews, and that audio starts on an iPhone.
@@ -141,7 +146,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 - **Goal:** grow the list from 367 to about 670 songs.
 - **Done:** 576 songs now (+209: 100 English, 109 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
 - **Still short:** about 95 songs. Second research run (focus on 2000–2025): 47 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 10-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
-- **To finish:** raise the search limit (the `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` setting) and rerun the research, mainly for Hebrew songs from the 1950s–60s, the 1990s and the 2010s–20s.
+- **To finish:** the search limit is now raised to 1000 per session (`.claude/settings.json`, merged to `main`). Rerun the research for the rest, mainly Hebrew songs from the 1950s–60s and the 2000s (2003–2009 is thinnest).
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.
   - The year is the original release year and is checked against a source before adding.
@@ -164,7 +169,23 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 - **Checked:** unit tests (server 13 new, web 4 new) and 7 new Playwright tests for the cover, including "no request before Reveal" and "no scrolling on a small phone". A placeholder record image is used in tests.
 - **Not checked:** real Apple covers. The sandbox cannot reach Apple, so the first real test is on the live site.
 
+### 9.4 Songs per performer: 10 in the list, 2 per game 🟡 Done on branch `artist-limits`, not merged
+
+- **List:** at most 10 songs per performer in `songs.json` (was 3). Collaboration credits count for every singer in the credit.
+- **Game:** at most 2 songs by the same performer in one game. The app sends one entry per dealt song, and the server counts them. It picks performers not dealt yet first, then those dealt once, and a 3rd song only when nothing else is left, so a game never gets stuck.
+- **Checked:** 142 server and 120 web unit tests, and all 83 Playwright tests pass.
+- **Known gap:** a game saved before this change lost its repeated entries, so a performer can reach 3 songs once in such a resumed game.
+
+### 9.5 Smoke tests for the live site 🟡 Done on branch `prod-smoke`, not merged; not yet run on production
+
+- `e2e/tests/smoke.spec.ts`, run with `npm run smoke`. Read-only and light: API health and stats, home, settings and setup in both languages, and one real turn (preview found, audio responds, reveal, cover if shown). Screenshots go to the test report.
+- **Checked:** 8 of 8 pass against a local server.
+- **Blocked:** the sandbox's network policy blocks `hit-recognition-production.up.railway.app`. The owner needs to add that domain under Allowed domains in the cloud environment's network settings. Then run `E2E_BASE_URL=https://hit-recognition-production.up.railway.app npm run smoke`.
+- Running them on production would also close two open checks above: real previews and real covers. iPhone Safari still needs a real phone.
+
 ### Suggested order
 
-1. Finish 9.1 (the remaining ~150 songs, mostly Hebrew). 9.2 and 9.3 are done.
-2. Then milestone 8, Spotify and Apple Music.
+1. Merge 9.4 and 9.5 when the owner approves.
+2. Allow the production domain and run the smoke tests (9.5).
+3. Finish 9.1 (about 95 songs left, mostly Hebrew). 9.2 and 9.3 are done.
+4. Then milestone 8, Spotify and Apple Music.
