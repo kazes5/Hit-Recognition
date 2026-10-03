@@ -15,6 +15,12 @@ describe('validateCatalog', () => {
     expect(s?.artistKeys).toEqual(['A', 'B']);
   });
 
+  it('keeps an optional itunesTrackId', () => {
+    const [s] = validateCatalog([{ ...song({ id: 1 }), itunesTrackId: 1440833098 }]);
+    expect(s?.itunesTrackId).toBe(1440833098);
+    expect(validateCatalog([song({ id: 2 })])[0]).not.toHaveProperty('itunesTrackId');
+  });
+
   it.each([
     ['not an array', { songs: [] }, /JSON array/],
     ['empty', [], /empty/],
@@ -28,6 +34,10 @@ describe('validateCatalog', () => {
     ['bad genre', [{ ...song({ id: 1 }), genre: 'jazz' }], /genre/],
     ['bad artistKeys', [{ ...song({ id: 1 }), artistKeys: [] }], /artistKeys/],
     ['non-string artistKeys', [{ ...song({ id: 1 }), artistKeys: ['a', 2] }], /artistKeys/],
+    ['zero itunesTrackId', [{ ...song({ id: 1 }), itunesTrackId: 0 }], /itunesTrackId/],
+    ['negative itunesTrackId', [{ ...song({ id: 1 }), itunesTrackId: -5 }], /itunesTrackId/],
+    ['fractional itunesTrackId', [{ ...song({ id: 1 }), itunesTrackId: 1.5 }], /itunesTrackId/],
+    ['string itunesTrackId', [{ ...song({ id: 1 }), itunesTrackId: '123' }], /itunesTrackId/],
     ['duplicate artist+title', [song({ id: 1, artist: 'A', title: 'T' }), song({ id: 2, artist: 'a', title: 't ' })], /duplicate artist/],
   ])('rejects %s', (_name, data, pattern) => {
     expect(() => validateCatalog(data)).toThrow(CatalogError);

@@ -87,7 +87,8 @@ export function createApp(options: AppOptions): Express {
     }
     let previewUrl: string | null = null;
     try {
-      previewUrl = await previewProvider.getPreviewUrl(toPublicSong(song));
+      // The provider gets the catalog song (lookup hints like itunesTrackId); only the URL is sent back.
+      previewUrl = await previewProvider.getPreviewUrl(song);
     } catch {
       previewUrl = null; // providers should never throw, but never surface it to the client
     }
@@ -103,7 +104,7 @@ export function createApp(options: AppOptions): Express {
     }
     let coverUrl: string | null = null;
     try {
-      coverUrl = await previewProvider.getCoverUrl(toPublicSong(song));
+      coverUrl = await previewProvider.getCoverUrl(song);
     } catch {
       coverUrl = null; // never surface provider errors to the client
     }
