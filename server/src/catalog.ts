@@ -61,6 +61,12 @@ export function validateCatalog(data: unknown): CatalogSong[] {
     ) {
       fail('artistKeys, if present, must be a non-empty array of non-empty strings');
     }
+    if (
+      s.itunesTrackId !== undefined &&
+      (typeof s.itunesTrackId !== 'number' || !Number.isInteger(s.itunesTrackId) || s.itunesTrackId <= 0)
+    ) {
+      fail('itunesTrackId, if present, must be a positive integer');
+    }
 
     if (isNonEmptyString(s.artist) && isNonEmptyString(s.title)) {
       const key = `${s.artist.trim().toLowerCase()}|${s.title.trim().toLowerCase()}`;
@@ -78,6 +84,7 @@ export function validateCatalog(data: unknown): CatalogSong[] {
         genre: s.genre as CatalogSong['genre'],
       };
       if (Array.isArray(s.artistKeys)) song.artistKeys = (s.artistKeys as string[]).map((k) => k.trim());
+      if (typeof s.itunesTrackId === 'number') song.itunesTrackId = s.itunesTrackId;
       songs.push(song);
     }
   });

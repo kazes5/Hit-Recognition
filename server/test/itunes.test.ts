@@ -100,6 +100,113 @@ describe('ItunesPreviewProvider', () => {
   });
 });
 
+describe('Hebrew songs, logging and pinned track ids', () => {
+  const artzi = song({ id: 301, artist: 'שלמה ארצי', title: 'ירח', language: 'he' });
+  const heTrack = { kind: 'song', artistId: 1, artistName: 'שלמה ארצי', trackName: 'ירח', previewUrl: 'https://p/he.m4a' };
+  const other = { kind: 'song', artistId: 2, artistName: 'אריק איינשטיין', trackName: 'אוהב להיות בבית', previewUrl: 'https://p/x.m4a' };
+  const urlsOf = (fetchMock: { mock: { calls: unknown[][] } }) => fetchMock.mock.calls.map((c) => new URL(String(c[0])));
+
+  it('adds lang=he_il only for Hebrew songs', async () => {
+    const fetchMock = vi.fn(async () => jsonResponse({ results: [heTrack] }));
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getPreviewUrl(artzi)).toBe('https://p/he.m4a');
+    expect(await p.getPreviewUrl(jb)).toBeNull();
+    const [he, en] = urlsOf(fetchMock);
+    expect(he?.searchParams.get('lang')).toBe('he_il');
+    expect(en?.searchParams.has('lang')).toBe(false);
+    expect(new URL(p.buildSearchUrl(jb)).searchParams.has('lang')).toBe(false);
+  });
+
+  it('makes a single request when the he_il search matches', async () => {
+    const fetchMock = vi.fn(async () => jsonResponse({ results: [heTrack] }));
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getPreviewUrl(artzi)).toBe('https://p/he.m4a');
+    expect(await p.getCoverUrl(artzi)).toBeNull();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('searches again without lang when the he_il search finds no match, and caches that', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ results: [other] }))
+      .mockResolvedValueOnce(jsonResponse({ results: [other, heTrack] }));
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getPreviewUrl(artzi)).toBe('https://p/he.m4a');
+    expect(await p.getPreviewUrl(artzi)).toBe('https://p/he.m4a');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const [first, second] = urlsOf(fetchMock);
+    expect(first?.searchParams.get('lang')).toBe('he_il');
+    expect(second?.searchParams.has('lang')).toBe(false);
+    expect(second?.searchParams.get('term')).toBe('שלמה ארצי ירח');
+  });
+
+  it('accepts transliterated results for Hebrew songs', async () => {
+    const latin = { ...heTrack, artistName: 'Shlomo Artzi', trackName: 'Yareach', previewUrl: 'https://p/latin.m4a' };
+    const fetchMock = vi.fn(async () => jsonResponse({ results: [latin] }));
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getPreviewUrl(artzi)).toBe('https://p/latin.m4a');
+  });
+
+  it('logs the first 3 results when nothing matches (once per song), but not for empty results', async () => {
+    const warn = vi.fn();
+    const results = [other, { ...other, trackName: 'שיר 2' }, { ...other, trackName: 'שיר 3' }, { ...other, trackName: 'שיר 4' }];
+    const p = new ItunesPreviewProvider({ fetch: vi.fn(async () => jsonResponse({ results })) as unknown as typeof fetch, logger: { warn } });
+    expect(await p.getPreviewUrl(artzi)).toBeNull();
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn).toHaveBeenCalledWith(
+      '[preview] no match for song 301 "שלמה ארצי – ירח": "אריק איינשטיין – אוהב להיות בבית", "אריק איינשטיין – שיר 2", "אריק איינשטיין – שיר 3"',
+    );
+
+    const quiet = vi.fn();
+    const empty = new ItunesPreviewProvider({ fetch: vi.fn(async () => jsonResponse({ results: [] })) as unknown as typeof fetch, logger: { warn: quiet } });
+    expect(await empty.getPreviewUrl(jb)).toBeNull();
+    expect(quiet).not.toHaveBeenCalled();
+  });
+
+  it('uses the lookup URL for a pinned itunesTrackId and skips the search', async () => {
+    const pinned = { ...artzi, itunesTrackId: 123456 };
+    const fetchMock = vi.fn(async () =>
+      jsonResponse({
+        results: [
+          { wrapperType: 'track', kind: 'song', trackId: 123456, artistName: 'Shlomo Artzi', trackName: 'Something Else', previewUrl: 'https://p/pinned.m4a', artworkUrl100: 'https://is1-ssl.mzstatic.com/a/100x100bb.jpg' },
+        ],
+      }),
+    );
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getPreviewUrl(pinned)).toBe('https://p/pinned.m4a');
+    expect(await p.getCoverUrl(pinned)).toBe('https://is1-ssl.mzstatic.com/a/300x300bb.jpg');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url] = urlsOf(fetchMock);
+    expect(`${url?.origin}${url?.pathname}`).toBe('https://itunes.apple.com/lookup');
+    expect(url?.searchParams.get('id')).toBe('123456');
+    expect(url?.searchParams.get('country')).toBe('IL');
+    expect(url?.searchParams.get('entity')).toBe('song');
+  });
+
+  it('sanitizes the pinned cover', async () => {
+    const pinned = { ...jb, itunesTrackId: 7 };
+    const fetchMock = vi.fn(async () => jsonResponse({ results: [{ kind: 'song', trackId: 7, previewUrl: 'https://p/7.m4a', artworkUrl100: 'https://evil.example/a.jpg' }] }));
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getCoverUrl(pinned)).toBeNull();
+    expect(await p.getPreviewUrl(pinned)).toBe('https://p/7.m4a');
+  });
+
+  it('falls back to search when the pinned lookup returns nothing', async () => {
+    const pinned = { ...jb, itunesTrackId: 999 };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ resultCount: 0, results: [] }))
+      .mockResolvedValueOnce(
+        jsonResponse({ results: [{ kind: 'song', artistName: 'James Brown', trackName: 'I Got You (I Feel Good)', previewUrl: 'https://p/jb.m4a' }] }),
+      );
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getPreviewUrl(pinned)).toBe('https://p/jb.m4a');
+    const [lookup, search] = urlsOf(fetchMock);
+    expect(lookup?.pathname).toBe('/lookup');
+    expect(search?.pathname).toBe('/search');
+  });
+});
+
 describe('cover URLs', () => {
   const track = (artworkUrl100: string | undefined, extra: Record<string, unknown> = {}) => ({
     kind: 'song',

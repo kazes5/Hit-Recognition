@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { artistMatches, normalizeText, pickBestPreview, titleScore, type ItunesTrack } from '../src/preview/matching.js';
+import {
+  artistMatches,
+  normalizeText,
+  pickBestCover,
+  pickBestPreview,
+  pickCrossScriptTrack,
+  titleScore,
+  type ItunesTrack,
+} from '../src/preview/matching.js';
 
 describe('normalizeText', () => {
   it('lowercases, strips diacritics and punctuation', () => {
@@ -23,6 +31,20 @@ describe('artistMatches', () => {
     expect(artistMatches('Lady Gaga', 'Lady Gaga & Bradley Cooper')).toBe(true);
     expect(artistMatches('The Jimi Hendrix Experience', 'Jimi Hendrix')).toBe(true);
     expect(artistMatches('הפרויקט של עידן רייכל', 'עידן רייכל')).toBe(true);
+  });
+
+  it('treats the Hebrew "ו" connector like "&"', () => {
+    expect(artistMatches('דטנר וקושניר', 'דטנר & קושניר')).toBe(true);
+    expect(artistMatches('דטנר וקושניר', 'דטנר ו קושניר')).toBe(true);
+    expect(artistMatches('דטנר & קושניר', 'דטנר וקושניר')).toBe(true);
+    expect(artistMatches('דטנר וקושניר', 'קושניר ודטנר')).toBe(true);
+    expect(artistMatches('יזהר כהן', 'יזהר כהן והאלפבתא')).toBe(true);
+    expect(artistMatches('דטנר וקושניר', 'דטנר את קושניר')).toBe(false);
+  });
+
+  it('keeps single-word artists starting with "ו"', () => {
+    expect(artistMatches('ורד', 'ורד')).toBe(true);
+    expect(artistMatches('ורד', 'רד')).toBe(false);
   });
 
   it('rejects different artists', () => {
@@ -76,5 +98,65 @@ describe('pickBestPreview', () => {
 
   it('returns null for empty results', () => {
     expect(pickBestPreview(song, [])).toBeNull();
+  });
+});
+
+describe('cross-script fallback (Hebrew songs)', () => {
+  const artzi = { artist: 'שלמה ארצי', title: 'ירח', language: 'he' as const };
+  const track = (artistName: string, trackName: string, extra: Partial<ItunesTrack> = {}): ItunesTrack => ({
+    kind: 'song',
+    artistId: 1,
+    artistName,
+    trackName,
+    previewUrl: `https://p/${artistName}/${trackName}`,
+    artworkUrl100: 'https://is1-ssl.mzstatic.com/a/100x100bb.jpg',
+    ...extra,
+  });
+
+  it.each([
+    ['Hebrew script', 'שלמה ארצי', 'ירח'],
+    ['Hebrew with niqqud', 'שְׁלֹמֹה אַרְצִי', 'יָרֵחַ'],
+    ['Latin artist, Hebrew title', 'Shlomo Artzi', 'ירח'],
+    ['Hebrew artist, Latin title', 'שלמה ארצי', 'Yareach'],
+    ['both Latin, single artistId', 'Shlomo Artzi', 'Yareach'],
+  ])('accepts %s', (_name, artistName, trackName) => {
+    const t = track(artistName, trackName);
+    expect(pickBestPreview(artzi, [t])).toBe(t.previewUrl);
+    expect(pickBestCover(artzi, [t])).toBe('https://is1-ssl.mzstatic.com/a/300x300bb.jpg');
+  });
+
+  it('prefers a strict match over a cross-script one', () => {
+    const results = [track('Shlomo Artzi', 'Yareach'), track('שלמה ארצי', 'ירח')];
+    expect(pickBestPreview(artzi, results)).toBe('https://p/שלמה ארצי/ירח');
+  });
+
+  it('rejects both-Latin results when they come from several artists', () => {
+    const results = [track('Shlomo Artzi', 'Yareach'), track('Some Cover Band', 'Yareach', { artistId: 2 })];
+    expect(pickBestPreview(artzi, results)).toBeNull();
+  });
+
+  it('rejects both-Latin results without an artistId', () => {
+    expect(pickBestPreview(artzi, [track('Shlomo Artzi', 'Yareach', { artistId: undefined })])).toBeNull();
+  });
+
+  it('rejects a different Hebrew name in the other field', () => {
+    expect(pickBestPreview(artzi, [track('שלמה ארצי', 'תרקוד')])).toBeNull();
+    expect(pickBestPreview(artzi, [track('אריק איינשטיין', 'ירח')])).toBeNull();
+    expect(pickBestPreview(artzi, [track('Shlomo Artzi', 'תרקוד')])).toBeNull();
+  });
+
+  it('never applies to English songs or songs without a language', () => {
+    const results = [track('Shlomo Artzi', 'Yareach')];
+    expect(pickBestPreview({ ...artzi, language: 'en' }, results)).toBeNull();
+    expect(pickBestPreview({ artist: artzi.artist, title: artzi.title }, results)).toBeNull();
+    const queen = { artist: 'Queen', title: 'Bohemian Rhapsody', language: 'en' as const };
+    expect(pickBestPreview(queen, [track('Queen', 'Something Else'), track('Glee Cast', 'Bohemian Rhapsody')])).toBeNull();
+    // the raw fallback would accept this; pickBestPreview only uses it for Hebrew songs
+    expect(pickCrossScriptTrack(queen, [track('Queen', 'Something Else')], 'previewUrl')).toBe('https://p/Queen/Something Else');
+  });
+
+  it('matches a "ו" credit across separators', () => {
+    const song = { artist: 'דטנר וקושניר', title: 'שיר', language: 'he' as const };
+    expect(pickBestPreview(song, [track('דטנר & קושניר', 'שיר')])).toBe('https://p/דטנר & קושניר/שיר');
   });
 });
