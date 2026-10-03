@@ -134,6 +134,31 @@ test.describe('API', () => {
     expect(res2.status()).toBe(200);
   });
 
+  test('POST /api/songs/next caps a performer at 2 per game (one excludeArtists entry per dealt song)', async ({ request }) => {
+    const all = await drainCatalog(request);
+    const A = all[0]!.artist;
+    const others = [...new Set(all.map((s) => s.artist))].filter((a) => a.toLowerCase() !== A.toLowerCase());
+    const aIds = all.filter((s) => s.artist.toLowerCase() === A.toLowerCase()).map((s) => s.id);
+
+    // [A, A] never returns A while other songs exist.
+    for (let i = 0; i < 20; i++) {
+      const res = await next(request, { excludeArtists: [A, A.toUpperCase()] });
+      expect(res.status()).toBe(200);
+      const { song } = (await res.json()) as { song: Song };
+      expect(song.artist.toLowerCase()).not.toBe(A.toLowerCase());
+    }
+
+    // [A] with every other artist already dealt twice: only A is under the cap, so A is returned.
+    const one = await next(request, { excludeArtists: [A, ...others, ...others] });
+    expect(one.status()).toBe(200);
+    expect(((await one.json()) as { song: Song }).song.artist.toLowerCase()).toBe(A.toLowerCase());
+
+    // Everyone dealt twice: nobody is under the cap, so the soft fallback still returns a song.
+    const two = await next(request, { excludeArtists: [A, A, ...others, ...others] });
+    expect(two.status()).toBe(200);
+    expect(aIds.length).toBeGreaterThan(0);
+  });
+
   test('POST /api/songs/next honours languages filter', async ({ request }) => {
     const stats = (await (await request.get('/api/songs/stats')).json()) as { byLanguage: Record<string, number> };
     for (const lang of ['he', 'en'] as const) {

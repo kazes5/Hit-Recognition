@@ -69,7 +69,7 @@ All endpoints return JSON. Errors: `{ "error": "<CODE>", "message": "..." }`.
 |---|---|---|
 | `GET /api/health` | – | `200 { "status": "ok" }` |
 | `GET /api/songs/stats` | – | `200 { "total": n, "byLanguage": { "he": n, "en": n }, "byDecade": { "1960": n, ... } }` |
-| `POST /api/songs/next` | `{ "excludeIds": number[], "excludeArtists": string[], "languages": Language[] }` (all optional; `languages` default both) | `200 { "song": Song }` — random song not in `excludeIds`, **preferring** artists not in `excludeArtists` (case-insensitive); falls back to a repeated artist only if no other song is left. `404 { "error": "NO_SONGS_LEFT" }` if nothing remains. `400 { "error": "INVALID_REQUEST" }` on bad body. |
+| `POST /api/songs/next` | `{ "excludeIds": number[], "excludeArtists": string[], "languages": Language[] }` (all optional; `languages` default both) | `200 { "song": Song }` — random song not in `excludeIds`, **preferring** artists not in `excludeArtists`. Each `excludeArtists` entry is one dealt song (duplicates are meaningful, case-insensitive) and counts once for every contributor of its credit. A performer appears at most 2 times per game: songs with no dealt contributor come first, then those under the cap of 2, then (soft fallback) any remaining song. `404 { "error": "NO_SONGS_LEFT" }` if nothing remains. `400 { "error": "INVALID_REQUEST" }` on bad body. |
 | `GET /api/songs/:id/preview` | – | `200 { "previewUrl": string \| null }` — 30-second audio URL. `null` if no preview could be found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. Results cached in memory. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-audio"`. |
 | `GET /api/songs/:id/cover` | – | `200 { "coverUrl": string \| null }` — HTTPS URL of the song's cover picture (Apple artwork, upscaled to 300x300). `null` if none was found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. It reuses the same cached iTunes lookup as the preview (one search per song, never two). Only `https://*.mzstatic.com/` URLs are accepted; anything else becomes `null`. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-cover"`. **The preview endpoint's response does not change and never contains the cover.** |
 | `GET /api/mock-cover` | – | A small valid cover-like image (`image/svg+xml`, square). Always available. |
@@ -97,8 +97,8 @@ Single-page app, no router required (screen state in a store). Pass-and-play on 
 
 Game rules (implemented as pure functions in `web/src/game/`, unit-tested):
 - 1–10 players, names unique & non-empty; target score 3–30, default 10.
-- Start: each player receives one revealed song (via `/api/songs/next` with all ids/artists used so far excluded).
-- Turn: fetch next song (excluding all ids used in the game and preferring unused artists), play its preview, player selects a slot, presses Reveal.
+- Start: each player receives one revealed song (via `/api/songs/next` with all ids used so far excluded and one `excludeArtists` entry per dealt song).
+- Turn: fetch next song (excluding all ids used in the game and one `excludeArtists` entry per dealt song; the server allows at most 2 songs per performer per game, a 3rd only when nothing else is left), play its preview, player selects a slot, presses Reveal.
 - Slot index `i` (0…n) = insert before the player's i-th card (cards sorted by year ascending); `n` = after the last card.
 - Correct iff `prevYear <= song.year <= nextYear` (missing neighbour = unbounded). Correct → card added; wrong → card discarded.
 - Score = number of cards in the timeline. When a player reaches the target after a reveal, pressing Next shows the winner screen.

@@ -16,7 +16,7 @@ Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) fo
 |---|---|---|---|
 | R1 | **Placement correctness** with equal years, first/last slot, single-card timeline | Core rule; `prevYear <= year <= nextYear`, missing neighbour unbounded. Off-by-one on slot index is easy. | Unit tests in `web/src/game/`; manual TC-10..TC-14 using known-year songs |
 | R2 | **No song repeats** within a game (incl. starting cards, discarded cards, songs skipped due to null preview) | Explicit rule | API: loop `/api/songs/next` with growing `excludeIds` until 404; UI: track `data-song-id` over a long game |
-| R3 | **Artist repeats** avoided until exhausted; case-insensitive | Explicit rule | API with `excludeArtists` in different casing; verify fallback only when no other artist remains |
+| R3 | **Max 2 songs per artist per game**; a 3rd only when nothing else is left (soft fallback); `excludeArtists` has one entry per dealt song, case-insensitive | Explicit rule | API with `excludeArtists` `[A, A]` (never returns A while others exist), `[A]` (other artists excluded: returns A), `[A, A]` with others excluded (200 via fallback); different casing |
 | R4 | **Hidden info leaking before reveal**: DOM text, `alt`, `aria-label`, `title` attributes, `document.title`, `data-*` attributes, CSS `content`, localStorage readable via devtools is acceptable-ish, `<audio>` src. Network-visible fields (JSON response) are **acceptable**. | Defeats the game | Before Reveal: dump `document.body.innerText`, all attribute values, `document.title`; search for artist/title/year of the current song |
 | R5 | **Audio does not start on mobile** (autoplay policy) | iOS Safari blocks `play()` without a user gesture; first clip after a network await is often blocked | Play must be triggered directly in the tap handler; test on real iPhone; `btn-play` always available as a manual fallback |
 | R6 | **30-second cutoff**; replay restarts; audio stops on Reveal / Next / leaving screen | Rule + annoyance | Real previews are ~30 s; check timer stop, no overlapping audio after Next |
@@ -24,7 +24,7 @@ Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) fo
 | R8 | **RTL layout / mixed-direction card text** | Hebrew artist on English UI and vice versa; timeline must stay LTR chronological | Switch languages; card text uses `dir="auto"` or per-language `dir`; titles with parentheses/numbers (e.g. "I Got You (I Feel Good)", "מ-100") render correctly |
 | R9 | **Persistence / resume** | Reload mid-turn must not reveal, lose, or duplicate cards; must not re-roll song (cheating vector) | Reload at each step (before play, slot selected, after reveal, winner) |
 | R10 | **Server unreachable** | Must show `error-banner`, not a blank screen or stuck spinner; recover when server is back | Kill server mid-game; 404 `NO_SONGS_LEFT` case |
-| R11 | **Data quality** of `songs.json` | Wrong original year = "correct" players marked wrong | Manual review of years, duplicates, spelling, balance, max 3 songs/artist |
+| R11 | **Data quality** of `songs.json` | Wrong original year = "correct" players marked wrong | Manual review of years, duplicates, spelling, balance, max 10 songs/artist (was 3) |
 | R12 | Setup validation | Duplicate/empty names, target range 3–20 | TC-01..TC-05 |
 
 ## 3. Manual test cases
@@ -96,6 +96,7 @@ Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) fo
 
 - `/api/health` returns `{status:"ok"}`. `/api/songs/stats` returns 310 total, he 44, en 266.
 - Bad body returns 400 `INVALID_REQUEST`, malformed JSON returns 400, unknown preview id returns 404 `SONG_NOT_FOUND`, mock preview returns `/api/mock-audio` (audio/wav).
+- Note: the figures in this section predate the 2-per-artist game cap and the 10-per-artist catalog cap.
 - Exhaustion loop with growing `excludeIds`/`excludeArtists`: 310 distinct songs, then 404 `NO_SONGS_LEFT`. No duplicates. The first repeated artist came at draw 257, which is exactly after all 256 distinct artist strings were used. PASS.
 
 ### 5.3 Exploratory UI (Playwright, Chromium, 390x844, mobile + touch)
@@ -126,6 +127,7 @@ Limitations: Google Fonts (Rubik / Tilt Neon) could not load in the sandbox beca
   - #229 GN'R "Sweet Child o' Mine": 1987 (album) / 1988 (single). Fine as is.
   - #186 Deep Purple "Smoke on the Water": 1972 (album) / 1973 (single). Fine as is.
 - **Duplicates:** none (ids 1–310 unique, no artist+title duplicates).
+- Note: figures here predate the catalog cap change to 10 songs per artist.
 - **Artists with more than 3 songs:** none. 13 artists have exactly 3.
 - **Language balance:** **he 44 (14%) vs en 266 (86%)**, but PLAN §4 says "roughly half and half". With "both" selected a Hebrew song appears only about 1 turn in 7. In my Hebrew-UI game, every card was English.
 - **Decade balance per language:** Hebrew has 0 songs in the 1950s and 2020s, 2 in the 1960s, 5 in the 1990s and 5 in the 2010s. With "songs: Hebrew only" the game has just 44 songs, and all 2020s years are missing.
@@ -182,6 +184,7 @@ Limitations: Google Fonts (Rubik / Tilt Neon) could not load in the sandbox beca
 #### Bug 6 (Minor, backend): Artist variants bypass avoid-repeat
 - Repro: a game can deal #13 "יזהר כהן" and later #72 "יזהר כהן והאלפבתא". The same goes for Lady Gaga (#103/#273) with #184 "Lady Gaga & Bradley Cooper", and Justin Bieber (#285) with #226.
 - Expected: these are treated as the same artist for the no-repeat preference.
+- Note: this finding predates the in-game cap (max 2 per performer, one `excludeArtists` entry per dealt song).
 - Fix options: an optional `artistKey`/`mainArtist` field in songs.json used by `normalizeArtistKey` (`server/src/selection.ts:13`), or change the printed name to the main artist. Note that `excludeArtists` is sent by the client using the displayed `artist` string.
 
 #### Bug 7 (Minor, backend): Misspelled artist

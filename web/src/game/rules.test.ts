@@ -227,8 +227,9 @@ describe('used ids / artists', () => {
     expect(addUsedId([1], 2)).toEqual([1, 2]);
   });
 
-  it('adds artists once, case-insensitively', () => {
-    expect(addUsedArtist(['ABBA'], 'abba')).toEqual(['ABBA']);
+  it('always appends artists (one entry per dealt song, no de-duplication)', () => {
+    expect(addUsedArtist(['ABBA'], 'abba')).toEqual(['ABBA', 'abba']);
+    expect(addUsedArtist(['ABBA'], 'ABBA')).toEqual(['ABBA', 'ABBA']);
     expect(addUsedArtist(['ABBA'], 'Queen')).toEqual(['ABBA', 'Queen']);
   });
 });

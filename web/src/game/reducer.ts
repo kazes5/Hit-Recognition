@@ -41,7 +41,9 @@ export const initialGameState: GameState = {
   endedEarly: false,
 };
 
+/** Records a dealt song once: one usedArtists entry per distinct song id (MARK_USED then SONG_READY must not double-count). */
 function markUsed(state: GameState, song: Song): GameState {
+  if (state.usedIds.includes(song.id)) return state;
   return {
     ...state,
     usedIds: addUsedId(state.usedIds, song.id),

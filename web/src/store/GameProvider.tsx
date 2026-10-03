@@ -80,6 +80,7 @@ export function GameProvider({
     (async () => {
       const s = stateRef.current;
       const excludeIds = [...s.usedIds];
+      // One entry per dealt song (duplicates are meaningful: the server counts them per artist).
       const excludeArtists = [...s.usedArtists];
       try {
         for (let i = s.dealtCount; i < s.players.length; i++) {
@@ -111,6 +112,7 @@ export function GameProvider({
     (async () => {
       const s = stateRef.current;
       const excludeIds = [...s.usedIds];
+      // One entry per drawn song, including ones skipped for a missing preview; the server counts them.
       const excludeArtists = [...s.usedArtists];
       try {
         for (let attempt = 0; attempt < MAX_SONG_ATTEMPTS; attempt++) {

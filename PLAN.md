@@ -19,7 +19,7 @@ A party game for one shared phone (web app), based on the Hitster board game. Th
 
 **Rules for picking songs**
 - A song is never played twice in the same game.
-- The app avoids picking an artist who has already appeared in the game. It only repeats an artist when no other artist is left.
+- At most 2 songs by the same artist in one game. The app first picks artists not seen yet, then artists seen once. A 3rd song by the same artist comes only when nothing else is left.
 - Songs with the same year as a card already on the timeline count as correct on either side of it.
 
 ---
@@ -72,7 +72,7 @@ The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is
 
 - **Today:** 576 songs (210 Hebrew, 366 English), from the 1950s to the 2020s. Goal: about 670 (see section 9.1).
 - Genres: pop, classic and light rock.
-- Automatic tests check the list: no duplicate ids or songs, at most 3 songs per artist, and enough songs in each decade.
+- Automatic tests check the list: no duplicate ids or songs, at most 10 songs per artist, and enough songs in each decade.
 - Still to do: a script that checks every song has a working preview. It needs internet access to Apple, so it has to run outside this sandbox.
 
 ---
@@ -107,7 +107,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | # | Milestone | Status |
 |---|---|---|
 | 1 | **Setup:** web + server projects, theme (colors and fonts), Hebrew/English text, RTL support | ✅ Done |
-| 2 | **Song list:** 576 songs with years checked, no repeated artists | ✅ Done. More songs still planned (section 9.1) |
+| 2 | **Song list:** 576 songs with years checked, at most 10 songs per artist | ✅ Done. More songs still planned (section 9.1) |
 | 3 | **Game logic:** players, turns, song picking without repeats, placement check, score, winner, with tests | ✅ Done |
 | 4 | **UI:** all screens in section 6, the card, the timeline, the neon look from the box cover | ✅ Done |
 | 5 | **Audio:** 30-second preview, replay, skip to another song if a preview fails | ✅ Done, but real previews are still untested (the build sandbox cannot reach Apple) |
@@ -140,12 +140,12 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 
 - **Goal:** grow the list from 367 to about 670 songs.
 - **Done:** 576 songs now (+209: 100 English, 109 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
-- **Still short:** about 95 songs. Second research run (focus on 2000–2025): 47 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 3-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
+- **Still short:** about 95 songs. Second research run (focus on 2000–2025): 47 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 10-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
 - **To finish:** raise the search limit (the `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` setting) and rerun the research, mainly for Hebrew songs from the 1950s–60s, the 1990s and the 2010s–20s.
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.
   - The year is the original release year and is checked against a source before adding.
-  - At most 3 songs per artist.
+  - At most 10 songs per artist.
 - **Done when:** about 670 songs, the catalog test passes, and the end-to-end tests still pass.
 
 ### 9.2 Winner at up to 30 cards ✅ Done

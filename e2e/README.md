@@ -38,7 +38,7 @@ Chromium is launched with `--autoplay-policy=no-user-gesture-required --use-fake
 | `api.spec.ts` | health, stats shape, `next` exclusion / artist preference / languages / 400s, mock preview, mock audio WAV, 404s, SPA fallback |
 | `setup.spec.ts` | home → setup, add/remove players, empty/duplicate/11th player rejected, target score |
 | `gameplay.spec.ts` | deterministic games via `page.route` song queue: hidden card leaks nothing, reveal gating, correct/wrong, rotation, scoreboard `data-score`, winner, equal-year rule, null preview → auto-skip |
-| `no-repeat.spec.ts` | real server: no song/artist repeats, `excludeIds`/`excludeArtists` grow with every request |
+| `no-repeat.spec.ts` | real server: no song repeats, at most 2 songs per artist, `excludeIds` grow and `excludeArtists` holds one entry per dealt song |
 | `i18n.spec.ts` | Hebrew RTL (`<html dir="rtl" lang="he">`), timeline stays `dir="ltr"`, persistence, song-language setting |
 | `resume.spec.ts` | reload mid-game → `btn-resume` restores state |
 | `responsive.spec.ts` | no horizontal scroll, buttons ≥ 44px (mobile), full-page screenshots → `screenshots/` |

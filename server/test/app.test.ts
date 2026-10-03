@@ -104,6 +104,26 @@ describe('API', () => {
       expect(res.body.song.id).toBe(52);
     });
 
+    it('treats duplicated excludeArtists entries as one dealt song each (max 2 per artist)', async () => {
+      const pool = [
+        song({ id: 60, artist: 'A' }),
+        song({ id: 61, artist: 'A' }),
+        song({ id: 62, artist: 'A' }),
+        song({ id: 63, artist: 'B' }),
+      ];
+      const capped = createApp({ songs: pool, previewProvider: new MockPreviewProvider() });
+      for (const r of [0, 0.5, 0.99]) {
+        const seeded = createApp({ songs: pool, previewProvider: new MockPreviewProvider(), rng: () => r });
+        const res = await request(seeded).post('/api/songs/next').send({ excludeArtists: ['A', 'a'] });
+        expect(res.body.song.id).toBe(63);
+      }
+      const one = await request(capped).post('/api/songs/next').send({ excludeIds: [63], excludeArtists: ['A'] });
+      expect(one.status).toBe(200);
+      const fallback = await request(capped).post('/api/songs/next').send({ excludeIds: [63, 60], excludeArtists: ['A', 'A'] });
+      expect(fallback.status).toBe(200);
+      expect([61, 62]).toContain(fallback.body.song.id);
+    });
+
     it('uses the injected rng', async () => {
       const seeded = createApp({ songs, previewProvider: new MockPreviewProvider(), rng: () => 0 });
       const res = await request(seeded).post('/api/songs/next').send({});

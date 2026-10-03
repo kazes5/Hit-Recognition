@@ -43,12 +43,18 @@ function pick<T>(items: readonly T[], rng: Rng): T {
   return items[index] as T;
 }
 
+/** In one game, at most this many songs by the same performer (a further one only when nothing else is left). */
+export const MAX_SONGS_PER_ARTIST_IN_GAME = 2;
+
 /**
  * Picks a random song that is not excluded, in one of the requested languages.
- * Prefers songs sharing no contributing artist with `excludeArtists` (full artist
- * strings as shown on cards; each is split into contributors and expanded with the
- * catalog's extra `artistKeys` for that credit). Falls back to a repeated artist
- * only when nothing else is left. Returns null when no song remains.
+ * `excludeArtists` holds one entry per song already dealt in the game (full artist
+ * strings as shown on cards; duplicates are meaningful). Each entry is split into
+ * contributors and expanded with the catalog's extra `artistKeys` for that credit,
+ * and counts once for every contributor. Selection is tiered and soft: first songs
+ * whose contributors were not dealt yet, then songs whose contributors were dealt
+ * fewer than MAX_SONGS_PER_ARTIST_IN_GAME times, then any remaining song.
+ * Returns null when no song remains.
  */
 export function selectNextSong<S extends CatalogSong>(
   songs: readonly S[],
@@ -60,18 +66,23 @@ export function selectNextSong<S extends CatalogSong>(
 
   const candidates = songs.filter((s) => !excludedIds.has(s.id) && languages.has(s.language));
   if (candidates.length === 0) return null;
+  if (criteria.excludeArtists.length === 0) return pick(candidates, rng);
 
-  const excludedKeys = new Set<string>();
-  if (criteria.excludeArtists.length > 0) {
-    const wanted = new Set(criteria.excludeArtists.map(normalizeArtistKey));
-    for (const name of criteria.excludeArtists) for (const k of splitArtistKeys(name)) excludedKeys.add(k);
+  const counts = new Map<string, number>();
+  for (const name of criteria.excludeArtists) {
+    const entryKey = normalizeArtistKey(name);
+    const keys = new Set(splitArtistKeys(name));
     for (const s of songs) {
-      if (wanted.has(normalizeArtistKey(s.artist))) for (const k of songArtistKeys(s)) excludedKeys.add(k);
+      if (normalizeArtistKey(s.artist) === entryKey) for (const k of songArtistKeys(s)) keys.add(k);
     }
+    for (const k of keys) counts.set(k, (counts.get(k) ?? 0) + 1);
   }
 
-  const fresh = candidates.filter((s) => !songArtistKeys(s).some((k) => excludedKeys.has(k)));
-  return pick(fresh.length > 0 ? fresh : candidates, rng);
+  const maxCount = (s: S): number => Math.max(0, ...songArtistKeys(s).map((k) => counts.get(k) ?? 0));
+  const fresh = candidates.filter((s) => maxCount(s) === 0);
+  if (fresh.length > 0) return pick(fresh, rng);
+  const underCap = candidates.filter((s) => maxCount(s) < MAX_SONGS_PER_ARTIST_IN_GAME);
+  return pick(underCap.length > 0 ? underCap : candidates, rng);
 }
 
 export type ParseResult<T> = { ok: true; value: T } | { ok: false; message: string };

@@ -162,6 +162,25 @@ describe('GameScreen (turn)', () => {
     expect(secondBody.excludeArtists).toContain('A1');
   });
 
+  it('keeps duplicate artists in excludeArtists (one entry per drawn song)', async () => {
+    let n = 0;
+    const fetchMock = vi.fn((url: string, init?: RequestInit) => {
+      void init;
+      if (url.endsWith('/next')) {
+        n++;
+        return Promise.resolve(json({ song: song(1980 + n, { id: 300 + n, artist: 'ABBA' }) }));
+      }
+      return Promise.resolve(json({ previewUrl: url.includes('/301/') ? null : '/ok.mp3' }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    renderWithProviders(<GameScreen />, { state: turnState(null, { usedArtists: ['ABBA'] }) });
+    await waitFor(() => expect(screen.getByTestId('btn-play')).toBeEnabled());
+    const nextCalls = fetchMock.mock.calls.filter(([u]) => u.endsWith('/next'));
+    expect(nextCalls).toHaveLength(2);
+    expect(JSON.parse(nextCalls[0]![1]!.body as string).excludeArtists).toEqual(['ABBA']);
+    expect(JSON.parse(nextCalls[1]![1]!.body as string).excludeArtists).toEqual(['ABBA', 'ABBA']);
+  });
+
   it('fetches another song when the audio fails to load', async () => {
     let n = 0;
     vi.stubGlobal(
