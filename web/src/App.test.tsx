@@ -8,7 +8,10 @@ import type { Song } from './game/types';
 import { FakeAudio } from './test/fakeAudio';
 
 const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
 
 /** Fake server: hands out songs with increasing years, so slot n (last) is always correct. */
 function fakeServer() {
@@ -18,7 +21,14 @@ function fakeServer() {
     if (url === '/api/songs/next') {
       bodies.push(JSON.parse((init?.body as string) ?? '{}'));
       n++;
-      const s: Song = { id: n, artist: `Artist ${n}`, title: `Song ${n}`, year: 1950 + n, language: 'en', genre: 'pop' };
+      const s: Song = {
+        id: n,
+        artist: `Artist ${n}`,
+        title: `Song ${n}`,
+        year: 1950 + n,
+        language: 'en',
+        genre: 'pop',
+      };
       return Promise.resolve(json({ song: s }));
     }
     return Promise.resolve(json({ previewUrl: '/api/mock-audio' }));
@@ -45,6 +55,39 @@ async function placeLastAndReveal(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('App flow', () => {
+  it('sends the same artist twice in excludeArtists when the server deals it twice', async () => {
+    const bodies: Array<Record<string, unknown>> = [];
+    let n = 0;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((url: string, init?: RequestInit) => {
+        if (url === '/api/songs/next') {
+          bodies.push(JSON.parse((init?.body as string) ?? '{}'));
+          n++;
+          const s: Song = {
+            id: n,
+            artist: n <= 2 ? 'ABBA' : `Artist ${n}`,
+            title: `Song ${n}`,
+            year: 1950 + n,
+            language: 'en',
+            genre: 'pop',
+          };
+          return Promise.resolve(json({ song: s }));
+        }
+        return Promise.resolve(json({ previewUrl: '/api/mock-audio' }));
+      }),
+    );
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByTestId('btn-new-game'));
+    await user.type(screen.getByTestId('input-player-name'), 'Ann{Enter}');
+    await user.type(screen.getByTestId('input-player-name'), 'Ben{Enter}');
+    await user.click(screen.getByTestId('btn-start-game'));
+    expect(await screen.findByTestId('screen-turn')).toBeInTheDocument();
+    await waitFor(() => expect(bodies.length).toBeGreaterThanOrEqual(3));
+    expect(bodies[2]?.excludeArtists).toEqual(['ABBA', 'ABBA']);
+  });
+
   it('home → setup → deal → turns → winner → play again', async () => {
     const { bodies } = fakeServer();
     const user = userEvent.setup();
