@@ -70,7 +70,7 @@ The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is
   "spotifyId": "...", "appleId": "..." }
 ```
 
-- **Today:** 560 songs (194 Hebrew, 366 English), from the 1950s to the 2020s. Goal: about 670 (see section 9.1).
+- **Today:** 576 songs (210 Hebrew, 366 English), from the 1950s to the 2020s. Goal: about 670 (see section 9.1).
 - Genres: pop, classic and light rock.
 - Automatic tests check the list: no duplicate ids or songs, at most 3 songs per artist, and enough songs in each decade.
 - Still to do: a script that checks every song has a working preview. It needs internet access to Apple, so it has to run outside this sandbox.
@@ -107,7 +107,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | # | Milestone | Status |
 |---|---|---|
 | 1 | **Setup:** web + server projects, theme (colors and fonts), Hebrew/English text, RTL support | ✅ Done |
-| 2 | **Song list:** 560 songs with years checked, no repeated artists | ✅ Done. More songs still planned (section 9.1) |
+| 2 | **Song list:** 576 songs with years checked, no repeated artists | ✅ Done. More songs still planned (section 9.1) |
 | 3 | **Game logic:** players, turns, song picking without repeats, placement check, score, winner, with tests | ✅ Done |
 | 4 | **UI:** all screens in section 6, the card, the timeline, the neon look from the box cover | ✅ Done |
 | 5 | **Audio:** 30-second preview, replay, skip to another song if a preview fails | ✅ Done, but real previews are still untested (the build sandbox cannot reach Apple) |
@@ -136,11 +136,11 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 
 ## 9. Next steps (planned, not started)
 
-### 9.1 More songs (+300) 🟡 Partly done: +193 of +300
+### 9.1 More songs (+300) 🟡 Partly done: +209 of +300
 
 - **Goal:** grow the list from 367 to about 670 songs.
-- **Done:** 560 songs now (+193: 100 English, 93 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
-- **Still short:** about 110 songs. Second research run (focus on 2000–2025): 31 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 3-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
+- **Done:** 576 songs now (+209: 100 English, 109 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
+- **Still short:** about 95 songs. Second research run (focus on 2000–2025): 47 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 3-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
 - **To finish:** raise the search limit (the `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` setting) and rerun the research, mainly for Hebrew songs from the 1950s–60s, the 1990s and the 2010s–20s.
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.

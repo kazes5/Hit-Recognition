@@ -558,5 +558,21 @@
   {"id":557,"artist":"יובל דיין","title":"שרק תחייך","year":2020,"language":"he","genre":"pop"},
   {"id":558,"artist":"דודו אהרון","title":"טרמינל 3","year":2015,"language":"he","genre":"pop"},
   {"id":559,"artist":"אליעד","title":"מתוק כשמרלי","year":2015,"language":"he","genre":"pop"},
-  {"id":561,"artist":"הדג נחש ואברהם טל","title":"תן לי מנגינה","year":2015,"language":"he","genre":"pop"}
+  {"id":561,"artist":"הדג נחש ואברהם טל","title":"תן לי מנגינה","year":2015,"language":"he","genre":"pop"},
+  {"id":562,"artist":"מירי מסיקה","title":"לשם","year":2005,"language":"he","genre":"pop"},
+  {"id":563,"artist":"אהוד בנאי","title":"בלוז כנעני","year":2004,"language":"he","genre":"light-rock"},
+  {"id":564,"artist":"ארקדי דוכין","title":"מי אוהב אותך יותר ממני","year":2004,"language":"he","genre":"pop"},
+  {"id":565,"artist":"שלמה גרוניך","title":"בנאליה לפני השקיעה","year":2013,"language":"he","genre":"pop"},
+  {"id":566,"artist":"אברהם טל","title":"שושנה","year":2013,"language":"he","genre":"pop"},
+  {"id":568,"artist":"מוש בן ארי","title":"תני לי סימן","year":2012,"language":"he","genre":"pop"},
+  {"id":569,"artist":"מוקי","title":"ילד של אבא","year":2013,"language":"he","genre":"pop"},
+  {"id":570,"artist":"סאבלימינל ועדן גבאי","title":"שרוטים","year":2016,"language":"he","genre":"pop"},
+  {"id":571,"artist":"אליעד","title":"אור","year":2015,"language":"he","genre":"pop"},
+  {"id":572,"artist":"רותם כהן ודסמר בואנו","title":"כל כך יפה לך","year":2017,"language":"he","genre":"pop"},
+  {"id":573,"artist":"התקווה 6","title":"גיבורי על","year":2024,"language":"he","genre":"pop"},
+  {"id":574,"artist":"שחר טבוך ואגם בוחבוט","title":"נאדי באדי","year":2024,"language":"he","genre":"pop"},
+  {"id":575,"artist":"אושר כהן","title":"מנגן ושר","year":2024,"language":"he","genre":"pop"},
+  {"id":576,"artist":"אודיה ועופר ניסים","title":"בלילות","year":2023,"language":"he","genre":"pop"},
+  {"id":577,"artist":"אגם בוחבוט","title":"קופידון","year":2022,"language":"he","genre":"pop"},
+  {"id":578,"artist":"פאר טסי","title":"אהבה חולה","year":2022,"language":"he","genre":"pop"}
 ]
