@@ -129,8 +129,9 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 ## 8. Out of scope (for now)
 
 - Online multiplayer across several phones.
-- Tokens for challenging or stealing cards (from the original game).
-- Guessing the artist or title for bonus points.
+- Using tokens to skip a song or to buy a card (from the original game).
+
+Tokens, naming the artist and title, and betting on another player's card are now planned in step 9.4.
 
 ---
 
@@ -164,7 +165,30 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 - **Checked:** unit tests (server 13 new, web 4 new) and 7 new Playwright tests for the cover, including "no request before Reveal" and "no scrolling on a small phone". A placeholder record image is used in tests.
 - **Not checked:** real Apple covers. The sandbox cannot reach Apple, so the first real test is on the live site.
 
+### 9.4 Tokens, naming and bets ⬜ Planned
+
+The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md).
+
+**Rules**
+- **Tokens:** every player starts with 1 token and gets +1 for every card they win, up to 5.
+- **Naming:** on their turn, a player can also type the artist and the song title. The app checks both without showing the answer.
+- **Bets:** if the current player did not name both correctly, each other player with a token can bet 1 token on a different spot of the current player's timeline.
+  - If the current player is wrong and a bettor is right, the bettor wins the card. It goes into the bettor's own timeline, and the bettor gets +1 token.
+  - A wrong bet loses its token.
+- **Winner:** a bettor can now reach the target on someone else's turn, so the winner check covers every player.
+
+**How**
+- **Checking names:** a new server endpoint, `POST /api/songs/:id/guess`, checks the typed names with tolerant Hebrew/English matching. It never returns the answer.
+- **Betting:** the phone goes around the table in seat order. Each player bets or passes.
+- **On/off:** a "Tokens & bets" switch in Setup, on by default.
+- **Saved games:** games saved before this change are migrated, not lost.
+
+**Steps:** (1) check names on the server, (2) game rules, (3) screens, (4) end-to-end tests and docs, (5) a "We accept it" button and English spellings of Hebrew artist names.
+
+**Open:** 13 rule questions where the request can be read more than one way. The plan picks a default for each; see section 2 of the plan.
+
 ### Suggested order
 
 1. Finish 9.1 (the remaining ~150 songs, mostly Hebrew). 9.2 and 9.3 are done.
-2. Then milestone 8, Spotify and Apple Music.
+2. 9.4, tokens and bets, after the owner confirms the rule questions.
+3. Then milestone 8, Spotify and Apple Music.
