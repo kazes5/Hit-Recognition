@@ -104,6 +104,21 @@ describe('API', () => {
       expect(res.body.song.id).toBe(52);
     });
 
+    it('passes itunesTrackId to the provider but never exposes it', async () => {
+      const pinned = [{ ...song({ id: 60, artist: 'A', title: 'T' }), itunesTrackId: 123 }];
+      const provider: PreviewProvider = { getPreviewUrl: vi.fn(async () => 'https://a/p.m4a'), getCoverUrl: vi.fn(async () => null) };
+      const pinnedApp = createApp({ songs: pinned, previewProvider: provider });
+      const next = await request(pinnedApp).post('/api/songs/next').send({});
+      expect(next.body.song.id).toBe(60);
+      expect(next.body.song).not.toHaveProperty('itunesTrackId');
+      const preview = await request(pinnedApp).get('/api/songs/60/preview');
+      expect(preview.body).toEqual({ previewUrl: 'https://a/p.m4a' });
+      const cover = await request(pinnedApp).get('/api/songs/60/cover');
+      expect(cover.body).toEqual({ coverUrl: null });
+      expect(provider.getPreviewUrl).toHaveBeenCalledWith(expect.objectContaining({ id: 60, itunesTrackId: 123 }));
+      expect(provider.getCoverUrl).toHaveBeenCalledWith(expect.objectContaining({ id: 60, itunesTrackId: 123 }));
+    });
+
     it('uses the injected rng', async () => {
       const seeded = createApp({ songs, previewProvider: new MockPreviewProvider(), rng: () => 0 });
       const res = await request(seeded).post('/api/songs/next').send({});

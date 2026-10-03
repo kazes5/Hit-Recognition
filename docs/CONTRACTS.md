@@ -63,6 +63,17 @@ interface Song {
 }
 ```
 
+**Catalog-only fields** (`server/data/songs.json`, internal; never sent to clients, `toPublicSong` strips them):
+
+| Field | Type | Meaning |
+|---|---|---|
+| `artistKeys` | `string[]` (non-empty) | Every contributing artist, for the "prefer unused artists" rule (e.g. a featured artist not named in `artist`). |
+| `itunesTrackId` | positive integer | Pins the exact iTunes track. The preview/cover lookup then uses `https://itunes.apple.com/lookup?id=<id>&country=<ITUNES_COUNTRY>&entity=song` and takes that track's preview and artwork without any name matching. If the lookup returns no preview, the normal search is used. Use it for songs whose name search keeps failing (e.g. the "no match" warning below). |
+
+To find an id: run `curl 'https://itunes.apple.com/search?term=<artist+title>&entity=song&country=IL&lang=he_il'` (URL-encode the term) and copy `trackId` of the right result; or open the song in Apple Music / iTunes on the web, where the track id is the `i=` query parameter of the song link (`…/album/…/1440833098?i=1440833100` → `1440833100`). Check it with the lookup URL above for the same country: it must return a `previewUrl`.
+
+**Preview matching** (iTunes provider): the search term is `"<artist> <title>"`. Hebrew songs (`language: "he"`) are searched first with `lang=he_il` and, if nothing matches, once more without `lang`; English songs never send `lang`. A result must match artist and title (ignoring case, diacritics/niqqud, punctuation, `&` / `and` / Hebrew `ו` connectors). Hebrew songs only also accept transliterated results (one field matches and the other has no Hebrew letters, or all results come from one artistId and are fully Latin). When iTunes returns results but none matches, the server logs `[preview] no match for song <id> "<artist> – <title>": <first 3 results>`.
+
 All endpoints return JSON. Errors: `{ "error": "<CODE>", "message": "..." }`.
 
 | Method & path | Request | Response |
