@@ -42,6 +42,7 @@ const en = {
   reveal: 'Reveal',
   scoreboard: 'Scoreboard',
   hiddenCard: 'Hidden song',
+  coverAlt: 'Cover of {title}',
 
   correct: 'Correct!',
   wrong: 'Wrong, it was {year}',
@@ -128,6 +129,7 @@ const he: Dictionary = {
   reveal: 'חשיפה',
   scoreboard: 'טבלת ניקוד',
   hiddenCard: 'שיר מוסתר',
+  coverAlt: 'עטיפת האלבום של {title}',
 
   correct: 'נכון!',
   wrong: 'טעות, השיר יצא ב-{year}',

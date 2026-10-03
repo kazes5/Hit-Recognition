@@ -8,6 +8,7 @@ export interface ItunesTrack {
   trackName?: string;
   trackCensoredName?: string;
   previewUrl?: string;
+  artworkUrl100?: string;
 }
 
 /**
@@ -77,22 +78,52 @@ export function titleScore(expected: string, actual: string): number {
   return 0;
 }
 
-/**
- * Picks the best iTunes result for the song: the artist must match, the title
- * must at least loosely match, and the closest title wins (first result on ties,
- * since iTunes orders by relevance).
- */
-export function pickBestPreview(song: Pick<Song, 'artist' | 'title'>, results: readonly ItunesTrack[]): string | null {
-  let best: { score: number; url: string } | null = null;
+function pickBestTrack(
+  song: Pick<Song, 'artist' | 'title'>,
+  results: readonly ItunesTrack[],
+  field: 'previewUrl' | 'artworkUrl100',
+): string | null {
+  let best: { score: number; value: string } | null = null;
   for (const track of results) {
-    if (typeof track.previewUrl !== 'string' || track.previewUrl.length === 0) continue;
+    const value = track[field];
+    if (typeof value !== 'string' || value.length === 0) continue;
     if (track.kind !== undefined && track.kind !== 'song') continue;
     if (typeof track.artistName !== 'string' || !artistMatches(song.artist, track.artistName)) continue;
     const name = track.trackName ?? track.trackCensoredName;
     if (typeof name !== 'string') continue;
     const score = titleScore(song.title, name);
     if (score === 0) continue;
-    if (best === null || score > best.score) best = { score, url: track.previewUrl };
+    if (best === null || score > best.score) best = { score, value };
   }
-  return best?.url ?? null;
+  return best?.value ?? null;
+}
+
+/**
+ * Picks the best iTunes result for the song: the artist must match, the title
+ * must at least loosely match, and the closest title wins (first result on ties,
+ * since iTunes orders by relevance).
+ */
+export function pickBestPreview(song: Pick<Song, 'artist' | 'title'>, results: readonly ItunesTrack[]): string | null {
+  return pickBestTrack(song, results, 'previewUrl');
+}
+
+/** Normalizes an Apple artwork URL: upscales 100x100 to 300x300; only https on mzstatic.com is accepted. */
+export function sanitizeCoverUrl(raw: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== 'https:') return null;
+  if (url.username !== '' || url.password !== '') return null;
+  const host = url.hostname.toLowerCase();
+  if (host !== 'mzstatic.com' && !host.endsWith('.mzstatic.com')) return null;
+  return url.toString().replace('100x100', '300x300');
+}
+
+/** Cover picture (artworkUrl100 upscaled to 300x300) of the best-matching result, or null. */
+export function pickBestCover(song: Pick<Song, 'artist' | 'title'>, results: readonly ItunesTrack[]): string | null {
+  const raw = pickBestTrack(song, results, 'artworkUrl100');
+  return raw === null ? null : sanitizeCoverUrl(raw);
 }

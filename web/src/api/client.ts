@@ -67,3 +67,10 @@ export async function fetchPreviewUrl(songId: number): Promise<string | null> {
   );
   return typeof data.previewUrl === 'string' && data.previewUrl ? data.previewUrl : null;
 }
+
+export async function fetchCoverUrl(songId: number): Promise<string | null> {
+  const data = await request<{ coverUrl?: string | null }>(
+    `/api/songs/${encodeURIComponent(String(songId))}/cover`,
+  );
+  return typeof data.coverUrl === 'string' && data.coverUrl ? data.coverUrl : null;
+}

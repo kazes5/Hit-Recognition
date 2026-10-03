@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, type CSSProperties } from 'react';
 import { useAudioPlayer } from '../audio/useAudioPlayer';
+import { CoverImage } from '../components/CoverImage';
 import { ErrorBanner } from '../components/ErrorBanner';
 import { Scoreboard } from '../components/Scoreboard';
 import { HiddenCard, SongCard } from '../components/SongCard';
@@ -122,6 +123,7 @@ export function GameScreen() {
                 className={`song-card--reveal ${result.correct ? 'song-card--correct' : 'song-card--wrong'}`}
               />
             </div>
+            <CoverImage songId={result.song.id} title={result.song.title} />
             {result.correct ? (
               <p className="result--correct" data-testid="result-correct" role="status">
                 {t('correct')}

@@ -15,14 +15,14 @@ const count = <K extends string | number>(key: (s: (typeof songs)[number]) => K)
 };
 
 describe('data/songs.json', () => {
-  it('has at least 200 songs', () => {
-    expect(songs.length).toBeGreaterThanOrEqual(200);
+  it('has at least 500 songs', () => {
+    expect(songs.length).toBeGreaterThanOrEqual(500);
   });
 
   it('has a solid Hebrew and English selection', () => {
     const byLang = count((s) => s.language);
-    expect(byLang.get('he') ?? 0).toBeGreaterThanOrEqual(100);
-    expect(byLang.get('en') ?? 0).toBeGreaterThanOrEqual(100);
+    expect(byLang.get('he') ?? 0).toBeGreaterThanOrEqual(150);
+    expect(byLang.get('en') ?? 0).toBeGreaterThanOrEqual(350);
   });
 
   it('covers every decade from the 1950s to the 2020s', () => {

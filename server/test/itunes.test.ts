@@ -100,8 +100,69 @@ describe('ItunesPreviewProvider', () => {
   });
 });
 
+describe('cover URLs', () => {
+  const track = (artworkUrl100: string | undefined, extra: Record<string, unknown> = {}) => ({
+    kind: 'song',
+    artistName: 'James Brown',
+    trackName: 'I Got You (I Feel Good)',
+    previewUrl: 'https://audio-ssl.itunes.apple.com/jb.m4a',
+    artworkUrl100,
+    ...extra,
+  });
+  const provider = (results: unknown[]) => {
+    const fetchMock = vi.fn(async () => jsonResponse({ results }));
+    return { fetchMock, p: new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent }) };
+  };
+
+  it('upscales 100x100 to 300x300 for the best-matching track', async () => {
+    const { p } = provider([
+      track('https://is1-ssl.mzstatic.com/image/thumb/x/cast/100x100bb.jpg', { artistName: 'Glee Cast' }),
+      track('https://is1-ssl.mzstatic.com/image/thumb/x/jb/100x100bb.jpg'),
+    ]);
+    expect(await p.getCoverUrl(jb)).toBe('https://is1-ssl.mzstatic.com/image/thumb/x/jb/300x300bb.jpg');
+  });
+
+  it('shares ONE lookup between preview and cover (concurrent and sequential)', async () => {
+    const { fetchMock, p } = provider([track('https://is1-ssl.mzstatic.com/a/100x100bb.jpg')]);
+    const [preview, cover] = await Promise.all([p.getPreviewUrl(jb), p.getCoverUrl(jb)]);
+    expect(preview).toBe('https://audio-ssl.itunes.apple.com/jb.m4a');
+    expect(cover).toBe('https://is1-ssl.mzstatic.com/a/300x300bb.jpg');
+    await p.getCoverUrl(jb);
+    await p.getPreviewUrl(jb);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['http scheme', 'http://is1-ssl.mzstatic.com/a/100x100bb.jpg'],
+    ['foreign host', 'https://evil.example.com/a/100x100bb.jpg'],
+    ['lookalike host', 'https://notmzstatic.com/a/100x100bb.jpg'],
+    ['mzstatic as a subdomain of another host', 'https://mzstatic.com.evil.example/a.jpg'],
+    ['not a URL', 'nonsense'],
+    ['missing', undefined],
+  ])('returns null cover for %s', async (_name, url) => {
+    const { p } = provider([track(url)]);
+    expect(await p.getCoverUrl(jb)).toBeNull();
+  });
+
+  it('accepts the bare mzstatic.com host', async () => {
+    const { p } = provider([track('https://mzstatic.com/a/100x100bb.jpg')]);
+    expect(await p.getCoverUrl(jb)).toBe('https://mzstatic.com/a/300x300bb.jpg');
+  });
+
+  it('returns null when nothing matches, and on errors (error cached only briefly)', async () => {
+    const none = provider([]);
+    expect(await none.p.getCoverUrl(jb)).toBeNull();
+    expect(await none.p.getCoverUrl(jb)).toBeNull();
+    expect(none.fetchMock).toHaveBeenCalledTimes(1);
+
+    const failing = new ItunesPreviewProvider({ fetch: vi.fn(async () => new Response('x', { status: 500 })) as unknown as typeof fetch, logger: silent });
+    await expect(failing.getCoverUrl(jb)).resolves.toBeNull();
+  });
+});
+
 describe('MockPreviewProvider', () => {
-  it('always returns the mock audio path', async () => {
+  it('always returns the mock audio and cover paths', async () => {
     expect(await new MockPreviewProvider().getPreviewUrl()).toBe('/api/mock-audio');
+    expect(await new MockPreviewProvider().getCoverUrl()).toBe('/api/mock-cover');
   });
 });

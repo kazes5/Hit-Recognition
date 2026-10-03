@@ -127,18 +127,66 @@ describe('API', () => {
     });
 
     it('passes the song to the provider and returns null previews', async () => {
-      const provider: PreviewProvider = { getPreviewUrl: vi.fn(async () => null) };
+      const provider: PreviewProvider = { getPreviewUrl: vi.fn(async () => null), getCoverUrl: async () => null };
       const res = await request(createApp({ songs, previewProvider: provider })).get('/api/songs/3/preview');
       expect(res.body).toEqual({ previewUrl: null });
       expect(provider.getPreviewUrl).toHaveBeenCalledWith(songs[2]);
     });
 
     it('returns null if a provider throws anyway', async () => {
-      const provider: PreviewProvider = { getPreviewUrl: async () => Promise.reject(new Error('boom')) };
+      const provider: PreviewProvider = { getPreviewUrl: async () => Promise.reject(new Error('boom')), getCoverUrl: async () => null };
       const res = await request(createApp({ songs, previewProvider: provider })).get('/api/songs/1/preview');
       expect(res.status).toBe(200);
       expect(res.body).toEqual({ previewUrl: null });
     });
+  });
+
+  describe('GET /api/songs/:id/cover', () => {
+    it('returns the mock cover URL', async () => {
+      const res = await request(app).get('/api/songs/227/cover');
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ coverUrl: '/api/mock-cover' });
+    });
+
+    it('404 SONG_NOT_FOUND for unknown or invalid ids', async () => {
+      for (const id of ['999', 'abc', '1.5']) {
+        const res = await request(app).get(`/api/songs/${id}/cover`);
+        expect(res.status).toBe(404);
+        expect(res.body.error).toBe('SONG_NOT_FOUND');
+      }
+    });
+
+    it('returns null for no cover and when the provider throws', async () => {
+      const none: PreviewProvider = { getPreviewUrl: async () => null, getCoverUrl: vi.fn(async () => null) };
+      const res = await request(createApp({ songs, previewProvider: none })).get('/api/songs/3/cover');
+      expect(res.body).toEqual({ coverUrl: null });
+      expect(none.getCoverUrl).toHaveBeenCalledWith(songs[2]);
+
+      const boom: PreviewProvider = { getPreviewUrl: async () => null, getCoverUrl: async () => Promise.reject(new Error('boom')) };
+      const res2 = await request(createApp({ songs, previewProvider: boom })).get('/api/songs/1/cover');
+      expect(res2.status).toBe(200);
+      expect(res2.body).toEqual({ coverUrl: null });
+    });
+
+    it('preview response never contains the cover', async () => {
+      const both: PreviewProvider = { getPreviewUrl: async () => 'https://a/p.m4a', getCoverUrl: async () => 'https://x.mzstatic.com/c.jpg' };
+      const res = await request(createApp({ songs, previewProvider: both })).get('/api/songs/1/preview');
+      expect(res.body).toEqual({ previewUrl: 'https://a/p.m4a' });
+    });
+  });
+
+  it('GET /api/mock-cover returns a square SVG', async () => {
+    const res = await request(app).get('/api/mock-cover').buffer(true).parse((r, cb) => {
+      const chunks: Buffer[] = [];
+      r.on('data', (c: Buffer) => chunks.push(c));
+      r.on('end', () => cb(null, Buffer.concat(chunks)));
+    });
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toMatch(/^image\/svg\+xml/);
+    const svg = (res.body as Buffer).toString('utf8');
+    expect(svg).toMatch(/^<svg[^>]*xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
+    expect(svg).toContain('viewBox="0 0 300 300"');
+    expect(svg.trimEnd().endsWith('</svg>')).toBe(true);
   });
 
   it('GET /api/mock-audio returns a WAV', async () => {

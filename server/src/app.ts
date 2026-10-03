@@ -5,6 +5,7 @@ import type { PreviewProvider } from './preview/types.js';
 import { parseNextSongRequest, selectNextSong, type Rng } from './selection.js';
 import { computeStats } from './stats.js';
 import { toPublicSong, type ApiError, type CatalogSong } from './types.js';
+import { createMockCoverSvg } from './preview/mock-cover.js';
 import { createSilentWav } from './wav.js';
 
 export interface AppOptions {
@@ -42,6 +43,7 @@ export function createApp(options: AppOptions): Express {
   const songsById = new Map(songs.map((s) => [s.id, s]));
   const stats = computeStats(songs);
   const mockWav = createSilentWav(2);
+  const mockCover = Buffer.from(createMockCoverSvg(), 'utf8');
 
   const app = express();
   app.disable('x-powered-by');
@@ -90,6 +92,29 @@ export function createApp(options: AppOptions): Express {
       previewUrl = null; // providers should never throw, but never surface it to the client
     }
     res.json({ previewUrl });
+  });
+
+  api.get('/songs/:id/cover', async (req, res) => {
+    const raw = req.params.id;
+    const song = /^\d+$/.test(raw) ? songsById.get(Number(raw)) : undefined;
+    if (!song) {
+      sendError(res, 404, 'SONG_NOT_FOUND', `Unknown song id: ${raw}`);
+      return;
+    }
+    let coverUrl: string | null = null;
+    try {
+      coverUrl = await previewProvider.getCoverUrl(toPublicSong(song));
+    } catch {
+      coverUrl = null; // never surface provider errors to the client
+    }
+    res.json({ coverUrl });
+  });
+
+  api.get('/mock-cover', (_req, res) => {
+    res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+    res.setHeader('Content-Length', String(mockCover.length));
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.end(mockCover);
   });
 
   api.get('/mock-audio', (_req, res) => {

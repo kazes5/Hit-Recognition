@@ -194,6 +194,28 @@ test.describe('API', () => {
     expect(await res.json()).toMatchObject({ error: 'SONG_NOT_FOUND' });
   });
 
+  test('GET /api/songs/:id/cover (mock provider) → "/api/mock-cover"; preview has no cover', async ({ request }) => {
+    const { song } = (await (await next(request, {})).json()) as { song: Song };
+    const res = await request.get(`/api/songs/${song.id}/cover`);
+    expect(res.status()).toBe(200);
+    expect(await res.json()).toEqual({ coverUrl: '/api/mock-cover' });
+    const preview = await request.get(`/api/songs/${song.id}/preview`);
+    expect(Object.keys(await preview.json())).toEqual(['previewUrl']);
+  });
+
+  test('GET /api/songs/:id/cover for unknown id → 404 SONG_NOT_FOUND', async ({ request }) => {
+    const res = await request.get('/api/songs/987654321/cover');
+    expect(res.status()).toBe(404);
+    expect(await res.json()).toMatchObject({ error: 'SONG_NOT_FOUND' });
+  });
+
+  test('GET /api/mock-cover is a non-empty SVG image', async ({ request }) => {
+    const res = await request.get('/api/mock-cover');
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toContain('image/svg+xml');
+    expect((await res.body()).length).toBeGreaterThan(0);
+  });
+
   test('unknown /api route → 404 JSON error', async ({ request }) => {
     for (const path of ['/api/does-not-exist', '/api/songs/nope/deeper/path']) {
       const res = await request.get(path);
