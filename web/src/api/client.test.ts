@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { song } from '../test/fixtures';
-import { ApiError, fetchNextSong, fetchPreviewUrl } from './client';
+import { ApiError, fetchNextSong, fetchCoverUrl, fetchPreviewUrl } from './client';
 
 const jsonResponse = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
@@ -54,5 +54,14 @@ describe('fetchPreviewUrl', () => {
   it('throws SONG_NOT_FOUND for unknown ids', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(404, { error: 'SONG_NOT_FOUND' })));
     await expect(fetchPreviewUrl(999)).rejects.toMatchObject({ code: 'SONG_NOT_FOUND' });
+  });
+});
+
+describe('fetchCoverUrl', () => {
+  it('returns the cover url, or null when absent', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response(JSON.stringify({ coverUrl: 'https://x/c.jpg' }), { status: 200 }))));
+    await expect(fetchCoverUrl(5)).resolves.toBe('https://x/c.jpg');
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response(JSON.stringify({ coverUrl: null }), { status: 200 }))));
+    await expect(fetchCoverUrl(5)).resolves.toBeNull();
   });
 });

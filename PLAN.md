@@ -70,7 +70,7 @@ The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is
   "spotifyId": "...", "appleId": "..." }
 ```
 
-- **Today:** 367 songs (101 Hebrew, 266 English), from the 1950s to the 2020s. Next target: about 670 (see section 9).
+- **Today:** 516 songs (150 Hebrew, 366 English), from the 1950s to the 2020s. Goal: about 670 (see section 9.1).
 - Genres: pop, classic and light rock.
 - Automatic tests check the list: no duplicate ids or songs, at most 3 songs per artist, and enough songs in each decade.
 - Still to do: a script that checks every song has a working preview. It needs internet access to Apple, so it has to run outside this sandbox.
@@ -107,7 +107,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | # | Milestone | Status |
 |---|---|---|
 | 1 | **Setup:** web + server projects, theme (colors and fonts), Hebrew/English text, RTL support | ✅ Done |
-| 2 | **Song list:** 367 songs with years checked, no repeated artists | ✅ Done (more songs planned, see section 9) |
+| 2 | **Song list:** 516 songs with years checked, no repeated artists | ✅ Done. More songs still planned (section 9.1) |
 | 3 | **Game logic:** players, turns, song picking without repeats, placement check, score, winner, with tests | ✅ Done |
 | 4 | **UI:** all screens in section 6, the card, the timeline, the neon look from the box cover | ✅ Done |
 | 5 | **Audio:** 30-second preview, replay, skip to another song if a preview fails | ✅ Done, but real previews are still untested (the build sandbox cannot reach Apple) |
@@ -115,7 +115,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 116 server unit tests, 112 web unit tests, 67 Playwright end-to-end tests (phone and desktop sizes). All pass.
+**Tests today:** 131 server unit tests, 116 web unit tests, 82 Playwright end-to-end tests (phone and desktop sizes). All pass.
 
 **Open checks:**
 - Play a song on the live Railway site on a phone. This confirms the real 30-second previews, and that audio starts on an iPhone.
@@ -136,17 +136,17 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 
 ## 9. Next steps (planned, not started)
 
-### 9.1 More songs (+300)
+### 9.1 More songs (+300) 🟡 Partly done: +149 of +300
 
 - **Goal:** grow the list from 367 to about 670 songs.
-- **Why:** with a target of 30 cards, a 10-player game needs at least 300 songs, and wrong guesses use up more. A bigger list also means fewer repeats across games.
+- **Done:** 516 songs now (+149: 100 English, 49 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
+- **Still short:** about 150 songs. The web search limit (about 200 searches per session) ran out, so the Hebrew research stopped early. Hebrew is 29% of the list (goal: about half), and there are still no Hebrew songs from the 1950s and only 8 from the 1960s.
+- **To finish:** raise the search limit (the `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` setting) and rerun the research, mainly for Hebrew songs from the 1950s–60s, the 1990s and the 2010s–20s.
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.
-  - The year is the original release year, and every year is checked against a source before adding.
+  - The year is the original release year and is checked against a source before adding.
   - At most 3 songs per artist.
-- **Balance:** aim for about half Hebrew (Hebrew is 27% today). Add more from the 1950s and 2020s, which are the thinnest decades.
-- **Work:** add songs to `songs.json` with new ids, raise the minimum counts in the catalog test, and rerun all tests.
-- **Done when:** about 670 songs, the catalog test passes, and the 67 end-to-end tests still pass.
+- **Done when:** about 670 songs, the catalog test passes, and the end-to-end tests still pass.
 
 ### 9.2 Winner at up to 30 cards ✅ Done
 
@@ -155,21 +155,16 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 - Checked: web unit tests (112) and the Setup end-to-end tests (20) pass. A full 30-card game was not played through.
 - **Watch for:** a long game with many players can use up the song list, because wrong guesses use songs too. The app then shows "no songs left" with an *End game* button. Step 9.1 (more songs) fixes this.
 
-### 9.3 Cover picture on reveal
+### 9.3 Cover picture on reveal ✅ Done
 
-- **Goal:** when a song is revealed, the card also shows the album or single cover.
-- **Where the pictures come from:** the same Apple (iTunes) lookup that finds the 30-second previews. It returns a cover image address, so no new login or service is needed. The server saves it with the preview, and the picture is not stored in the repo.
-- **Must not leak the answer:** the cover must not be loaded or shown before the player taps **Reveal**. It is only sent to the app at reveal time.
-- **When there is no picture:** the card looks exactly as it does today.
-- **Work:**
-  - Server: return the cover image address from the preview lookup (with caching), with tests.
-  - Frontend: show the cover on the revealed card, in the result screen and, if it fits, on timeline cards. Update the card layout so the year stays easy to read.
-  - Tests: no cover is requested before Reveal, the card works without a cover, and the layout holds in Hebrew and English.
-- **Done when:** a revealed song shows its cover on the live site, and a missing cover causes no layout problems.
-- **Risk:** covers can only be tested on the live site, because the sandbox cannot reach Apple.
+- When the player taps **Reveal**, the result screen shows the song's cover next to the card. The cover comes from the same Apple (iTunes) lookup as the preview, so each song needs only one lookup.
+- **No answer leak:** the cover is only requested after Reveal. It is not requested, loaded or shown before that.
+- **When there is no cover** (none found, a failed request or an image that won't load), nothing is shown and the screen looks as before.
+- **Where:** the result screen only; not on timeline cards, the scoreboard or the winner screen.
+- **Checked:** unit tests (server 13 new, web 4 new) and 7 new Playwright tests for the cover, including "no request before Reveal" and "no scrolling on a small phone". A placeholder record image is used in tests.
+- **Not checked:** real Apple covers. The sandbox cannot reach Apple, so the first real test is on the live site.
 
 ### Suggested order
 
-1. 9.1 (content), because long 30-card games depend on the bigger list. (9.2 is done.)
-2. 9.3 (cover pictures).
-3. Then milestone 8, Spotify and Apple Music.
+1. Finish 9.1 (the remaining ~150 songs, mostly Hebrew). 9.2 and 9.3 are done.
+2. Then milestone 8, Spotify and Apple Music.

@@ -913,6 +913,48 @@ body {
 .turn-stage--result { flex-direction: column; gap: var(--space-3); }
 .turn-stage--result p { margin: 0; }
 
+/* Result stage: revealed card + optional cover side by side, result text on its own row below.
+   Same height with or without the cover; flex order keeps the text last whatever the markup order. */
+.turn-stage--result {
+  --cover-size: 108px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+}
+.turn-stage--result > p { order: 3; flex: 0 0 auto; margin-block-start: calc(-1 * var(--space-3)); }
+/* zero-height line break between the card/cover row and the result text */
+.turn-stage--result::after { content: ''; order: 2; flex: 0 0 100%; block-size: 0; }
+
+/* ---------- Cover picture (album art, shown after Reveal) ---------- */
+.cover {
+  order: 1;
+  flex: 0 0 auto;
+  inline-size: var(--cover-size, 108px);
+  block-size: var(--cover-size, 108px);
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #0b0d12 linear-gradient(135deg, #141824, #0b0d12);
+  border: 1.5px solid rgb(127 216 255 / 0.65);
+  box-shadow: 0 0 0 1px rgb(127 216 255 / 0.12), 0 0 16px rgb(127 216 255 / 0.35), 0 8px 18px rgb(0 0 0 / 0.5);
+  animation: cover-in 0.35s cubic-bezier(.2,.8,.2,1) both;
+}
+.cover__img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+@keyframes cover-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (max-height: 700px) {
+  .turn-stage--result { --cover-size: 88px; }
+}
+
 .turn-timeline {
   width: 100%;
   display: flex;
@@ -955,4 +997,5 @@ body {
   /* playing state still visible without motion: static cyan ring */
   .speaker--playing { transform: none; }
   .timeline { scroll-behavior: auto; }
+  .cover { animation: none; }
 }

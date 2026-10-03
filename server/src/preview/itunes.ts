@@ -1,5 +1,5 @@
 import type { Song } from '../types.js';
-import { pickBestPreview, type ItunesTrack } from './matching.js';
+import { pickBestCover, pickBestPreview, type ItunesTrack } from './matching.js';
 import type { PreviewProvider } from './types.js';
 
 export interface ItunesPreviewProviderOptions {
@@ -13,8 +13,15 @@ export interface ItunesPreviewProviderOptions {
   logger?: Pick<Console, 'warn'>;
 }
 
+interface LookupResult {
+  previewUrl: string | null;
+  coverUrl: string | null;
+}
+
+const NOT_FOUND: LookupResult = { previewUrl: null, coverUrl: null };
+
 interface CacheEntry {
-  value: string | null;
+  value: LookupResult;
   expiresAt: number;
 }
 
@@ -28,7 +35,7 @@ export class ItunesPreviewProvider implements PreviewProvider {
   private readonly now: () => number;
   private readonly logger: Pick<Console, 'warn'>;
   private readonly cache = new Map<number, CacheEntry>();
-  private readonly inFlight = new Map<number, Promise<string | null>>();
+  private readonly inFlight = new Map<number, Promise<LookupResult>>();
 
   constructor(options: ItunesPreviewProviderOptions = {}) {
     this.country = options.country ?? 'IL';
@@ -50,8 +57,17 @@ export class ItunesPreviewProvider implements PreviewProvider {
   }
 
   async getPreviewUrl(song: Song): Promise<string | null> {
+    return (await this.resolve(song)).previewUrl;
+  }
+
+  async getCoverUrl(song: Song): Promise<string | null> {
+    return (await this.resolve(song)).coverUrl;
+  }
+
+  /** One cached/in-flight iTunes search per song, shared by preview and cover. */
+  private resolve(song: Song): Promise<LookupResult> {
     const cached = this.cache.get(song.id);
-    if (cached && cached.expiresAt > this.now()) return cached.value;
+    if (cached && cached.expiresAt > this.now()) return Promise.resolve(cached.value);
 
     const pending = this.inFlight.get(song.id);
     if (pending) return pending;
@@ -61,7 +77,7 @@ export class ItunesPreviewProvider implements PreviewProvider {
     return lookup;
   }
 
-  private async lookup(song: Song): Promise<string | null> {
+  private async lookup(song: Song): Promise<LookupResult> {
     try {
       const res = await this.fetchFn(this.buildSearchUrl(song), {
         signal: AbortSignal.timeout(this.timeoutMs),
@@ -70,13 +86,13 @@ export class ItunesPreviewProvider implements PreviewProvider {
       if (!res.ok) throw new Error(`iTunes responded ${res.status}`);
       const body = (await res.json()) as { results?: unknown };
       const results = Array.isArray(body.results) ? (body.results as ItunesTrack[]) : [];
-      const url = pickBestPreview(song, results);
-      this.cache.set(song.id, { value: url, expiresAt: Number.POSITIVE_INFINITY });
-      return url;
+      const value: LookupResult = { previewUrl: pickBestPreview(song, results), coverUrl: pickBestCover(song, results) };
+      this.cache.set(song.id, { value, expiresAt: Number.POSITIVE_INFINITY });
+      return value;
     } catch (err) {
       this.logger.warn(`[preview] iTunes lookup failed for song ${song.id}: ${(err as Error).message}`);
-      this.cache.set(song.id, { value: null, expiresAt: this.now() + this.errorTtlMs });
-      return null;
+      this.cache.set(song.id, { value: NOT_FOUND, expiresAt: this.now() + this.errorTtlMs });
+      return NOT_FOUND;
     }
   }
 }

@@ -133,7 +133,10 @@ describe('GameScreen (turn)', () => {
     await user.click(screen.getByTestId('btn-next'));
     expect(screen.getByTestId('current-player-name')).toHaveTextContent('Ben');
     await waitFor(() => expect(screen.getByTestId('btn-play')).toBeEnabled());
-    const body = JSON.parse((fetchMock.mock.calls[0] as unknown as [string, RequestInit])[1].body as string);
+    const body = JSON.parse(
+      (fetchMock.mock.calls.find(([u]) => String(u).endsWith('/next')) as unknown as [string, RequestInit])[1]
+        .body as string,
+    );
     expect(body.excludeIds).toEqual(expect.arrayContaining([1, 2, 3, 9]));
     expect(body.languages).toEqual(['he', 'en']);
   });
@@ -216,5 +219,85 @@ describe('GameScreen (turn)', () => {
     await user.click(screen.getAllByTestId('timeline-slot')[1]!);
     await user.click(screen.getByTestId('btn-reveal'));
     expect(screen.getByTestId('btn-next')).toHaveTextContent('See the winner');
+  });
+});
+
+describe('GameScreen (cover picture)', () => {
+  let imageLoads: 'load' | 'error' | 'never';
+  const OriginalImage = globalThis.Image;
+  beforeEach(() => {
+    imageLoads = 'load';
+    class FakeImage {
+      onload: (() => void) | null = null;
+      onerror: (() => void) | null = null;
+      referrerPolicy = '';
+      set src(_v: string) {
+        if (imageLoads === 'never') return;
+        queueMicrotask(() => (imageLoads === 'load' ? this.onload?.() : this.onerror?.()));
+      }
+    }
+    vi.stubGlobal('Image', FakeImage);
+  });
+  afterEach(() => {
+    globalThis.Image = OriginalImage;
+  });
+
+  const coverFetch = (impl: () => Promise<Response>) => {
+    const fn = vi.fn((url: string) => (url.endsWith('/cover') ? impl() : Promise.resolve(json({}))));
+    vi.stubGlobal('fetch', fn);
+    return fn;
+  };
+  const coverCalls = (fn: ReturnType<typeof coverFetch>) =>
+    fn.mock.calls.filter(([u]) => String(u).endsWith('/cover'));
+
+  async function reveal(s: GameState) {
+    const user = userEvent.setup();
+    renderWithProviders(<GameScreen />, { state: s });
+    await user.click(screen.getAllByTestId('timeline-slot')[1]!);
+    return user;
+  }
+
+  it('does not request the cover before reveal, then shows it once loaded', async () => {
+    const fn = coverFetch(() => Promise.resolve(json({ coverUrl: 'https://img.test/c.jpg' })));
+    const user = await reveal(turnState(song(2003, { id: 215, title: 'Dragostea' })));
+    expect(coverCalls(fn)).toHaveLength(0);
+    expect(screen.queryByTestId('cover-wrap')).toBeNull();
+    await user.click(screen.getByTestId('btn-reveal'));
+    const img = await screen.findByTestId('cover-image');
+    expect(coverCalls(fn)).toHaveLength(1);
+    expect(String(coverCalls(fn)[0]![0])).toBe('/api/songs/215/cover');
+    expect(img).toHaveAttribute('src', 'https://img.test/c.jpg');
+    expect(img).toHaveAttribute('alt', 'Cover of Dragostea');
+    expect(screen.getByTestId('cover-wrap')).toHaveClass('cover');
+  });
+
+  it('renders nothing for a null cover, a failed request or an image error', async () => {
+    for (const mode of ['null', 'fail', 'imgerror'] as const) {
+      imageLoads = mode === 'imgerror' ? 'error' : 'load';
+      const fn = coverFetch(() =>
+        mode === 'fail'
+          ? Promise.resolve(json({ error: 'X' }, 500))
+          : Promise.resolve(json({ coverUrl: mode === 'null' ? null : 'https://img.test/c.jpg' })),
+      );
+      const user = await reveal(turnState(song(2003, { id: 215 })));
+      await user.click(screen.getByTestId('btn-reveal'));
+      await waitFor(() => expect(coverCalls(fn)).toHaveLength(1));
+      await act(async () => {});
+      expect(screen.getByTestId('btn-next')).toBeEnabled();
+      expect(screen.queryByTestId('cover-wrap')).toBeNull();
+      expect(screen.queryByTestId('cover-image')).toBeNull();
+      document.body.innerHTML = '';
+    }
+  });
+
+  it('ignores a stale cover response after the song changed', async () => {
+    let resolveCover!: (r: Response) => void;
+    const fn = coverFetch(() => new Promise<Response>((r) => (resolveCover = r)));
+    const user = await reveal(turnState(song(2003, { id: 215 })));
+    await user.click(screen.getByTestId('btn-reveal'));
+    await waitFor(() => expect(coverCalls(fn)).toHaveLength(1));
+    await user.click(screen.getByTestId('btn-next')); // leaves the result screen
+    await act(async () => resolveCover(json({ coverUrl: 'https://img.test/old.jpg' })));
+    expect(screen.queryByTestId('cover-wrap')).toBeNull();
   });
 });

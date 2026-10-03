@@ -108,6 +108,13 @@ Errors: `.error-banner` (⚠ plus red-tinted box) at the top of `.screen__body`.
 
 `.speaker` is drawn with CSS only: concentric radial gradients for the frame, basket, surround, cone and dust cap, plus four screws, like the cover. Size is set with `--speaker-size` (default `min(56vw, 220px)`); `.speaker--small` is 72px. `.speaker--playing` adds a gentle 0.46s thump (scale 1 → 1.04), a pumping cap highlight and a cyan halo. Optional `.equalizer` (4 `<span>` bars) for the hidden card.
 
+## Cover picture (result screen)
+
+- `.cover` (a `<figure>`) holds the album art and `.cover__img` fills it (`object-fit: cover`). It is a square tile sized by `--cover-size` (108px; 88px on screens shorter than 700px, set on `.turn-stage--result`), with 14px rounded corners, a thin cyan border and glow, and a dark gradient placeholder behind the image.
+- Layout: inside `.turn-stage--result` the revealed card and the cover sit side by side (cover on the inline-end side, so it mirrors in RTL), and the result text takes its own row below. Flex `order` and a zero-height `::after` line break do this whatever order the markup is in. With no cover the stage looks exactly as before (centered card, text below), and the result screen still fits 390x844 without scrolling.
+- The cover fades and scales in over 0.35s (`cover-in`); this is disabled under `prefers-reduced-motion`. The figure should only be rendered once the image has loaded or is known to exist, so nothing jumps.
+- Never put the cover on the hidden card, in the timeline or on the scoreboard.
+
 ## Motion
 
 - Fast transitions take 150ms; sheets and pops take 300ms with `cubic-bezier(.2,.8,.2,1)`. Buttons scale to 0.97 while pressed.
@@ -125,4 +132,4 @@ Errors: `.error-banner` (⚠ plus red-tinted box) at the top of `.screen__body`.
 
 ## Extra classes (beyond CONTRACTS §5)
 
-`.neon-subtitle`, `.text-muted`, `.logo`, `.btn--block`, `.song-card--large`, `.song-card--correct`, `.song-card--wrong`, `.song-card--new`, `.song-card--reveal`, `.timeline__empty`, `.speaker--small`, `.equalizer`, `.error-banner`, `.field__label`, `.field__row`, `.chip-group`, `.player-list`, `.player-badge`, `.player-badge__score`, `.overlay`, `.overlay__panel`, `.score-table` (+ `tr.is-leader`), `.stack`, `.row`, `.center`, `.visually-hidden`, `.flip-rtl`, `.logo-heading`, `.screen__header--stacked`, `.turn-stage`, `.turn-stage--result`, `.turn-stage__controls`, `.turn-timeline`, `.turn-timeline__hint`, `.equalizer--playing`, `.score-table tr.is-current`. Token: `--footer-h`.
+`.neon-subtitle`, `.text-muted`, `.logo`, `.btn--block`, `.song-card--large`, `.song-card--correct`, `.song-card--wrong`, `.song-card--new`, `.song-card--reveal`, `.timeline__empty`, `.speaker--small`, `.equalizer`, `.error-banner`, `.field__label`, `.field__row`, `.chip-group`, `.player-list`, `.player-badge`, `.player-badge__score`, `.overlay`, `.overlay__panel`, `.score-table` (+ `tr.is-leader`), `.stack`, `.row`, `.center`, `.visually-hidden`, `.flip-rtl`, `.logo-heading`, `.screen__header--stacked`, `.turn-stage`, `.turn-stage--result`, `.turn-stage__controls`, `.turn-timeline`, `.turn-timeline__hint`, `.equalizer--playing`, `.cover`, `.cover__img`, `--cover-size`, `.score-table tr.is-current`. Token: `--footer-h`.
