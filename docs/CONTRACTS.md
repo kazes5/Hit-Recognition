@@ -71,6 +71,8 @@ All endpoints return JSON. Errors: `{ "error": "<CODE>", "message": "..." }`.
 | `GET /api/songs/stats` | – | `200 { "total": n, "byLanguage": { "he": n, "en": n }, "byDecade": { "1960": n, ... } }` |
 | `POST /api/songs/next` | `{ "excludeIds": number[], "excludeArtists": string[], "languages": Language[] }` (all optional; `languages` default both) | `200 { "song": Song }` — random song not in `excludeIds`, **preferring** artists not in `excludeArtists` (case-insensitive); falls back to a repeated artist only if no other song is left. `404 { "error": "NO_SONGS_LEFT" }` if nothing remains. `400 { "error": "INVALID_REQUEST" }` on bad body. |
 | `GET /api/songs/:id/preview` | – | `200 { "previewUrl": string \| null }` — 30-second audio URL. `null` if no preview could be found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. Results cached in memory. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-audio"`. |
+| `GET /api/songs/:id/cover` | – | `200 { "coverUrl": string \| null }` — HTTPS URL of the song's cover picture (Apple artwork, upscaled to 300x300). `null` if none was found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. It reuses the same cached iTunes lookup as the preview (one search per song, never two). Only `https://*.mzstatic.com/` URLs are accepted; anything else becomes `null`. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-cover"`. **The preview endpoint's response does not change and never contains the cover.** |
+| `GET /api/mock-cover` | – | A small valid cover-like image (`image/svg+xml`, square). Always available. |
 | `GET /api/mock-audio` | – | A short valid audio file (e.g. generated silent WAV, ~2 s), `Content-Type: audio/wav`. Always available. |
 
 ## 5. Design tokens & shared classes (`web/src/styles/theme.css`)
@@ -118,3 +120,12 @@ Game rules (implemented as pure functions in `web/src/game/`, unit-tested):
 | Added during build | `btn-resume` (Home, only with a saved game), `screen-dealing` (while starting cards are dealt), `btn-end-game` (in scoreboard), `btn-home` (Winner), `btn-back` (also on Setup), `final-timeline` / `final-timeline-card` (Winner) |
 
 Song-language setting persisted in `localStorage` key `hitster.songLanguages` (`"he"`, `"en"`, `"both"`; default `both`).
+
+## 7. Cover picture on reveal
+
+- The frontend calls `GET /api/songs/:id/cover` **only after the player presses Reveal** (when the result is shown). Never before: no request, no `<img>`, no preloading while the card is hidden.
+- The cover is not stored in `localStorage`. If a saved game is resumed on the result screen, the cover is fetched again.
+- Markup on the result screen, next to the revealed card: `<figure class="cover" data-testid="cover-wrap"><img class="cover__img" data-testid="cover-image" src=... alt="..." referrerpolicy="no-referrer"></figure>`.
+- If `coverUrl` is `null`, the request fails, or the image fails to load, **no `cover-wrap` / `cover-image` element is rendered** (no broken-image icon, no empty gap). The result screen then looks exactly as before.
+- No cover on the hidden card, the timeline cards, the scoreboard or the winner screen.
+- The UI designer owns the `.cover` / `.cover__img` styles (`web/src/styles/theme.css`).
