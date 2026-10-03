@@ -9,7 +9,8 @@
     "test:mobile": "playwright test --project=mobile-chromium",
     "test:desktop": "playwright test --project=desktop-chromium",
     "report": "playwright show-report playwright-report",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "smoke": "playwright test tests/smoke.spec.ts"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
