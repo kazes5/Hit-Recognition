@@ -115,12 +115,10 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 142 server unit tests, 120 web unit tests, 83 Playwright end-to-end tests (phone and desktop sizes), all passing on branch `artist-limits`. Branch `prod-smoke` adds 8 smoke tests (section 9.5). On `main` (without these branches): 131 server, 116 web, 82 end-to-end.
+**Tests today:** 172 server unit tests, 120 web unit tests, 83 Playwright end-to-end tests (phone and desktop sizes). All pass. Branch `prod-smoke` adds 8 smoke tests (section 9.5).
 
-**Branches waiting to be merged** (pushed, no PR yet, held back by the owner):
-- `artist-limits`: per-performer limits, section 9.4.
+**Branch waiting to be merged** (pushed, no PR yet, held back by the owner):
 - `prod-smoke`: smoke tests for the live site, section 9.5.
-The two branches change different files, so they can be merged in either order.
 
 **Open checks:**
 - Play a song on the live Railway site on a phone. This confirms the real 30-second previews, and that audio starts on an iPhone.
@@ -169,7 +167,7 @@ The two branches change different files, so they can be merged in either order.
 - **Checked:** unit tests (server 13 new, web 4 new) and 7 new Playwright tests for the cover, including "no request before Reveal" and "no scrolling on a small phone". A placeholder record image is used in tests.
 - **Not checked:** real Apple covers. The sandbox cannot reach Apple, so the first real test is on the live site.
 
-### 9.4 Songs per performer: 10 in the list, 2 per game 🟡 Done on branch `artist-limits`, not merged
+### 9.4 Songs per performer: 10 in the list, 2 per game ✅ Done
 
 - **List:** at most 10 songs per performer in `songs.json` (was 3). Collaboration credits count for every singer in the credit.
 - **Game:** at most 2 songs by the same performer in one game. The app sends one entry per dealt song, and the server counts them. It picks performers not dealt yet first, then those dealt once, and a 3rd song only when nothing else is left, so a game never gets stuck.
@@ -185,7 +183,7 @@ The two branches change different files, so they can be merged in either order.
 
 ### Suggested order
 
-1. Merge 9.4 and 9.5 when the owner approves.
+1. Merge 9.5 when the owner approves.
 2. Allow the production domain and run the smoke tests (9.5).
 3. Finish 9.1 (about 95 songs left, mostly Hebrew). 9.2 and 9.3 are done.
 4. Then milestone 8, Spotify and Apple Music.
