@@ -140,7 +140,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 
 - **Goal:** grow the list from 367 to about 670 songs.
 - **Done:** 560 songs now (+193: 100 English, 93 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
-- **Still short:** about 110 songs. Second research run (focus on 2000–2025): 31 Hebrew songs added, 18 from 2000–2025 plus 13 from the 1960s and 1990s. Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 3-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
+- **Still short:** about 110 songs. Second research run (focus on 2000–2025): 31 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 3-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
 - **To finish:** raise the search limit (the `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` setting) and rerun the research, mainly for Hebrew songs from the 1950s–60s, the 1990s and the 2010s–20s.
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.
