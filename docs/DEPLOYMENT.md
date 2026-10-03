@@ -63,7 +63,7 @@ railway logs                       # follow runtime logs
 - **Zero-downtime:** the old deployment keeps serving until the new one passes `/api/health`. A failed health check leaves the old version live.
 - **Rollback:** **Deployments** tab → pick an earlier successful deployment → **⋮** → **Redeploy** (or **Rollback**).
 - **Logs:** click a deployment to see its **Build Logs** and **Deploy Logs**.
-- **Preview logs:** the server logs `[preview] iTunes lookup failed for song <id>: …` for network/HTTP errors (that null is cached for 5 minutes, then retried), and `[preview] no match for song <id> "<artist> – <title>": "<artist> – <track>", …` (first 3 iTunes results) when iTunes answers but no result matches the song. A "no match" is cached in memory until the process restarts, so after fixing the catalog (e.g. adding an `itunesTrackId`, see `docs/CONTRACTS.md` §4) **redeploy or restart** to clear the cache.
+- **Preview logs:** the server logs `[preview] iTunes lookup failed for song <id>: …` for network/HTTP errors (that null is cached for 5 minutes, then retried), and `[preview] no match for song <id> "<artist> – <title>": "<artist> – <track>", …` (first 3 iTunes results) when iTunes answers but no result matches the song. If iTunes rejects the Hebrew `lang=he_il` search (HTTP 4xx), the server logs `[preview] iTunes rejected lang=he_il …` once and searches Hebrew songs without `lang` from then on. A "no match" is cached in memory until the process restarts, so after fixing the catalog (e.g. adding an `itunesTrackId`, see `docs/CONTRACTS.md` §4) **redeploy or restart** to clear the cache.
 
 ## 4. Post-deploy smoke checklist
 

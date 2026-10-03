@@ -140,6 +140,41 @@ describe('Hebrew songs, logging and pinned track ids', () => {
     expect(second?.searchParams.get('term')).toBe('שלמה ארצי ירח');
   });
 
+  it('falls back to a plain search when iTunes rejects lang=he_il (400), and stops sending it', async () => {
+    const warn = vi.fn();
+    const fetchMock = vi.fn(async (url: string) =>
+      new URL(url).searchParams.has('lang')
+        ? new Response('bad request', { status: 400 })
+        : jsonResponse({ results: [heTrack] }),
+    );
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as unknown as typeof fetch, logger: { warn } });
+    expect(await p.getPreviewUrl(artzi)).toBe('https://p/he.m4a');
+    const other301 = song({ id: 302, artist: 'שלמה ארצי', title: 'ירח', language: 'he' });
+    expect(await p.getPreviewUrl(other301)).toBe('https://p/he.m4a');
+    // 1st song: he_il (400) + plain; 2nd song: plain only.
+    expect(urlsOf(fetchMock).map((u) => u.searchParams.has('lang'))).toEqual([true, false, false]);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]?.[0]).toMatch(/rejected lang=he_il/);
+  });
+
+  it('still searches without lang when the he_il search hits a network error', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('socket hang up'))
+      .mockResolvedValueOnce(jsonResponse({ results: [heTrack] }));
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: silent });
+    expect(await p.getPreviewUrl(artzi)).toBe('https://p/he.m4a');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('fails the song (cached for errorTtlMs) when the plain search errors too', async () => {
+    const warn = vi.fn();
+    const fetchMock = vi.fn(async () => new Response('err', { status: 500 }));
+    const p = new ItunesPreviewProvider({ fetch: fetchMock as typeof fetch, logger: { warn } });
+    expect(await p.getPreviewUrl(artzi)).toBeNull();
+    expect(warn.mock.calls.at(-1)?.[0]).toMatch(/lookup failed for song 301: iTunes responded 500/);
+  });
+
   it('accepts transliterated results for Hebrew songs', async () => {
     const latin = { ...heTrack, artistName: 'Shlomo Artzi', trackName: 'Yareach', previewUrl: 'https://p/latin.m4a' };
     const fetchMock = vi.fn(async () => jsonResponse({ results: [latin] }));

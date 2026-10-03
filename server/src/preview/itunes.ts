@@ -31,6 +31,13 @@ export const ITUNES_LOOKUP_URL = 'https://itunes.apple.com/lookup';
 /** iTunes `lang` for Hebrew songs: asks the IL storefront for Hebrew-script names instead of transliterations. */
 export const HEBREW_LANG = 'he_il';
 
+/** Non-2xx response from iTunes. */
+class HttpError extends Error {
+  constructor(readonly status: number) {
+    super(`iTunes responded ${status}`);
+  }
+}
+
 export class ItunesPreviewProvider implements PreviewProvider {
   private readonly country: string;
   private readonly fetchFn: typeof fetch;
@@ -40,6 +47,8 @@ export class ItunesPreviewProvider implements PreviewProvider {
   private readonly logger: Pick<Console, 'warn'>;
   private readonly cache = new Map<number, CacheEntry>();
   private readonly inFlight = new Map<number, Promise<LookupResult>>();
+  /** Cleared after iTunes rejects `lang=he_il` once (4xx); Hebrew songs then search without it. */
+  private hebrewLangSupported = true;
 
   constructor(options: ItunesPreviewProviderOptions = {}) {
     this.country = options.country ?? 'IL';
@@ -110,11 +119,22 @@ export class ItunesPreviewProvider implements PreviewProvider {
       this.logger.warn(`[preview] iTunes track id ${song.itunesTrackId} of song ${song.id} has no preview; falling back to search`);
     }
 
-    const langs = song.language === 'he' ? [HEBREW_LANG, undefined] : [undefined];
+    const langs = song.language === 'he' && this.hebrewLangSupported ? [HEBREW_LANG, undefined] : [undefined];
     let coverUrl: string | null = null;
     let lastResults: ItunesTrack[] = [];
     for (const lang of langs) {
-      const results = await this.fetchResults(this.buildSearchUrl(song, lang));
+      let results: ItunesTrack[];
+      try {
+        results = await this.fetchResults(this.buildSearchUrl(song, lang));
+      } catch (err) {
+        // The localised search is only a bonus: never let it fail the song.
+        if (lang === undefined) throw err;
+        if (err instanceof HttpError && err.status >= 400 && err.status < 500) {
+          this.hebrewLangSupported = false;
+          this.logger.warn(`[preview] iTunes rejected lang=${lang} (${err.message}); searching without it from now on`);
+        }
+        continue;
+      }
       if (results.length > 0) lastResults = results;
       const previewUrl = pickBestPreview(song, results);
       const cover = pickBestCover(song, results);
@@ -147,7 +167,7 @@ export class ItunesPreviewProvider implements PreviewProvider {
       signal: AbortSignal.timeout(this.timeoutMs),
       headers: { Accept: 'application/json' },
     });
-    if (!res.ok) throw new Error(`iTunes responded ${res.status}`);
+    if (!res.ok) throw new HttpError(res.status);
     const body = (await res.json()) as { results?: unknown };
     return Array.isArray(body.results) ? (body.results as ItunesTrack[]) : [];
   }
