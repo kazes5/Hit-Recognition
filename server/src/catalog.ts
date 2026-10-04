@@ -55,11 +55,11 @@ export function validateCatalog(data: unknown): CatalogSong[] {
     }
     if (!isLanguage(s.language)) fail('language must be "he" or "en"');
     if (!isGenre(s.genre)) fail('genre must be one of pop, rock, light-rock, classic-rock');
-    if (
-      s.artistKeys !== undefined &&
-      (!Array.isArray(s.artistKeys) || s.artistKeys.length === 0 || !s.artistKeys.every(isNonEmptyString))
-    ) {
-      fail('artistKeys, if present, must be a non-empty array of non-empty strings');
+    for (const field of ['artistKeys', 'artistAliases', 'titleAliases'] as const) {
+      const value = s[field];
+      if (value !== undefined && (!Array.isArray(value) || value.length === 0 || !value.every(isNonEmptyString))) {
+        fail(`${field}, if present, must be a non-empty array of non-empty strings`);
+      }
     }
     if (
       s.itunesTrackId !== undefined &&
@@ -85,6 +85,8 @@ export function validateCatalog(data: unknown): CatalogSong[] {
       };
       if (Array.isArray(s.artistKeys)) song.artistKeys = (s.artistKeys as string[]).map((k) => k.trim());
       if (typeof s.itunesTrackId === 'number') song.itunesTrackId = s.itunesTrackId;
+      if (Array.isArray(s.artistAliases)) song.artistAliases = (s.artistAliases as string[]).map((a) => a.trim());
+      if (Array.isArray(s.titleAliases)) song.titleAliases = (s.titleAliases as string[]).map((a) => a.trim());
       songs.push(song);
     }
   });

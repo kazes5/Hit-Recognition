@@ -210,6 +210,57 @@ describe('API', () => {
     });
   });
 
+  describe('POST /api/songs/:id/guess', () => {
+    it('returns exactly the two booleans for a right guess', async () => {
+      const res = await request(app).post('/api/songs/3/guess').send({ artist: 'אייל גולן', title: 'מי שמאמין' });
+      expect(res.status).toBe(200);
+      expect(res.headers['cache-control']).toBe('no-store');
+      expect(res.body).toEqual({ artistCorrect: true, titleCorrect: true });
+    });
+
+    it('judges each field on its own and never leaks the answer', async () => {
+      const res = await request(app).post('/api/songs/3/guess').send({ artist: 'Eyal Golan', title: 'מי שמאמינ' });
+      expect(res.body).toEqual({ artistCorrect: false, titleCorrect: true });
+      expect(res.text).not.toMatch(/אייל|2010|Title/);
+    });
+
+    it('treats a missing body or blank fields as a wrong guess', async () => {
+      const empty = await request(app).post('/api/songs/227/guess');
+      expect(empty.status).toBe(200);
+      expect(empty.body).toEqual({ artistCorrect: false, titleCorrect: false });
+      const blank = await request(app).post('/api/songs/227/guess').send({ artist: ' ', title: '' });
+      expect(blank.body).toEqual({ artistCorrect: false, titleCorrect: false });
+    });
+
+    it('404 SONG_NOT_FOUND for unknown or invalid ids', async () => {
+      for (const id of ['999', 'abc', '1.5']) {
+        const res = await request(app).post(`/api/songs/${id}/guess`).send({ artist: 'ABBA' });
+        expect(res.status).toBe(404);
+        expect(res.body.error).toBe('SONG_NOT_FOUND');
+      }
+    });
+
+    it('400 INVALID_REQUEST for a bad body', async () => {
+      for (const body of [[], { artist: 5 }, { title: null }, { artist: 'x'.repeat(201) }]) {
+        const res = await request(app).post('/api/songs/1/guess').send(body);
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe('INVALID_REQUEST');
+      }
+    });
+
+    it('accepts aliases but never exposes them', async () => {
+      const aliased = [
+        { ...song({ id: 70, artist: 'אייל גולן', title: 'מי שמאמין', language: 'he' }), artistAliases: ['Eyal Golan'], titleAliases: ['Mi Shemamin'] },
+      ];
+      const aliasApp = createApp({ songs: aliased, previewProvider: new MockPreviewProvider() });
+      const guess = await request(aliasApp).post('/api/songs/70/guess').send({ artist: 'eyal golan', title: 'mi shemamin' });
+      expect(guess.body).toEqual({ artistCorrect: true, titleCorrect: true });
+      const next = await request(aliasApp).post('/api/songs/next').send({});
+      expect(next.body.song).not.toHaveProperty('artistAliases');
+      expect(next.body.song).not.toHaveProperty('titleAliases');
+    });
+  });
+
   it('GET /api/mock-cover returns a square SVG', async () => {
     const res = await request(app).get('/api/mock-cover').buffer(true).parse((r, cb) => {
       const chunks: Buffer[] = [];
@@ -285,6 +336,17 @@ describe('static frontend', () => {
     const res = await request(staticApp).get('/api/unknown');
     expect(res.status).toBe(404);
     expect(res.body.error).toBe('NOT_FOUND');
+  });
+
+  it('falls back to index.html when the static dir sits under a dot folder', async () => {
+    // e.g. a checkout under ~/.cache or .claude/worktrees: only dots inside the URL are refused.
+    const dotDir = path.join(dir, '.hidden', 'dist');
+    mkdirSync(dotDir, { recursive: true });
+    writeFileSync(path.join(dotDir, 'index.html'), '<!doctype html><title>Dot</title>');
+    const dotApp = createApp({ songs, previewProvider: new MockPreviewProvider(), staticDir: dotDir });
+    const res = await request(dotApp).get('/some/deep/link');
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('<title>Dot</title>');
   });
 
   it('is skipped when the directory does not exist', async () => {

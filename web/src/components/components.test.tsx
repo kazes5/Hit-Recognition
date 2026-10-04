@@ -90,8 +90,8 @@ describe('Scoreboard', () => {
     wrap(
       <Scoreboard
         players={[
-          { name: 'Ann', timeline: [song(1990), song(2000)] },
-          { name: 'Ben', timeline: [song(1980)] },
+          { name: 'Ann', timeline: [song(1990), song(2000)], tokens: 1 },
+          { name: 'Ben', timeline: [song(1980)], tokens: 1 },
         ]}
         currentPlayerIndex={0}
         targetScore={10}

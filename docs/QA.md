@@ -4,9 +4,9 @@ Owner: QA engineer. Sources: [PLAN.md](../PLAN.md), [CONTRACTS.md](CONTRACTS.md)
 
 ## 1. Scope
 
-In scope (MVP): pass-and-play web app on one phone (390x844 primary, also 360x740 / 430x932), English + Hebrew UI, `server/` API (`/api/health`, `/api/songs/stats`, `/api/songs/next`, `/api/songs/:id/preview`, `/api/mock-audio`), the curated `server/data/songs.json`, game rules in `web/src/game/`, save/resume, error handling.
+In scope (MVP): pass-and-play web app on one phone (390x844 primary, also 360x740 / 430x932), English + Hebrew UI, `server/` API (`/api/health`, `/api/songs/stats`, `/api/songs/next`, `/api/songs/:id/preview`, `/api/songs/:id/guess`, `/api/mock-audio`), the curated `server/data/songs.json`, game rules in `web/src/game/`, tokens, naming and bets (`docs/TOKENS_AND_BETS.md`), save/resume, error handling.
 
-Out of scope: Spotify / Apple Music login (phase 2), online multiplayer, tokens, artist/title bonus guessing, Railway infra (covered by DevOps), load testing.
+Out of scope: Spotify / Apple Music login (phase 2), online multiplayer, Railway infra (covered by DevOps), load testing.
 
 Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) for automation; real iOS Safari + Android Chrome for audio/autoplay checks before release.
 
@@ -26,6 +26,9 @@ Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) fo
 | R10 | **Server unreachable** | Must show `error-banner`, not a blank screen or stuck spinner; recover when server is back | Kill server mid-game; 404 `NO_SONGS_LEFT` case |
 | R11 | **Data quality** of `songs.json` | Wrong original year = "correct" players marked wrong | Manual review of years, duplicates, spelling, balance, max 10 songs/artist (was 3) |
 | R12 | Setup validation | Duplicate/empty names, target range 3–20 | TC-01..TC-05 |
+| R13 | **Tokens and bets settle wrongly**: wrong card winner, tokens off by one, a bettor winning the game on someone else's turn not noticed | New rules, many paths | Unit tests (`tokens.test.ts`, `reducer.test.ts`), `e2e/tests/betting.spec.ts`, TC-31..TC-46 |
+| R14 | **Names give the answer away**: the screen says which part was right before Reveal, a bettor's typing is still on screen for the next one, or a request is sent while typing | Fairness | TC-36, TC-38, TC-40; network tab: one `/guess` call per Lock in / Check, none without text |
+| R15 | **Keyboard on phones** covers the fields or the footer button | iOS and Android handle the on-screen keyboard differently | TC-47..TC-50 on real phones |
 
 ## 3. Manual test cases
 
@@ -62,6 +65,41 @@ Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) fo
 | TC-29 | Mobile layout | 360/390/430 widths, portrait. | No horizontal page scroll (only timeline scrolls); touch targets ≥44px; long titles wrap, not cut. |
 | TC-30 | API | `POST /api/songs/next` with bad body (`excludeIds:"x"`). | 400 `INVALID_REQUEST`. Unknown id preview → 404 `SONG_NOT_FOUND`. `/api/health` → `{status:"ok"}`. |
 
+## 3b. Manual checklist: tokens, naming and bets
+
+Rules: `docs/TOKENS_AND_BETS.md`. Automated: `e2e/tests/betting.spec.ts`. Use 3 players (Ann, Bob, Carol) unless a case says otherwise. Tokens are in the header chip (◉) and the scoreboard's Tokens column.
+
+| ID | Area | Steps | Expected |
+|---|---|---|---|
+| TC-31 | Setup | Open Setup. Turn "Tokens & bets" off, go back, open Setup again, reload. | On by default. Off is remembered. With it off, the turn has Reveal, no ◉, no naming, no skip. |
+| TC-32 | Tokens | Start a game. Win cards until you have 5, then win one more. | Start at 1; +1 per card; the 6th card gives no token ("+1 card (tokens full)"); the meter shows "Max". |
+| TC-33 | Lock in | Pick no spot. Open "Name artist + title". | Lock in stays disabled, with "Pick a spot on the timeline first". |
+| TC-34 | Naming both | Name both right (try other case, no apostrophes, a small typo), Lock in. | The card is revealed at once. "Named it! No bets allowed." Names shown with ✓ ✓. |
+| TC-35 | Named, wrong spot | Name both right, pick a wrong spot. | Card discarded, no bets, no tokens move. |
+| TC-36 | Bets open | Name one part wrong (or nothing), Lock in. | "Bets are open!". Nothing says which part was wrong. The answer is nowhere on screen. |
+| TC-37 | Bettor allowed | Bob taps his name, types only the artist right, Check. | "You can bet!". Free spots light up; Ann's spot shows a pink "A" and cannot be picked. |
+| TC-38 | Fields cleared | After Bob's Check, Carol taps her name. | Carol's fields are empty. Bob's typing is gone. |
+| TC-39 | Bettor denied | Carol names neither right. | "Not this time. Pass the phone on." Her token is kept. Her button shows "tried". |
+| TC-40 | Cancel | A bettor taps Cancel before Check; another taps Cancel after Check. | Before Check: the try is kept. After Check: the try is used. No request without typed text. |
+| TC-41 | Any order, earlier wins | Two songs share a year so two spots are right. Carol bets first, then Bob, both right; Ann wrong. | Carol wins the card (into her own timeline, sorted, gold outline, "Added to Carol's timeline"), +1 token. Bob: "Correct bet, but Carol bet first", keeps his token. |
+| TC-42 | Wrong bet | Ann right, Bob bets wrong. | Ann +1 card +1 token. Bob −1 token. |
+| TC-43 | Nobody right | Ann wrong, every bet wrong. | "Nobody got it. The card is out." Each bettor −1. |
+| TC-44 | We accept it | Ann types names that are fair but rejected; bets are placed; Reveal. Tap "We accept it". | Bet tokens come back; a card won by a bettor is taken back; Ann's spot alone decides. The button is gone afterwards. |
+| TC-45 | Skip | With 3+ tokens, pick a spot, tap "Skip · 3". Tap "Keep listening"; then Skip again and confirm. | Keep listening costs nothing. Skip: −3 tokens, a new song, the spot is cleared. No skip button with 2 tokens or during betting. |
+| TC-46 | Winner / resume | (a) Bob reaches the target by a won bet on Ann's turn. (b) Reload during betting, with a bettor mid-naming. (c) End the game early with players tied on cards. | (a) Next says "See the winner", Bob wins. (b) Same round, same bets; the unchecked bettor's try is unused. (c) More tokens wins ("Tied on cards; more tokens wins."); still tied, shared win. |
+
+**Real phones** (the keyboard and Safari cannot be checked in Chromium):
+
+| ID | Device | Steps | Expected |
+|---|---|---|---|
+| TC-47 | iPhone Safari | Tap a name field. | No zoom (16px inputs). No autocorrect, no suggestions, no capital letter forced. |
+| TC-48 | iPhone Safari | Open the naming fields, keyboard up. Then the bettor's fields. | The field being typed in stays visible; the page can scroll to the footer button (Lock in / Check); nothing is hidden for good under the keyboard. After the keyboard closes, no gap is left at the bottom. |
+| TC-49 | Android Chrome | Same as TC-48. | The footer stays above the keyboard (`interactive-widget=resizes-content`). |
+| TC-50 | Both, Hebrew | Type Hebrew in an English UI and English in the Hebrew UI. | Text runs the right way in the field (`dir="auto"`). |
+| TC-51 | Both | Play the clip, Lock in, play again from the betting screen (Replay in the gold box). | Audio plays from a tap; it stops on Reveal and on Next. |
+| TC-52 | Small phone (360×640), Hebrew | Go through every betting screen with long names. | No sideways page scroll; long names end with "…"; buttons at least 44px. |
+| TC-53 | Screen reader (VoiceOver / TalkBack) | Go through a betting round. | The bettor change and "You can bet!" / "Not this time" are announced; taken spots are read as "Ann's pick" / "Bob's bet". |
+
 ## 4. Acceptance checklist (mapped to PLAN.md)
 
 | PLAN ref | Requirement | Covered by |
@@ -80,6 +118,7 @@ Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) fo
 | §5 | Health check, save/resume, Vitest + Playwright | TC-24, TC-30, lint/test runs |
 | §6 | Screens Home/Players/Turn/Result/Scoreboard/Winner/Settings | Full exploratory game |
 | §7.5 | Skip song if preview fails | TC-19, TC-20 |
+| §9.6 | Tokens, naming, bets, skip, "We accept it" | TC-31..TC-53, `betting.spec.ts` |
 
 ---
 

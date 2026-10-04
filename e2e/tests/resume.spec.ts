@@ -5,6 +5,7 @@ import {
   mockSongQueue,
   placeAndReveal,
   readScores,
+  readTokens,
   song,
   tid,
   timelineIds,
@@ -41,6 +42,9 @@ test('reload mid-game → btn-resume restores players, timelines, scores and cur
   const bobTimeline = await timelineIds(page);
   const scores = await readScores(page);
   expect(scores).toEqual({ Alice: 2, Bob: 1 });
+  // Tokens & bets is on by default: +1 token for Alice's card.
+  const tokens = await readTokens(page);
+  expect(tokens).toEqual({ Alice: 2, Bob: 1 });
 
   await page.reload();
   await expect(tid(page, 'screen-home')).toBeVisible();
@@ -50,6 +54,7 @@ test('reload mid-game → btn-resume restores players, timelines, scores and cur
   await waitForTurn(page, 'Bob');
   expect(await timelineIds(page)).toEqual(bobTimeline);
   expect(await readScores(page)).toEqual(scores);
+  expect(await readTokens(page)).toEqual(tokens);
 
   // Game continues normally; Alice still has her two cards.
   await placeAndReveal(page, 1);

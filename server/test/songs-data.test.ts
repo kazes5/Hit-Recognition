@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '../src/catalog.js';
+import { buildKnownNames, isArtistCorrect, isTitleCorrect } from '../src/guess.js';
 import { songArtistKeys } from '../src/selection.js';
 import { decadeOf } from '../src/stats.js';
 
@@ -69,5 +70,57 @@ describe('data/songs.json', () => {
         expect(hebrew.test(s.artist) || hebrew.test(s.title), `song ${s.id}`).toBe(false);
       }
     }
+  });
+
+  describe('guess checking', () => {
+    const known = buildKnownNames(songs);
+
+    it("accepts every song's own artist and title as typed on the card", () => {
+      const rejected = songs.filter((s) => !isArtistCorrect(s, s.artist, known) || !isTitleCorrect(s, s.title, known));
+      expect(rejected.map((s) => s.id)).toEqual([]);
+    });
+
+    it("rejects other songs' artists and titles", () => {
+      const wrong: string[] = [];
+      songs.forEach((s, i) => {
+        for (let k = 1; k <= 25; k++) {
+          const other = songs[(i + k * 17) % songs.length]!;
+          const sharesArtist = songArtistKeys(other).some((key) => songArtistKeys(s).includes(key));
+          if (!sharesArtist && isArtistCorrect(s, other.artist, known)) wrong.push(`${s.id} artist <- ${other.id}`);
+          if (other.title.toLowerCase() !== s.title.toLowerCase() && isTitleCorrect(s, other.title, known)) {
+            wrong.push(`${s.id} title <- ${other.id}`);
+          }
+        }
+      });
+      expect(wrong).toEqual([]);
+    });
+
+    it("accepts every song's own aliases", () => {
+      const rejected: string[] = [];
+      for (const s of songs) {
+        for (const a of s.artistAliases ?? []) if (!isArtistCorrect(s, a, known)) rejected.push(`${s.id} artist "${a}"`);
+        for (const t of s.titleAliases ?? []) if (!isTitleCorrect(s, t, known)) rejected.push(`${s.id} title "${t}"`);
+      }
+      expect(rejected).toEqual([]);
+    });
+
+    it("never accepts one song's aliases for a different song", () => {
+      const keys = new Map(songs.map((s) => [s, songArtistKeys(s)]));
+      const wrong: string[] = [];
+      for (const s of songs) {
+        const own = keys.get(s)!;
+        for (const other of songs) {
+          if (other === s) continue;
+          const sharesArtist = keys.get(other)!.some((key) => own.includes(key));
+          for (const a of sharesArtist ? [] : (other.artistAliases ?? [])) {
+            if (isArtistCorrect(s, a, known)) wrong.push(`${s.id} artist <- ${other.id} "${a}"`);
+          }
+          for (const t of other.titleAliases ?? []) {
+            if (isTitleCorrect(s, t, known)) wrong.push(`${s.id} title <- ${other.id} "${t}"`);
+          }
+        }
+      }
+      expect(wrong).toEqual([]);
+    });
   });
 });

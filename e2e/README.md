@@ -35,12 +35,15 @@ Chromium is launched with `--autoplay-policy=no-user-gesture-required --use-fake
 
 | Spec | What it covers |
 |---|---|
-| `api.spec.ts` | health, stats shape, `next` exclusion / artist preference / languages / 400s, mock preview, mock audio WAV, 404s, SPA fallback |
+| `api.spec.ts` | health, stats shape, `next` exclusion / artist preference / languages / 400s, mock preview, mock audio WAV, `guess` (two booleans only, 404/400), 404s, SPA fallback |
 | `setup.spec.ts` | home → setup, add/remove players, empty/duplicate/11th player rejected, target score |
-| `gameplay.spec.ts` | deterministic games via `page.route` song queue: hidden card leaks nothing, reveal gating, correct/wrong, rotation, scoreboard `data-score`, winner, equal-year rule, null preview → auto-skip |
+| `gameplay.spec.ts` | classic rules (the "Tokens & bets" switch turned off), deterministic games via `page.route` song queue: hidden card leaks nothing, reveal gating, correct/wrong, rotation, scoreboard `data-score`, winner, equal-year rule, null preview → auto-skip |
+| `betting.spec.ts` | tokens, naming and bets (switch on): tokens 1 → +1 per card → max 5, naming both blocks bets (real `/guess`), bettor allowed/denied, any order + earlier right bet wins, won bet goes to the bettor's timeline, wrong bets lose a token, taken spots, answer not in the page, empty fields for the next bettor, skip for 3 tokens, reload mid-betting, "We accept it", Hebrew 360×640, no `/guess` call unless something was typed |
 | `no-repeat.spec.ts` | real server: no song repeats, at most 2 songs per artist, `excludeIds` grow and `excludeArtists` holds one entry per dealt song |
 | `i18n.spec.ts` | Hebrew RTL (`<html dir="rtl" lang="he">`), timeline stays `dir="ltr"`, persistence, song-language setting |
-| `resume.spec.ts` | reload mid-game → `btn-resume` restores state |
-| `responsive.spec.ts` | no horizontal scroll, buttons ≥ 44px (mobile), full-page screenshots → `screenshots/` |
+| `resume.spec.ts` | reload mid-game → `btn-resume` restores state (cards and tokens) |
+| `responsive.spec.ts` | no horizontal scroll, buttons ≥ 44px (mobile), full-page screenshots → `screenshots/` (01–08 the main screens; 09–13 naming, who's betting, a bettor's naming, a won bet, the skip sheet) |
 
 Screenshots in `screenshots/` are regenerated on every run and committed for design review.
+
+`helpers.ts` plays a turn either way: `placeAndReveal` taps Reveal when nobody can bet, or Lock in (with optional `name` and `bets`) and then Reveal from the betting round. `startGame(..., { tokensAndBets: false })` turns the Setup switch off. `mockGuess` answers `/api/songs/:id/guess` for the fake songs.

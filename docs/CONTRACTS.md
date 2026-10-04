@@ -68,6 +68,8 @@ interface Song {
 | Field | Type | Meaning |
 |---|---|---|
 | `artistKeys` | `string[]` (non-empty) | Every contributing artist, for the "prefer unused artists" rule (e.g. a featured artist not named in `artist`). |
+| `artistAliases` | `string[]` (non-empty) | Other names a guess may use for the artist: a Latin spelling of a Hebrew name (`"Eyal Golan"`), a short form (`"Pink"`). Used only by `POST /api/songs/:id/guess`. |
+| `titleAliases` | `string[]` (non-empty) | Other titles a guess may use (`"Nothing Compares to You"`). Used only by `POST /api/songs/:id/guess`. |
 | `itunesTrackId` | positive integer | Pins the exact iTunes track. The preview/cover lookup then uses `https://itunes.apple.com/lookup?id=<id>&country=<ITUNES_COUNTRY>&entity=song` and takes that track's preview and artwork without any name matching. If the lookup returns no preview, the normal search is used. Use it for songs whose name search keeps failing (e.g. the "no match" warning below). |
 
 To find an id: run `curl 'https://itunes.apple.com/search?term=<artist+title>&entity=song&country=IL&lang=he_il'` (URL-encode the term) and copy `trackId` of the right result; or open the song in Apple Music / iTunes on the web, where the track id is the `i=` query parameter of the song link (`…/album/…/1440833098?i=1440833100` → `1440833100`). Check it with the lookup URL above for the same country: it must return a `previewUrl`.
@@ -83,6 +85,7 @@ All endpoints return JSON. Errors: `{ "error": "<CODE>", "message": "..." }`.
 | `POST /api/songs/next` | `{ "excludeIds": number[], "excludeArtists": string[], "languages": Language[] }` (all optional; `languages` default both) | `200 { "song": Song }` — random song not in `excludeIds`, **preferring** artists not in `excludeArtists`. Each `excludeArtists` entry is one dealt song (duplicates are meaningful, case-insensitive) and counts once for every contributor of its credit. A performer appears at most 2 times per game: songs with no dealt contributor come first, then those under the cap of 2, then (soft fallback) any remaining song. `404 { "error": "NO_SONGS_LEFT" }` if nothing remains. `400 { "error": "INVALID_REQUEST" }` on bad body. |
 | `GET /api/songs/:id/preview` | – | `200 { "previewUrl": string \| null }` — 30-second audio URL. `null` if no preview could be found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. Results cached in memory. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-audio"`. |
 | `GET /api/songs/:id/cover` | – | `200 { "coverUrl": string \| null }` — HTTPS URL of the song's cover picture (Apple artwork, upscaled to 300x300). `null` if none was found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. It reuses the same cached iTunes lookup as the preview (one search per song, never two). Only `https://*.mzstatic.com/` URLs are accepted; anything else becomes `null`. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-cover"`. **The preview endpoint's response does not change and never contains the cover.** |
+| `POST /api/songs/:id/guess` | `{ "artist"?: string, "title"?: string }` (each at most 200 characters; a missing or blank field is a wrong guess for that field, not an error; an empty body is allowed) | `200 { "artistCorrect": boolean, "titleCorrect": boolean }` — checks a typed guess with tolerant matching (see §8). **The response never contains the song's artist, title, year or aliases** ("did you mean" is never offered). Stateless; the same id can be checked again. `404 { "error": "SONG_NOT_FOUND" }` for an unknown or non-numeric id. `400 { "error": "INVALID_REQUEST" }` if the body is not a JSON object, a field is not a string, or a field is too long. |
 | `GET /api/mock-cover` | – | A small valid cover-like image (`image/svg+xml`, square). Always available. |
 | `GET /api/mock-audio` | – | A short valid audio file (e.g. generated silent WAV, ~2 s), `Content-Type: audio/wav`. Always available. |
 
@@ -90,7 +93,7 @@ All endpoints return JSON. Errors: `{ "error": "<CODE>", "message": "..." }`.
 
 The UI designer owns this file. The frontend developer imports it once in `main.tsx` and uses these names. The designer may add more; these must exist.
 
-CSS custom properties: `--color-bg`, `--color-surface`, `--color-text`, `--color-text-muted`, `--color-neon-pink`, `--color-neon-cyan`, `--color-success`, `--color-error`, `--font-display`, `--font-body`, `--radius-card`, `--space-1` … `--space-6`.
+CSS custom properties: `--color-bg`, `--color-surface`, `--color-text`, `--color-text-muted`, `--color-neon-pink`, `--color-neon-cyan`, `--color-success`, `--color-error`, `--color-token` (gold, `#ffd166`: spending tokens), `--font-display`, `--font-body`, `--radius-card`, `--space-1` … `--space-6`.
 
 Classes:
 - Layout: `.app-shell`, `.screen`, `.screen__header`, `.screen__body`, `.screen__footer`
@@ -116,6 +119,16 @@ Game rules (implemented as pure functions in `web/src/game/`, unit-tested):
 - If preview is `null` or audio fails to load, the app silently fetches another song (that song id is still marked used).
 - Clip plays max 30 s; audio starts only on a user tap (mobile autoplay rules).
 
+Tokens, naming and bets (full rules: `docs/TOKENS_AND_BETS.md`). A **"Tokens & bets"** switch in Setup turns them on or off. It is on by default and remembered in `localStorage` key `hitster.tokensAndBets` (`"on"` / `"off"`). With it off, the game is exactly the rules above.
+- **Tokens.** Every player starts with 1. +1 for every card won, up to 5; a token earned at 5 is lost. The starting card gives none.
+- **Naming.** After picking a spot, the current player may type the artist and the title. The footer button is **Lock in** instead of Reveal whenever another player has a token (someone could bet). If both names are right, or nobody can bet, the card is revealed at once. Otherwise the betting round opens. Naming never gives a token.
+- **Betting.** First come, first served: any other player with a token, no try yet this turn, and a free spot left taps their name. They must name the artist or the title (one right is enough) to bet; if not, they lose nothing. One try per turn; it is used once the names are checked (Cancel before Check keeps it). A bet costs 1 token and goes on a free spot of the current player's timeline: not the current player's spot, not an earlier bet. The round ends when someone taps Reveal. When nobody is left who may try, the screen says "All bets are in!" and waits for Reveal.
+- **Settling.** Every spot is checked against the current player's timeline before the card is added. The current player right: they get the card and +1 token; a bettor on another right spot keeps their token. The current player wrong: the earliest right bet wins the card into **the bettor's own** timeline (sorted by year), the bet token back and +1. Wrong bets lose their token. Nobody right: the card is out.
+- **"We accept it".** On the result screen, when the current player's typed names were rejected and there were bets, the group can accept them: the turn is settled again as if no bets were placed (bet tokens back, a won card taken back).
+- **Skipping.** Before Lock in, a player with 3+ tokens can pay 3 to skip the song. The song is marked used, a new one plays, and the chosen spot is cleared.
+- **Winner.** After each turn **every** player is checked against the target (a bettor can reach it on someone else's turn). When the game is ended early, the most cards wins; tied on cards, more tokens wins; still tied, they share the win.
+- A saved game resumes in the middle of the betting round with the same bets and tries. A bettor whose names were not checked yet goes back to "Who's betting?" with the try unused.
+
 `data-testid`s:
 
 | Screen | testids |
@@ -128,6 +141,13 @@ Game rules (implemented as pure functions in `web/src/game/`, unit-tested):
 | Winner | `screen-winner`, `winner-name`, `btn-play-again` |
 | Settings | `screen-settings`, `btn-lang-he`, `btn-lang-en`, `btn-songs-he`, `btn-songs-en`, `btn-songs-both`, `btn-back` |
 | Errors | `error-banner` (e.g. server unreachable / no songs left), `btn-retry`, `btn-error-end-game` |
+| Setup: tokens | `toggle-tokens-bets` (`role="switch"`, `aria-checked`) |
+| Turn: tokens | `current-player-tokens` (header chip, with `data-tokens`), `token-meter` (each meter, with `data-tokens`) |
+| Turn: skip | `btn-skip-song` (only with ≥ 3 tokens, before Lock in), `skip-confirm` (the sheet), `btn-confirm-skip`, `btn-keep-listening` |
+| Turn: naming | `btn-name-it` (with `aria-expanded`), `input-guess-artist`, `input-guess-title`, `btn-lock-in` (disabled until a slot is selected; replaces `btn-reveal` when someone could bet), `btn-guess-retry` and `btn-continue-without-naming` (when the check fails) |
+| Betting | `bet-panel` (the betting screen body), `bet-legend` (with `li[data-marker="pick"/"bet"/"mine"/"free"]`), `btn-bettor` (one per other player, with `data-player` = index; `aria-disabled="true"` when they cannot try), `btn-check-guess`, `bet-allowed`, `bet-denied`, `btn-bet-ok`, `btn-place-bet`, `btn-cancel-bet`, `bet-announce` (live region), `btn-reveal` (ends the round); on the timeline `data-owner` (player index) and, on taken slots, `data-marker` (`pick` / `bet`) and `data-initials` |
+| Result: tokens | `turn-outcome`, `outcome-row` (with `data-outcome` = `won` / `right` / `lost` / `refunded` and `data-player` = indices), `result-named`, `result-stolen`, `guess-artist-result` and `guess-title-result` (with `data-correct`), `btn-accept-guess` |
+| Scoreboard / Winner: tokens | `data-tokens` on `score-row` (switch on only), `won-on-tokens` (Winner, when tokens broke a tie) |
 | Added during build | `btn-resume` (Home, only with a saved game), `screen-dealing` (while starting cards are dealt), `btn-end-game` (in scoreboard), `btn-home` (Winner), `btn-back` (also on Setup), `final-timeline` / `final-timeline-card` (Winner) |
 
 Song-language setting persisted in `localStorage` key `hitster.songLanguages` (`"he"`, `"en"`, `"both"`; default `both`).
@@ -140,3 +160,27 @@ Song-language setting persisted in `localStorage` key `hitster.songLanguages` (`
 - If `coverUrl` is `null`, the request fails, or the image fails to load, **no `cover-wrap` / `cover-image` element is rendered** (no broken-image icon, no empty gap). The result screen then looks exactly as before.
 - No cover on the hidden card, the timeline cards, the scoreboard or the winner screen.
 - The UI designer owns the `.cover` / `.cover__img` styles (`web/src/styles/theme.css`).
+
+## 8. Artist/title guess
+
+Server side (`server/src/guess.ts`), used by `POST /api/songs/:id/guess`. The game rules that use it are in `docs/TOKENS_AND_BETS.md`.
+
+**Cleaning up before comparing** (both the guess and the catalog text):
+- Case, accents and Hebrew vowel marks are ignored. `&`, `and` and Hebrew `ו` count as the same.
+- Apostrophes and Hebrew geresh/gershayim are removed: `ד'אור` = `דאור`, `תש"ח` = `תשח`.
+- Hebrew final letters count as the normal letter: `ך ם ן ף ץ` = `כ מ נ פ צ`.
+- A standalone `n` counts as `and` ("Guns N' Roses"). A leading `the` is ignored, and for artists a leading `להקת` too.
+- Spaces are ignored when comparing, so `acdc` = `AC/DC`.
+
+**Typos** are allowed by the length of the expected text (spaces removed): up to 4 letters → none, up to 8 → 1, up to 14 → 2, up to 20 → 3, longer → 4. Swapping two neighbouring letters counts as one typo. A guess that is **exactly another artist or title in the catalog** is never accepted as a typo: "Believe" is not a typo of "Believer".
+
+**Title is right** if the guess matches the full title, the title without its brackets, a bracketed part of at least three words (`"I Feel Good"` for *I Got You (I Feel Good)*), the title without a trailing `, Part 2`, or a `titleAliases` entry. Part of a title never counts.
+
+**Artist is right** if the guess matches:
+- the whole credit or an `artistAliases` entry; or
+- the same contributors in any order (`"קושניר ודטנר"`); or
+- only contributors that count on their own. Those are credited names of at least two words ("Bradley Cooper") and catalog `artistKeys` entries ("Bruno Mars"). One-word parts of a band name ("Earth", "חלב") never count alone, and any wrong extra name makes the guess wrong.
+
+**Frontend rules:**
+- Call the endpoint only when a player typed something and confirmed (Lock in or Check). Never while typing, and never with a datalist or suggestions.
+- Before Reveal, show only what the rules need: "no bets" / "bets open" for the current player, "You can bet!" / "Not this time" for a bettor. Never which field was right.

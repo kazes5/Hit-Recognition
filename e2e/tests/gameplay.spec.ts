@@ -5,6 +5,7 @@ import {
   mockSongQueue,
   placeAndReveal,
   readScores,
+  setTokensAndBets,
   slot,
   song,
   tapPlay,
@@ -17,6 +18,8 @@ import {
 
 /**
  * Deterministic gameplay: /api/songs/next and /preview are served from a fixed queue.
+ * These games turn the "Tokens & bets" switch OFF, so they test the classic rules
+ * (place, Reveal, Next). The token, naming and betting flow is in betting.spec.ts.
  * Contract: docs/CONTRACTS.md §6.
  */
 
@@ -36,6 +39,7 @@ async function startTwoPlayers(page: Page, target = 3): Promise<void> {
   await addPlayer(page, 'Bob');
   await tid(page, 'input-target-score').fill(String(target));
   await tid(page, 'input-target-score').blur();
+  await setTokensAndBets(page, false);
   await tid(page, 'btn-start-game').click();
 }
 
@@ -85,6 +89,10 @@ test('full game: start cards, hidden card, reveal gating, correct/wrong, rotatio
   await expect(cards.first()).toContainText('1990');
   await expectHidden(page, S.t1);
   await expect(tid(page, 'speaker')).toBeVisible();
+  // Switch off: no tokens, no naming, no Lock in, no skipping.
+  for (const id of ['current-player-tokens', 'btn-name-it', 'btn-lock-in', 'btn-skip-song']) {
+    await expect(tid(page, id), `${id} with the switch off`).toHaveCount(0);
+  }
   await tapPlay(page);
 
   // One card → two slots (0 = before, 1 = after).
@@ -205,6 +213,7 @@ test('turn rotates through all players and wraps around', async ({ page }) => {
   ]);
   await tid(page, 'btn-new-game').click();
   for (const n of ['Alice', 'Bob', 'Carol']) await addPlayer(page, n);
+  await setTokensAndBets(page, false);
   await tid(page, 'btn-start-game').click();
   for (const name of ['Alice', 'Bob', 'Carol', 'Alice']) {
     await waitForTurn(page, name);

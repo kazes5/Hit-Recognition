@@ -1,6 +1,23 @@
 import path from 'node:path';
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
-import { addPlayer, freshStart, mockSongQueue, placeAndReveal, song, tapPlay, tid, waitForTurn } from './helpers';
+import {
+  addPlayer,
+  bettorButton,
+  checkBettorName,
+  freshStart,
+  lockIn,
+  mockGuess,
+  mockSongQueue,
+  placeAndReveal,
+  placeBet,
+  reveal,
+  slot,
+  song,
+  tapPlay,
+  tid,
+  typeNames,
+  waitForTurn,
+} from './helpers';
 
 /**
  * Mobile-first layout checks + full-page screenshots of every screen (committed in e2e/screenshots/
@@ -44,6 +61,13 @@ async function checkScreen(page: Page, info: TestInfo, name: string): Promise<vo
   });
 }
 
+async function switchToHebrew(page: Page): Promise<void> {
+  await tid(page, 'btn-settings').click();
+  await tid(page, 'btn-lang-he').click();
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await tid(page, 'btn-back').click();
+}
+
 async function shootAll(page: Page, info: TestInfo, lang: 'en' | 'he'): Promise<void> {
   const p = (n: string) => (lang === 'he' ? `he-${n}` : n);
   await mockSongQueue(page, [
@@ -55,12 +79,7 @@ async function shootAll(page: Page, info: TestInfo, lang: 'en' | 'he'): Promise<
     song(806, 2012, 'עומר אדם', 'מישהו שומר עליי', 'he'),
   ]);
   await freshStart(page);
-  if (lang === 'he') {
-    await tid(page, 'btn-settings').click();
-    await tid(page, 'btn-lang-he').click();
-    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
-    await tid(page, 'btn-back').click();
-  }
+  if (lang === 'he') await switchToHebrew(page);
   await checkScreen(page, info, p('01-home'));
 
   await tid(page, 'btn-settings').click();
@@ -82,8 +101,9 @@ async function shootAll(page: Page, info: TestInfo, lang: 'en' | 'he'): Promise<
 
   await tid(page, 'timeline').locator('[data-testid="timeline-slot"][data-index="1"]').click();
   await checkScreen(page, info, p('05-turn-slot-selected'));
-  await tid(page, 'btn-reveal').click();
-  await expect(tid(page, 'revealed-card')).toBeVisible();
+  // Tokens & bets is on by default: Lock in opens the betting round; nobody bets.
+  expect(await lockIn(page)).toBe('betting');
+  expect(await reveal(page)).toBe(true);
   await checkScreen(page, info, p('06-result'));
 
   await tid(page, 'btn-scoreboard').click();
@@ -110,4 +130,82 @@ test('mobile layout + screenshots (English)', async ({ page }, info) => {
 
 test('mobile layout + screenshots (Hebrew RTL)', async ({ page }, info) => {
   await shootAll(page, info, 'he');
+});
+
+/**
+ * The tokens, naming and betting screens: naming, "Who's betting?", a bettor's naming,
+ * a won bet, and the skip confirmation (docs/TOKENS_AND_BETS.md §6).
+ */
+async function shootBetting(page: Page, info: TestInfo, lang: 'en' | 'he'): Promise<void> {
+  const p = (n: string) => (lang === 'he' ? `he-${n}` : n);
+  const he = lang === 'he';
+  const t1 = he
+    ? song(814, 1980, 'שלמה ארצי', 'גבר הולך לאיבוד', 'he')
+    : song(814, 1980, 'Queen', 'Another One Bites the Dust');
+  const queue = [
+    song(811, 1990, 'Whitney Houston', 'Greatest Love Of All'), // Alice's start card
+    song(812, 2000, 'Coldplay', 'Yellow'), // Bart's
+    song(813, 1970, 'Simon & Garfunkel', 'The Boxer'), // Carol's
+    t1, // Alice places it after 1990 (wrong); Bart bets before 1990 and wins it
+    song(815, 2010, 'Katy Perry', 'Firework'), // Bart: after 2000, right → 3 tokens
+    song(816, 1960, 'Elvis Presley', "It's Now or Never"), // Carol: before 1970
+    song(817, 1995, 'Oasis', 'Wonderwall'), // Alice: after 1990
+    song(818, 1985, 'a-ha', 'Take On Me'), // Bart's next turn: he skips it
+    song(819, 1950, 'Nat King Cole', 'Mona Lisa'),
+  ];
+  await mockSongQueue(page, queue);
+  await mockGuess(page, queue);
+  await freshStart(page);
+  if (he) await switchToHebrew(page);
+
+  await tid(page, 'btn-new-game').click();
+  for (const n of he ? ['דנה', 'יוסי', 'מיכל'] : ['Alice', 'Bart', 'Carol']) await addPlayer(page, n);
+  await tid(page, 'input-target-score').fill('10');
+  await tid(page, 'input-target-score').blur();
+  await expect(tid(page, 'toggle-tokens-bets')).toHaveAttribute('aria-checked', 'true');
+  await tid(page, 'btn-start-game').click();
+
+  // Turn 1 (Alice): picks a wrong spot and names the artist only, so bets open.
+  await waitForTurn(page);
+  await tapPlay(page);
+  await slot(page, 1).click();
+  await typeNames(page, { artist: t1.artist, title: he ? 'שיר אחר' : 'Bohemian Rhapsody' });
+  await checkScreen(page, info, p('09-naming'));
+  expect(await lockIn(page)).toBe('betting');
+  await checkScreen(page, info, p('10-who-is-betting'));
+
+  // Bart grabs the phone, names the artist and bets before 1990.
+  await bettorButton(page, 1).click();
+  await tid(page, 'input-guess-artist').fill(t1.artist);
+  await checkScreen(page, info, p('11-bettor-naming'));
+  expect(await checkBettorName(page, {})).toBe(true);
+  await placeBet(page, 0);
+  await expect(tid(page, 'btn-bettor').first()).toBeVisible();
+
+  expect(await reveal(page)).toBe(false);
+  await expect(tid(page, 'result-stolen')).toBeVisible();
+  await checkScreen(page, info, p('12-won-bet'));
+  await tid(page, 'btn-next').click();
+
+  // Bart (2 tokens) places right → 3 tokens; Carol and Alice play plain turns.
+  for (const index of [2, 0, 1]) {
+    await waitForTurn(page);
+    expect(await placeAndReveal(page, index)).toBe(true);
+    await tid(page, 'btn-next').click();
+  }
+
+  // Bart's turn again, with 3 tokens: "Skip song · 3" and its confirmation.
+  await waitForTurn(page);
+  await expect(tid(page, 'current-player-tokens')).toHaveAttribute('data-tokens', '3');
+  await tid(page, 'btn-skip-song').click();
+  await expect(tid(page, 'skip-confirm')).toBeVisible();
+  await checkScreen(page, info, p('13-skip-confirm'));
+}
+
+test('betting screens + screenshots (English)', async ({ page }, info) => {
+  await shootBetting(page, info, 'en');
+});
+
+test('betting screens + screenshots (Hebrew RTL)', async ({ page }, info) => {
+  await shootBetting(page, info, 'he');
 });

@@ -69,6 +69,21 @@ export async function fetchPreviewUrl(songId: number): Promise<string | null> {
   return typeof data.previewUrl === 'string' && data.previewUrl ? data.previewUrl : null;
 }
 
+export interface GuessCheck {
+  artistCorrect: boolean;
+  titleCorrect: boolean;
+}
+
+/** Checks a typed artist/title guess on the server (docs/CONTRACTS.md §8). Never returns the answer. */
+export async function checkGuess(songId: number, guess: { artist: string; title: string }): Promise<GuessCheck> {
+  const data = await request<Partial<GuessCheck>>(`/api/songs/${encodeURIComponent(String(songId))}/guess`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ artist: guess.artist.slice(0, 200), title: guess.title.slice(0, 200) }),
+  });
+  return { artistCorrect: data.artistCorrect === true, titleCorrect: data.titleCorrect === true };
+}
+
 export async function fetchCoverUrl(songId: number): Promise<string | null> {
   const data = await request<{ coverUrl?: string | null }>(
     `/api/songs/${encodeURIComponent(String(songId))}/cover`,

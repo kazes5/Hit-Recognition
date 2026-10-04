@@ -26,6 +26,11 @@
   --color-error: #ff5a6e;
   --color-card-ink: #1b1c1e;       /* text on pastel cards */
   --color-card-ink-soft: #3a3d42;  /* deck code / card number */
+  /* Tokens and bets: gold means spending tokens (Bet, Skip) */
+  --color-token: #ffd166;
+  --color-token-soft: #ffe3a3;
+  --color-token-ink: #2a1c00;      /* text on gold */
+  --glow-token-box: 0 0 6px var(--color-token), 0 0 18px rgb(255 209 102 / 0.45);
 
   /* Glows */
   --glow-pink:
@@ -978,6 +983,468 @@ body {
   .turn-stage > .song-card { --card-size: 96px; }
   .turn-stage .speaker--small { --speaker-size: 56px; }
   .screen--turn .screen__body { gap: var(--space-3); }
+}
+
+/* ---------- Tokens, naming and bets (docs/TOKENS_AND_BETS.md §6) ---------- */
+.icon { flex-shrink: 0; vertical-align: middle; }
+
+/* Token: a gold disc with a note */
+.token-icon {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff6d6 0 10%, var(--color-token) 42%, #c9962a 100%);
+  box-shadow: 0 0 6px rgb(255 209 102 / 0.8);
+  color: #4a3300;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Turn header: "◉ 3" next to the pink card count */
+.token-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding-block: 2px;
+  padding-inline: 3px 9px;
+  border-radius: var(--radius-btn);
+  border: 1.5px solid rgb(255 209 102 / 0.7);
+  color: var(--color-token-soft);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+.player-badge { min-width: 0; }
+.screen--turn .player-badge > bdi { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-badge__score, .token-chip { flex-shrink: 0; }
+
+/* Token meter: 5 pips */
+.token-meter { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; direction: ltr; }
+.token-meter__pip {
+  inline-size: 12px;
+  block-size: 12px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(255 209 102 / 0.4);
+}
+.token-meter__pip--on {
+  border-color: var(--color-token);
+  background: radial-gradient(circle at 35% 30%, #fff6d6 0 10%, var(--color-token) 45%, #c9962a 100%);
+  box-shadow: 0 0 6px rgb(255 209 102 / 0.7);
+}
+.token-meter__count { margin-inline-start: 4px; min-inline-size: 10px; color: var(--color-token-soft); font-size: var(--fs-sm); font-weight: 700; }
+.token-meter__max { margin-inline-start: 4px; color: var(--color-token); font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Buttons: gold = spends tokens */
+.btn--sm { min-height: 44px; padding-inline: var(--space-4); font-size: var(--fs-sm); }
+.btn--token {
+  background: var(--color-token);
+  color: var(--color-token-ink);
+  box-shadow: var(--glow-token-box);
+}
+.btn--token:hover:not([disabled]) { background: #ffdc85; box-shadow: 0 0 8px var(--color-token), 0 0 26px rgb(255 209 102 / 0.6); }
+.btn--token .token-icon { box-shadow: none; }
+.btn--token-outline {
+  background: transparent;
+  border: 1.5px solid rgb(255 209 102 / 0.7);
+  color: var(--color-token-soft);
+  padding-inline: 14px 16px;
+}
+.btn--token-outline:hover:not([disabled]) { background: rgb(255 209 102 / 0.08); }
+.turn-stage__controls .btn--token-outline { min-width: 0; }
+
+/* Footer with two buttons (Cancel + Check / Bet) */
+.screen__footer--row { flex-direction: row; }
+.screen__footer--row > .btn { flex: 1 1 auto; min-width: 0; padding-inline: var(--space-3); white-space: nowrap; }
+.screen__footer-hint { margin: 0; text-align: center; font-size: var(--fs-sm); color: var(--color-text-muted); }
+
+/* Skip confirmation sheet */
+.overlay__panel--token { border-block-start-color: var(--color-token); box-shadow: 0 -4px 24px rgb(255 209 102 / 0.25); }
+.skip-sheet { gap: var(--space-4); text-align: center; }
+.skip-sheet h2 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+.skip-sheet p { margin: 0; color: #c9ced3; font-size: 15px; }
+.token-change {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: 14px;
+  background: rgb(255 209 102 / 0.06);
+  border: 1px solid rgb(255 209 102 / 0.3);
+  color: var(--color-text-muted);
+}
+
+/* "Name artist + title" */
+.name-it { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); width: 100%; }
+.name-it__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding-inline: 18px;
+  border-radius: var(--radius-btn);
+  border: 1.5px dashed rgb(127 216 255 / 0.7);
+  background: transparent;
+  color: var(--color-neon-cyan-soft);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.name-it__toggle:hover { background: rgb(127 216 255 / 0.06); }
+.name-it__toggle--open { border-style: solid; background: rgb(127 216 255 / 0.08); }
+.name-it__body { width: 100%; }
+.name-it__who { margin: 0; text-align: center; font-size: 13px; color: var(--color-text-muted); }
+
+.guess-fields {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 6px var(--space-3) var(--space-3);
+  border: 1.5px solid rgb(127 216 255 / 0.4);
+  border-radius: 16px;
+  background: rgb(127 216 255 / 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.guess-fields > legend { padding-inline: 6px; font-size: 13px; font-weight: 500; color: var(--color-neon-cyan-soft); }
+.guess-fields .field { gap: var(--space-1); }
+.guess-fields .field > label { font-size: 13px; }
+.guess-fields__note { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: 13px; color: var(--color-text-muted); }
+
+/* Timeline: taken spots during betting (pink = the current player's pick, gold = a bet) */
+.timeline-slot:disabled { cursor: default; }
+.timeline-slot:disabled:hover::before { background: rgb(127 216 255 / 0.25); box-shadow: none; }
+.timeline-slot--taken { flex-basis: 48px; width: 48px; cursor: not-allowed; }
+.timeline-slot--taken::after {
+  content: attr(data-initials);
+  width: 30px;
+  height: 30px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.timeline-slot.timeline-slot--pick::before { background: var(--color-neon-pink); box-shadow: 0 0 8px var(--color-neon-pink), 0 0 16px rgb(255 47 179 / 0.6); }
+.timeline-slot.timeline-slot--pick::after { background: var(--color-neon-pink); color: #1a0010; border: 2px solid #ffd0ee; box-shadow: 0 0 10px var(--color-neon-pink); }
+.timeline-slot.timeline-slot--bet::before { background: var(--color-token); box-shadow: 0 0 8px var(--color-token), 0 0 16px rgb(255 209 102 / 0.6); }
+.timeline-slot.timeline-slot--bet::after { background: var(--color-token); color: var(--color-token-ink); border: 2px solid #fff3c9; box-shadow: 0 0 10px var(--color-token); }
+.timeline-slot--taken:focus-visible::after { outline: 3px solid var(--color-neon-cyan); outline-offset: 2px; }
+
+/* Legend under the timeline (initials + full names, so colour is never the only clue) */
+.bet-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+.bet-legend li { display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; }
+.bet-legend b { color: var(--color-text); font-weight: 600; }
+.bet-legend bdi { display: inline-block; max-width: 12em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.marker {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: 20px;
+  block-size: 20px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+}
+.marker--pick { background: var(--color-neon-pink); color: #1a0010; }
+.marker--bet { background: var(--color-token); color: var(--color-token-ink); }
+.marker--mine { background: var(--color-neon-cyan); color: #06202c; }
+.marker--free { background: var(--color-bg); border: 1.5px solid rgb(127 216 255 / 0.6); color: var(--color-neon-cyan); font-size: 13px; }
+
+/* Avatars (initials) in the bettor list and the outcome rows */
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: 30px;
+  block-size: 30px;
+  border-radius: 50%;
+  background: var(--color-surface-2);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+.avatar--bet { background: var(--color-token); border-color: #fff3c9; color: var(--color-token-ink); }
+.avatar--pick { background: var(--color-neon-pink); border-color: #ffd0ee; color: #1a0010; }
+.avatar--lg { inline-size: 36px; block-size: 36px; font-size: 14px; }
+
+/* Betting round */
+.screen--turn .screen__body.bet-stage { gap: var(--space-3); }
+.bet-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-3) 14px 14px;
+  border-radius: 18px;
+  border: 1.5px solid rgb(255 209 102 / 0.6);
+  background: linear-gradient(180deg, rgb(255 209 102 / 0.09), rgb(255 209 102 / 0.02));
+  box-shadow: 0 0 18px rgb(255 209 102 / 0.18);
+}
+.bet-box h2 { margin: 0; flex: 1; min-width: 0; font-size: 1.375rem; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.bet-box h2:focus { outline: none; }
+.bet-box__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bet-box__kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-token); }
+.bet-box__kicker:focus { outline: none; }
+.bet-box__mini { display: flex; align-items: center; gap: 10px; }
+.bet-box__mini > .song-card { --card-size: 44px; border-width: 1.5px; }
+.bet-box__mini > .song-card > .equalizer { display: none; }
+.bet-box__lead { margin: 0; font-size: 15px; }
+.bet-box__sub { margin: 0; font-size: 13px; color: var(--color-text-muted); }
+.bet-box__meta { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-muted); }
+.bet-box__who { display: flex; align-items: center; gap: 10px; }
+.bet-box--ok { border-color: rgb(62 224 143 / 0.6); background: linear-gradient(180deg, rgb(62 224 143 / 0.08), rgb(62 224 143 / 0.02)); box-shadow: 0 0 18px rgb(62 224 143 / 0.15); }
+.bet-box--ok .bet-box__kicker { color: var(--color-success); }
+.bet-box--denied {
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px;
+  text-align: center;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  box-shadow: none;
+}
+.bet-box--denied h2 { flex: none; font-size: 1.375rem; }
+.bet-box__icon {
+  display: grid;
+  place-items: center;
+  inline-size: 48px;
+  block-size: 48px;
+  border-radius: 50%;
+  background: rgb(255 90 110 / 0.12);
+  border: 1.5px solid rgb(255 90 110 / 0.6);
+  color: #ff7a8a;
+}
+.bet-box__name { margin: 0; font-weight: 600; color: #c9ced3; overflow-wrap: anywhere; }
+.bet-box__keep { margin: 0; display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); font-weight: 600; color: var(--color-token-soft); }
+.turn-stage--compact { flex-wrap: nowrap; gap: var(--space-5); }
+.turn-stage.turn-stage--compact > .song-card { --card-size: 88px; }
+
+.bet-list-title { align-self: flex-start; margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); }
+.bettor-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* many players: the list scrolls inside its box, the page does not grow forever */
+  max-block-size: 50dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.bettor-btn {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-block: 6px;
+  padding-inline: var(--space-2) var(--space-3);
+  border-radius: 14px;
+  border: 1.5px solid rgb(255 209 102 / 0.5);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+}
+.bettor-btn:hover:not([aria-disabled='true']) { background: var(--color-surface-2); }
+.bettor-btn[aria-disabled='true'] { border-color: var(--color-border); color: var(--color-text-muted); cursor: not-allowed; }
+.bettor-btn__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bettor-btn__go { display: inline-flex; align-items: center; gap: 2px; color: var(--color-token); font-size: var(--fs-sm); font-weight: 700; }
+.bettor-btn__reason {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: var(--radius-btn);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.bettor-btn__reason--bet { background: rgb(255 209 102 / 0.16); color: var(--color-token); }
+
+/* Result: what happened with the names, the bets and the tokens */
+.turn-outcome { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); width: 100%; }
+.turn-outcome p { margin: 0; }
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+  padding-block: 6px;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-btn);
+  border: 2px solid currentColor;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+}
+.result-badge--named { color: var(--color-neon-cyan-soft); border-color: var(--color-neon-cyan); border-width: 1.5px; background: rgb(127 216 255 / 0.08); box-shadow: 0 0 12px rgb(127 216 255 / 0.3); font-size: 15px; font-weight: 600; }
+.result-badge--stolen { color: var(--color-token); background: rgb(255 209 102 / 0.1); box-shadow: 0 0 14px rgb(255 209 102 / 0.35); font-size: var(--fs-lg); }
+.result-badge--stolen bdi { overflow-wrap: anywhere; }
+.guess-result { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px var(--space-2); font-size: var(--fs-sm); color: var(--color-text-muted); text-align: center; }
+.guess-result__part { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text); overflow-wrap: anywhere; }
+.guess-result__yes { color: var(--color-success); font-weight: 800; }
+.guess-result__no { color: var(--color-error); font-weight: 800; }
+.turn-outcome__plain { font-size: 15px; font-weight: 600; text-align: center; }
+
+.outcome-list { width: 100%; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.outcome-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding-block: 6px;
+  padding-inline: var(--space-3);
+  border-radius: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-size: var(--fs-sm);
+}
+.outcome-row__avatars { display: inline-flex; flex-shrink: 0; }
+.outcome-row__avatars .avatar { inline-size: 26px; block-size: 26px; font-size: 11px; }
+.outcome-row__avatars .avatar + .avatar { margin-inline-start: -6px; box-shadow: 0 0 0 2px var(--color-surface); }
+.outcome-row__who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 600; }
+.outcome-row__what { font-weight: 700; text-align: end; }
+.outcome-row--won .outcome-row__what { color: var(--color-success); white-space: nowrap; }
+.outcome-row--lost .outcome-row__what { flex: 1; min-width: 0; text-align: start; color: #ff7a8a; }
+.outcome-row--right .outcome-row__what,
+.outcome-row--refunded .outcome-row__what { color: var(--color-text-muted); font-weight: 500; }
+
+.accept-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 14px;
+  border-radius: 16px;
+  border: 1.5px dashed rgb(127 216 255 / 0.55);
+  background: rgb(127 216 255 / 0.04);
+}
+.accept-box h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.accept-box p { margin: 0; font-size: 13px; color: var(--color-text-muted); }
+
+/* A card won by a bettor, in the bettor's timeline */
+.song-card--stolen { overflow: visible; outline: 2.5px solid var(--color-token); outline-offset: 3px; box-shadow: 0 0 16px rgb(255 209 102 / 0.75); }
+.song-card--stolen::before {
+  content: '♪';
+  position: absolute;
+  inset-block-start: -10px;
+  inset-inline-end: -10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  inline-size: 22px;
+  block-size: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--color-bg);
+  background: var(--color-token);
+  color: var(--color-token-ink);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+.turn-timeline__hint--stolen { color: var(--color-text-muted); }
+.turn-timeline__hint--stolen bdi { color: var(--color-token); font-weight: 700; }
+
+/* Scoreboard: Player / Tokens / Cards */
+.score-table--tokens th {
+  padding-block: 6px;
+  padding-inline: var(--space-2);
+  border-block-end: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: start;
+}
+.score-table--tokens th:nth-child(2) { width: 8.5em; }
+.score-table--tokens th:last-child { width: 5em; text-align: end; }
+.score-table__tokens { white-space: nowrap; }
+.score-table__rule { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: 13px; color: var(--color-text-muted); }
+
+/* Winner */
+.winner-note { margin: 0; color: var(--color-token-soft); font-size: var(--fs-sm); font-weight: 600; text-align: center; }
+
+/* Setup: the "Tokens & bets" switch */
+.rule-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 14px var(--space-4);
+  border-radius: 16px;
+  border: 1.5px solid rgb(255 209 102 / 0.6);
+  background: linear-gradient(180deg, rgb(255 209 102 / 0.08), rgb(255 209 102 / 0.02));
+  box-shadow: 0 0 16px rgb(255 209 102 / 0.15);
+}
+.rule-box--off { border-color: var(--color-border); background: var(--color-surface); box-shadow: none; }
+.rule-box__top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.rule-box__title { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 17px; font-weight: 700; }
+.rule-box__text { margin: 0; font-size: var(--fs-sm); color: var(--color-text-muted); }
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  inline-size: 56px;
+  block-size: 32px;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--radius-btn);
+  background: var(--color-surface-2);
+  box-shadow: inset 0 0 0 1.5px var(--color-border);
+  cursor: pointer;
+  transition: background-color var(--dur-fast);
+}
+/* 48px tap area around the 32px track */
+.switch::before { content: ''; position: absolute; inset: -8px; }
+.switch[aria-checked='true'] { justify-content: flex-end; background: var(--color-token); box-shadow: 0 0 10px rgb(255 209 102 / 0.55); }
+.switch__knob {
+  display: grid;
+  place-items: center;
+  inline-size: 26px;
+  block-size: 26px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  color: var(--color-token);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+}
+.switch[aria-checked='true'] .switch__knob { background: var(--color-bg); }
+.switch[aria-checked='true'] .switch__knob::after { content: '✓'; }
+
+/* Short screens (360x640): tighter betting screens */
+@media (max-height: 700px) {
+  .turn-stage.turn-stage--compact > .song-card { --card-size: 72px; }
+  .bet-box h2 { font-size: var(--fs-lg); }
+  .name-it__who { display: none; }
 }
 
 /* ---------- 12. Desktop ---------- */

@@ -38,12 +38,23 @@ async function drainCatalog(request: APIRequestContext): Promise<Song[]> {
   throw new Error('catalog never exhausted');
 }
 
+/**
+ * Catalog-only `artistKeys` that link a credit to a performer under another name
+ * (server/data/songs.json). The client cannot see them, so the test lists them.
+ */
+const HIDDEN_KEYS: Record<string, string[]> = {
+  'mark ronson': ['bruno mars'],
+  teapacks: ['טיפקס'],
+  'noa kirel': ['נועה קירל'],
+};
+
 /** Contributor keys of a credit, split like server/src/selection.ts splitArtistKeys. */
 function contributorKeys(artist: string): string[] {
   let parts = artist.split(/\s*(?:&|\+|,)\s*|\s+(?:feat\.?|ft\.?|featuring|and|x|vs\.?)\s+/i);
   if (/[\u0590-\u05FF]/.test(artist)) parts = parts.flatMap((p) => p.split(/\s+ו(?=[א-ת])/));
   const keys = parts.map((p) => p.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^the /, '')).filter((k) => k.length > 0);
-  return keys.length > 0 ? [...new Set(keys)] : [artist.toLowerCase()];
+  const all = keys.length > 0 ? keys : [artist.toLowerCase()];
+  return [...new Set(all.flatMap((k) => [k, ...(HIDDEN_KEYS[k] ?? [])]))];
 }
 
 test.describe('API', () => {
@@ -100,8 +111,8 @@ test.describe('API', () => {
     // While draining with growing excludeArtists, the server repeats a contributor only once no
     // remaining song has all-new contributors. Contributors are split like the server does
     // ("Lady Gaga & Bradley Cooper", "יזהר כהן והאלפבתא"). At the first repeat, count the songs that
-    // still look all-new here; the server also knows catalog-only artistKeys the client can't see
-    // (e.g. "Mark Ronson" includes Bruno Mars), so a couple of such songs are allowed.
+    // still look all-new here. The catalog-only artistKeys that link names (HIDDEN_KEYS) are
+    // applied; a couple of songs are still allowed in case more such links are added.
     const seen = new Set<string>();
     let freshAtFirstRepeat = 0;
     for (const [i, s] of all.entries()) {
@@ -115,12 +126,18 @@ test.describe('API', () => {
     expect(freshAtFirstRepeat, 'server repeated an artist while songs by unused artists were left').toBeLessThanOrEqual(2);
 
     // Exclude every artist but one (sent in UPPER CASE) → must get that artist.
+    // The kept artist shares no contributor with any other credit (excluding "X & Y" also excludes Y).
     const byArtist = new Map<string, Song[]>();
     for (const s of all) {
       const k = s.artist.toLowerCase();
       byArtist.set(k, [...(byArtist.get(k) ?? []), s]);
     }
-    const [keep] = [...byArtist.keys()];
+    const keyOwners = new Map<string, Set<string>>();
+    for (const a of byArtist.keys()) {
+      for (const k of contributorKeys(a)) keyOwners.set(k, (keyOwners.get(k) ?? new Set()).add(a));
+    }
+    const keep = [...byArtist.keys()].find((a) => contributorKeys(a).every((k) => keyOwners.get(k)!.size === 1))!;
+    expect(keep).toBeDefined();
     const excludeArtists = [...new Set(all.map((s) => s.artist))]
       .filter((a) => a.toLowerCase() !== keep)
       .map((a) => a.toUpperCase());
@@ -240,6 +257,36 @@ test.describe('API', () => {
     const res = await request.get('/api/songs/987654321/cover');
     expect(res.status()).toBe(404);
     expect(await res.json()).toMatchObject({ error: 'SONG_NOT_FOUND' });
+  });
+
+  test('POST /api/songs/:id/guess judges artist and title and returns only two booleans', async ({ request }) => {
+    const { song } = (await (await next(request, {})).json()) as { song: Song };
+    const right = await request.post(`/api/songs/${song.id}/guess`, { data: { artist: song.artist, title: song.title } });
+    expect(right.status()).toBe(200);
+    expect(await right.json()).toEqual({ artistCorrect: true, titleCorrect: true });
+
+    const loose = await request.post(`/api/songs/${song.id}/guess`, {
+      data: { artist: `  ${song.artist.toUpperCase()} `, title: 'zz no such song zz' },
+    });
+    expect(await loose.json()).toEqual({ artistCorrect: true, titleCorrect: false });
+
+    const wrong = await request.post(`/api/songs/${song.id}/guess`, { data: {} });
+    const text = await wrong.text();
+    expect(JSON.parse(text)).toEqual({ artistCorrect: false, titleCorrect: false });
+    expect(text).not.toContain(String(song.year));
+  });
+
+  test('POST /api/songs/:id/guess → 404 for an unknown id, 400 for a bad body', async ({ request }) => {
+    const unknown = await request.post('/api/songs/987654321/guess', { data: { artist: 'ABBA' } });
+    expect(unknown.status()).toBe(404);
+    expect(await unknown.json()).toMatchObject({ error: 'SONG_NOT_FOUND' });
+
+    const { song } = (await (await next(request, {})).json()) as { song: Song };
+    for (const data of [{ artist: 5 }, { title: 'x'.repeat(201) }]) {
+      const res = await request.post(`/api/songs/${song.id}/guess`, { data });
+      expect(res.status(), JSON.stringify(data).slice(0, 40)).toBe(400);
+      expect(await res.json()).toMatchObject({ error: 'INVALID_REQUEST' });
+    }
   });
 
   test('GET /api/mock-cover is a non-empty SVG image', async ({ request }) => {

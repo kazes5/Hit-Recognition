@@ -19,11 +19,15 @@ export interface Song {
  * Catalog entry. `artistKeys` optionally lists every contributing artist (e.g. a
  * featured artist not named in `artist`). `itunesTrackId` optionally pins the
  * exact iTunes track, so the preview is looked up by id instead of by name.
- * Both are internal only; never sent to clients.
+ * `artistAliases` / `titleAliases` are other names a player's guess may use
+ * (a Latin spelling of a Hebrew artist, a well-known alternative title).
+ * All are internal only; never sent to clients.
  */
 export interface CatalogSong extends Song {
   artistKeys?: string[];
   itunesTrackId?: number;
+  artistAliases?: string[];
+  titleAliases?: string[];
 }
 
 export function toPublicSong(song: Song): Song {

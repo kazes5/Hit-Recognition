@@ -15,6 +15,13 @@ describe('validateCatalog', () => {
     expect(s?.artistKeys).toEqual(['A', 'B']);
   });
 
+  it('keeps optional artistAliases and titleAliases', () => {
+    const [s] = validateCatalog([{ ...song({ id: 1 }), artistAliases: [' Eyal Golan '], titleAliases: ['Mi Shemamin'] }]);
+    expect(s?.artistAliases).toEqual(['Eyal Golan']);
+    expect(s?.titleAliases).toEqual(['Mi Shemamin']);
+    expect(validateCatalog([song({ id: 2 })])[0]).not.toHaveProperty('artistAliases');
+  });
+
   it('keeps an optional itunesTrackId', () => {
     const [s] = validateCatalog([{ ...song({ id: 1 }), itunesTrackId: 1440833098 }]);
     expect(s?.itunesTrackId).toBe(1440833098);
@@ -34,6 +41,9 @@ describe('validateCatalog', () => {
     ['bad genre', [{ ...song({ id: 1 }), genre: 'jazz' }], /genre/],
     ['bad artistKeys', [{ ...song({ id: 1 }), artistKeys: [] }], /artistKeys/],
     ['non-string artistKeys', [{ ...song({ id: 1 }), artistKeys: ['a', 2] }], /artistKeys/],
+    ['empty artistAliases', [{ ...song({ id: 1 }), artistAliases: [] }], /artistAliases/],
+    ['blank titleAliases', [{ ...song({ id: 1 }), titleAliases: [' '] }], /titleAliases/],
+    ['non-array titleAliases', [{ ...song({ id: 1 }), titleAliases: 'Alias' }], /titleAliases/],
     ['zero itunesTrackId', [{ ...song({ id: 1 }), itunesTrackId: 0 }], /itunesTrackId/],
     ['negative itunesTrackId', [{ ...song({ id: 1 }), itunesTrackId: -5 }], /itunesTrackId/],
     ['fractional itunesTrackId', [{ ...song({ id: 1 }), itunesTrackId: 1.5 }], /itunesTrackId/],
