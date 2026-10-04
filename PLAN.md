@@ -182,7 +182,7 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 - **Blocked:** the sandbox's network policy blocks `hit-recognition-production.up.railway.app`. The owner needs to add that domain under Allowed domains in the cloud environment's network settings. Then run `E2E_BASE_URL=https://hit-recognition-production.up.railway.app npm run smoke`.
 - Running them on production would also close two open checks above: real previews and real covers. iPhone Safari still needs a real phone.
 
-### 9.6 Tokens, naming and bets 🟡 Step 1 of 5 done
+### 9.6 Tokens, naming and bets 🟡 Steps 1–2 done, step 3 in progress
 
 The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owner answered all 13 rule questions on 2026-10-04.
 
@@ -207,10 +207,10 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 
 **Steps:**
 1. Check names on the server. ✅ Done: `POST /api/songs/:id/guess`, with 85 new server unit tests and 2 new end-to-end API tests.
-2. Game rules.
+2. Game rules. ✅ Done: tokens, bets, skips, winner check for every player, token tie-break, saved-game migration; 113 new web unit tests.
 3. Screens.
 4. End-to-end tests and docs.
-5. A "We accept it" button and English spellings of Hebrew artist names.
+5. A "We accept it" button and English spellings of Hebrew artist names. 🟡 Spellings done (209 songs; 42 alternative titles); the button comes with the screens.
 
 ### Suggested order
 

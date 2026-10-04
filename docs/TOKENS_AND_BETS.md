@@ -1,6 +1,6 @@
 # Tokens, naming and bets: plan
 
-**Status:** step 1 (checking names on the server) is done; steps 2–5 are not started. The owner has answered all rule questions (section 2). This is step 9.6 in [PLAN.md](../PLAN.md).
+**Status:** steps 1 and 2 are done, and so is the data half of step 5 (English spellings). Step 3 (screens) is in progress; then step 4 (end-to-end tests and docs) and the "We accept it" button. The owner has answered all rule questions (section 2). This is step 9.6 in [PLAN.md](../PLAN.md).
 
 This plan adds four things to the game:
 - every player has **tokens**;
@@ -349,7 +349,7 @@ The current line, "Correct!" or "Wrong, it was 2003", stays. Below it, up to 3 s
 - **When a bettor wins the card,** the timeline on the result screen switches to the bettor's timeline, shows "Added to Bob's timeline", and the new card gets a gold outline.
 
 ### 6.5 Setup and Winner
-- **Setup.** A **"Tokens & bets"** switch, on by default and remembered on the phone. The text under it explains the rules in one line (`tokenRule`). In a 1-player game the switch has no effect.
+- **Setup.** A **"Tokens & bets"** switch, on by default and remembered on the phone. The text under it explains the rules in one line (`tokenRule`). In a 1-player game nobody can bet, but tokens and skipping still work.
 - **Winner.** When the game was ended early and tokens broke a tie on cards, a line under the title says so (`wonOnTokens`).
 
 ### 6.6 Phones, Hebrew and accessibility
@@ -585,10 +585,10 @@ Each step is finished with all tests passing before the next one starts.
 | # | Step | Main files | Done when |
 |---|---|---|---|
 | 1 ✅ | **Checking names on the server:** shared text cleanup, the matching rules, the `/guess` endpoint, and the empty alias fields | `server/src/text.ts`, `guess.ts`, `app.ts`, `types.ts`, `catalog.ts`, `docs/CONTRACTS.md` §4 and §8 | server tests and `api.spec.ts` pass, including the cases in §8 |
-| 2 | **Game rules:** tokens, skipping, the bettor flow, settling a turn, the winner check for every player, the token tie-break, saved-game migration, the on/off switch in the state | `web/src/game/*`, `web/src/api/client.ts` (`checkGuess`), `web/src/test/fixtures.ts` | unit tests pass and the type check is clean |
+| 2 ✅ | **Game rules:** tokens, skipping, the bettor flow, settling a turn, the winner check for every player, the token tie-break, saved-game migration, the on/off switch in the state | `web/src/game/*`, `web/src/api/client.ts` (`checkGuess`), `web/src/test/fixtures.ts` | unit tests pass and the type check is clean |
 | 3 | **Screens:** token meter, skip button and confirmation, naming fields, Lock in, the three betting screens, timeline markers, result rows, scoreboard, winner screen, setup switch, Hebrew and English text. The mockup canvas is updated first. | `GameScreen.tsx`, `Timeline.tsx`, `Scoreboard.tsx`, `WinnerScreen.tsx`, `SetupScreen.tsx`, new `TokenMeter`, `NameGuess`, `BetPanel`, `TurnOutcome`, `SkipSong`, `dictionaries.ts`, `I18nProvider.tsx`, `theme.css`, `index.html` | screen tests pass, and it works by hand at 360×640 in Hebrew and English |
 | 4 | **End-to-end tests and docs** | `e2e/tests/*`, `PLAN.md` §1, §6 and §8, `docs/DESIGN.md`, `docs/QA.md`, `docs/CONTRACTS.md` §6 | all Playwright tests pass (phone and desktop) |
-| 5 | **Fairness:** the "We accept it" button, and aliases for the best-known Hebrew artists (Latin spelling) and for famous alternative titles | `reducer.ts` (`ACCEPT_GUESS`), result screen, `server/data/songs.json` | its tests pass, and a sample of 20 artists typed in English letters is accepted |
+| 5 🟡 | **Fairness:** the "We accept it" button (game logic done, button in step 3), and aliases (✅ done: 209 songs with English spellings of the artist, 42 with alternative titles) for the best-known Hebrew artists (Latin spelling) and for famous alternative titles | `reducer.ts` (`ACCEPT_GUESS`), result screen, `server/data/songs.json` | its tests pass, and a sample of 20 artists typed in English letters is accepted |
 
 **Risks**
 - **Wrong judgements.** Tolerant matching will sometimes accept or reject the wrong answer.
