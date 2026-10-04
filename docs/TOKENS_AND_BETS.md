@@ -1,11 +1,11 @@
 # Tokens, naming and bets: plan
 
-**Status:** all five steps are done (section 9): the server check, the game rules, the screens, the end-to-end tests and docs, and "We accept it" with the aliases. The owner has answered all rule questions (section 2). This is step 9.6 in [PLAN.md](../PLAN.md). Where this plan and the code differ, the code and `docs/CONTRACTS.md` §6 win; the differences found while testing are fixed below.
+**Status:** all five steps are done (section 9): the server check, the game rules, the screens, the end-to-end tests and docs, and "We accept it" with the aliases. The owner has answered all rule questions (section 2). After the first release the owner changed two rules (D1, D2 and D4 below): tokens come only from a right spot with a right name, and a bettor may only name what the current player did not get right. This is step 9.6 in [PLAN.md](../PLAN.md). Where this plan and the code differ, the code and `docs/CONTRACTS.md` §6 win; the differences found while testing are fixed below.
 
 This plan adds four things to the game:
 - every player has **tokens**;
 - the current player can also **name the artist and the song title**;
-- the other players can **bet a token** on where the song belongs on the current player's timeline, if they can name the artist or the title;
+- the other players can **bet a token** on where the song belongs on the current player's timeline, if they can name a part (artist or title) the current player did not get right;
 - a player can **skip a song for 3 tokens**.
 
 It was written from four research reports: the game logic, the screens, how to check typed answers, and the official HITSTER token rules.
@@ -14,18 +14,18 @@ It was written from four research reports: the game logic, the screens, how to c
 
 ## 1. The new rules, as the app will play them
 
-1. **Tokens.** Every player starts with **1 token**. A player gets **+1 token for every card they win**, up to **5**. A token earned while holding 5 is lost. The starting card gives no token.
-2. **Naming (optional).** On their turn, after picking a spot on the timeline, the current player can also type the **artist** and the **song title**. The app checks both without showing the answer. Naming never gives a token.
+1. **Tokens.** Every player starts with **1 token**, up to **5**. A token earned while holding 5 is lost. The **only** way to earn a token: on your own turn, place the card on the **right spot** and name the **artist or the title** correctly. That gives **+1** (also when both are right). A card alone, the starting card and a won bet give no token.
+2. **Naming (optional).** On their turn, after picking a spot on the timeline, the current player can also type the **artist** and the **song title**. The app checks both without showing the answer. Naming is offered on every turn, also when nobody can bet.
 3. **Bets.** Bets are only allowed if the current player did **not** name both the artist and the title correctly.
    - **First come, first served.** Any other player with at least 1 token may try to bet. Whoever takes the phone first goes first.
-   - **To bet, a player must name the artist or the title correctly** (at least one of the two). If they name neither, they cannot bet this turn and lose nothing.
+   - **To bet, a player must correctly name a part the current player did not get right.** If the current player got neither, the bettor names the artist or the title (one right is enough). If the current player got the artist, the bettor must name the title, and the other way round. If they fail, they cannot bet this turn and lose nothing.
    - A bet costs **1 token** and goes on a spot of the **current player's** timeline. The spot must be different from the current player's spot and from every earlier bet.
    - Each player gets **one try per turn**.
 4. **Reveal and outcome.**
-   - **Current player placed it right:** they get the card and +1 token. Every bettor on a wrong spot loses their token. A bettor on another spot that is also right (same year) keeps their token.
-   - **Current player placed it wrong, and a bettor is on a right spot:** the **earliest** such bettor gets the card. It goes into **their own** timeline, sorted by year. They get their bet token back and +1 token for the card. Wrong bettors lose their token. A later bettor who was also right keeps their token.
+   - **Current player placed it right:** they get the card, and +1 token if they also named the artist or the title right. Every bettor on a wrong spot loses their token. A bettor on another spot that is also right (same year) keeps their token.
+   - **Current player placed it wrong, and a bettor is on a right spot:** the **earliest** such bettor gets the card. It goes into **their own** timeline, sorted by year. They get their bet token back (no extra token). The current player gets no token, whatever they named. Wrong bettors lose their token. A later bettor who was also right keeps their token.
    - **Nobody is right:** the card is discarded, and every bettor loses their token. Nothing is taken from anyone's timeline.
-   - **The current player named both correctly but placed it wrong:** the card is discarded. No bets were allowed.
+   - **The current player named both correctly but placed it wrong:** the card is discarded, and no token. No bets were allowed.
 5. **Skip a song.** Before locking in, the current player can pay **3 tokens** to skip the song. A new song plays and the turn goes on.
 6. **Winner.** The first player to reach the target score wins, as today. A bettor can now reach it on someone else's turn, so the app checks **all** players after each turn.
    - **When the game is ended early,** the most cards wins. If players are tied on cards, **the one with more tokens wins**. If they are still tied, they share the win.
@@ -34,14 +34,14 @@ It was written from four research reports: the game logic, the screens, how to c
 
 ## 2. Owner decisions
 
-All 13 questions were answered by the owner on 2026-10-04.
+All 13 questions were answered by the owner on 2026-10-04. D1, D2, D3 and D4 were changed by the owner later the same day, after the first release.
 
 | # | Question | Decision |
 |---|---|---|
-| D1 | How many tokens for winning a card? | **+1 per card.** A bettor who wins the card also gets back the token they bet. |
-| D2 | Does naming give a token? | **No.** For the current player, naming both correctly stops the bets. For a bettor, naming one of the two gives the right to bet. |
-| D3 | Does a bettor who wins the card keep the token they bet? | **Yes**, and they also get +1 for the card. |
-| D4 | Must a bettor name the artist and title? | **Yes, the artist or the title, to be allowed to bet.** After that, only the spot decides who wins the card. |
+| D1 | How many tokens for winning a card? | **None.** *(Changed: was +1 per card.)* A bettor who wins the card gets back the token they bet. |
+| D2 | Does naming give a token? | **Yes, with a right spot.** *(Changed: was no.)* The current player gets +1 when they place the card right **and** name the artist or the title right. Naming both correctly also stops the bets. |
+| D3 | Does a bettor who wins the card keep the token they bet? | **Yes**, and nothing more. |
+| D4 | Must a bettor name the artist and title? | **Yes, a part the current player did not get right, to be allowed to bet.** *(Changed: was the artist or the title.)* After that, only the spot decides who wins the card. |
 | D5 | Can bets share a spot? | **No.** Each bet must be on a different spot from the current player's spot and from every earlier bet. |
 | D6 | Two bettors on right spots (possible when two songs share a year). | **First come, first served:** the earlier bet wins the card. The other bettor keeps their token. |
 | D7 | The current player is right, and a bettor is on another spot that is also right. | The current player gets the card. The bettor keeps their token. |
@@ -54,8 +54,8 @@ All 13 questions were answered by the owner on 2026-10-04.
 
 **Compared with the official HITSTER rules:**
 - **Starting tokens:** the official game starts with 2 tokens, not 1.
-- **How tokens are earned:** officially, by naming the song. Here, by winning a card.
-- **Who may challenge:** officially, anyone, even when the current player named the song. Here, a player who names the artist or the title, and only when the current player did not name both.
+- **How tokens are earned:** officially, by naming the song. Here, by naming the artist or the title **and** placing the card right.
+- **Who may challenge:** officially, anyone, even when the current player named the song. Here, a player who names a part the current player did not get right, and only when the current player did not name both.
 - **Skipping a song:** costs 1 token officially, 3 tokens here.
 - **Buying a card:** the official game sells a card for 3 tokens. Here, tokens cannot buy cards.
 
@@ -72,16 +72,16 @@ The game is still played on one shared phone. The steps marked **new** are added
    - A skip is only possible before Lock in.
 4. **Name it (new, optional).** A small button, **"Name artist + title"**, opens two text fields.
    - Skipping it costs no taps.
-   - The button only shows when someone could bet, that is, when another player has a token.
+   - The button shows on every turn with the switch on. With a right spot, one right name earns a token.
 5. **Lock in (new).** This replaces **Reveal** whenever someone could bet.
    - The app checks the names.
-   - **If both are right, or nobody can bet,** the card is revealed straight away. If both were right, a note says "Named it! No bets allowed".
-   - **Otherwise** the screen says **"Bets are open!"**. It never says which name was wrong.
+   - **If both are right, or nobody can bet,** the card is revealed straight away. If both were right, a note says "Named it! No bets allowed". When nobody can bet, the footer button stays **Reveal**, and it checks the typed names first.
+   - **Otherwise** the screen says **"Bets are open!"**. If the current player got one part right, it says which part is still open ("Ann named the artist. To bet, name the title."), so the bettors know what to name.
 6. **Betting round (new), first come, first served.**
    1. **Who's betting?** The screen shows the current player's timeline and a button for each player who may still try. That means at least 1 token, no try yet this turn, and a free spot left.
       - Whoever grabs the phone first taps their own name.
       - Players who cannot try are shown greyed out with the reason: "no tokens", "tried" or "no free spot". A player who bet shows "1st bet", "2nd bet" and so on.
-   2. **Name it.** The bettor types the artist, the title, or both, and taps **Check**.
+   2. **Name it.** The bettor types the open parts and taps **Check**. Both open: the artist, the title, or both. One open: only that field is shown.
       - The app answers only **"You can bet!"** or **"Not this time"**. It never says which part was right.
       - The fields are cleared after Check, so the next player cannot read them.
    3. **Bet.** If allowed, the bettor picks a free spot and taps **"Bet 1 token"**.
@@ -94,7 +94,7 @@ The game is still played on one shared phone. The steps marked **new** are added
 
 **Taps per turn:**
 - **Nobody bets:** Play, spot, Lock in, Reveal, Next. That is 5 taps; today it takes 4.
-- **Nobody can bet:** stays at 4.
+- **Nobody can bet:** stays at 4 (plus typing, if they name).
 - **Each bettor:** name, Check, spot, Bet (4 taps), plus typing.
 
 ---
@@ -278,8 +278,9 @@ wonOnTokens(players: readonly Player[], target: number): boolean   // ended earl
 **How `settleTurn` settles a turn:**
 1. Every spot is checked against the current player's timeline **before** the new card is added: the current player's spot and each bet.
 2. The card goes to the current player if their spot is right. If not, it goes to the **earliest bet** (by order of play) whose spot is right. If nobody is right, it goes to nobody.
-3. The card winner gets the card inserted in their own timeline with `insertCard`, sorted by year (not at the spot they bet on), and `awardToken`. A winning bettor's bet token is not taken.
-4. A bettor on a wrong spot gets `spendTokens`. A bettor on a right spot who did not get the card keeps their token (outcome `right`).
+3. The card winner gets the card inserted in their own timeline with `insertCard`, sorted by year (not at the spot they bet on). A winning bettor's bet token is not taken.
+4. The current player gets `awardToken` only when their spot is right **and** they named the artist or the title right (`namedAny`), or "We accept it" was tapped. `TurnSettlement.namedToken` says so.
+5. A bettor on a wrong spot gets `spendTokens`. A bettor on a right spot who did not get the card keeps their token (outcome `right`).
 
 **Winner when the game is ended early:** `findWinners` (`rules.ts`): the most cards, then the most tokens. Players equal on both share the win. `wonOnTokens` tells the Winner screen to show the "Tied on cards; more tokens wins." line.
 
@@ -330,7 +331,7 @@ wonOnTokens(players: readonly Player[], target: number): boolean   // ended earl
    - When nobody is left who may try, the box says "All bets are in!".
    - Footer: **Reveal**.
 2. **Name it.**
-   - The heading says "Bob, name the artist or the title", with two fields.
+   - The heading says "Bob, name the artist or the title", with two fields. When the current player got one part right, it says "Bob, name the title" (or "the artist"), with only that field and the legend "Only this part is still open".
    - Footer: **Cancel** and **Check**.
 3. **The answer.**
    - **Allowed:** "You can bet!". The timeline's free spots light up. Footer: **Cancel** and **Bet 1 token** (gold).
@@ -342,18 +343,20 @@ The current line, "Correct!" or "Wrong, it was 2003", stays. Below it, up to 3 s
 | What happened | What is shown |
 |---|---|
 | Right, named both | "Named it! No bets allowed." · Ann: +1 card · +1 token |
-| Right, with bets | Ann: +1 card · +1 token · "−1 token: Bob, Carol" |
-| Wrong, a bettor right | "Bob wins the card!" · Bob: +1 card · +1 token · "−1 token: Carol" |
+| Right, named one | Ann: +1 card · +1 token |
+| Right, named none | Ann: +1 card |
+| Right, with bets | Ann: +1 card (· +1 token if named) · "−1 token: Bob, Carol" |
+| Wrong, a bettor right | "Bob wins the card!" · Bob: +1 card · "−1 token: Carol" |
 | Two bettors right | as above, plus "Correct bet, but Bob bet first" for the later bettor (who keeps their token) |
 | Wrong, nobody right | "Nobody got it. The card is out." · "−1 token: …" |
-| Token cap | "+1 card (tokens full)" |
+| Token cap | "+1 card (tokens full)" (right spot and a right name, already at 5) |
 
 - **The current player's typed names** are shown after Reveal, with ✓/✗ for each. Bettors' names are not shown.
 - **"We accept it"** shows when the current player's names were rejected (see §4.4).
 - **When a bettor wins the card,** the timeline on the result screen switches to the bettor's timeline, shows "Added to Bob's timeline", and the new card gets a gold outline.
 
 ### 6.5 Setup and Winner
-- **Setup.** A **"Tokens & bets"** switch, on by default and remembered on the phone. The text under it explains the rules in one line (`tokenRule`). In a 1-player game nobody can bet, but tokens and skipping still work.
+- **Setup.** A **"Tokens & bets"** switch, on by default and remembered on the phone. The text under it explains the rules in one line (`tokenRule`). In a 1-player game nobody can bet, but naming, tokens and skipping still work.
 - **Winner.** When the game was ended early and tokens broke a tie on cards, a line under the title says so (`wonOnTokens`).
 
 ### 6.6 Phones, Hebrew and accessibility
@@ -394,13 +397,13 @@ The current line, "Correct!" or "Wrong, it was 2003", stays. Below it, up to 3 s
 | tokensCount | {count} of {max} tokens | {count} מתוך {max} אסימונים |
 | tokensMax | Max | מקסימום |
 | tokensAndBets | Tokens & bets | אסימונים והימורים |
-| tokenRule | Start with 1 token, +1 for every card (max {max}). Skip a song for 3 tokens. | מתחילים עם אסימון אחד, ועוד אחד על כל קלף (עד {max}). דילוג על שיר עולה 3 אסימונים. |
+| tokenRule | Start with 1 token. Place the card right and name the artist or the title for +1 (max {max}). Skip a song for 3 tokens. | מתחילים עם אסימון אחד. מיקום נכון בתורכם יחד עם ניחוש נכון של המבצע או של שם השיר מזכה באסימון (עד {max}). דילוג על שיר עולה 3 אסימונים. |
 | skipSong | Skip song | דילוג על השיר |
 | skipConfirm | Skip this song for 3 tokens? | לדלג על השיר תמורת 3 אסימונים? |
 | skipYes | Skip | לדלג |
 | keepListening | Keep listening | להמשיך להאזין |
 | nameItToggle | Name artist + title | לנחש מבצע ושם שיר |
-| nameItLegend | Name both to block bets (optional) | ניחוש של שניהם חוסם הימורים (לא חובה) |
+| nameItLegend | Optional: right spot + a right name = +1 token | לא חובה: מקום נכון וניחוש נכון מזכים באסימון |
 | guessArtist | Artist | מבצע |
 | guessArtistPlaceholder | Who sings it? | מי שר? |
 | guessTitle | Song title | שם השיר |
@@ -413,7 +416,11 @@ The current line, "Correct!" or "Wrong, it was 2003", stays. Below it, up to 3 s
 | bettingOpen | Bets are open! | ההימורים פתוחים! |
 | betHint | Think {player} is wrong? Grab the phone and tap your name. | חושבים ש-{player} טועה? קחו את הטלפון והקישו על השם שלכם. |
 | betNeedsName | To bet, name the artist or the title. | כדי להמר צריך לנחש את המבצע או את שם השיר. |
+| betNeedsTitle | {player} named the artist. To bet, name the title. | המבצע כבר נוחש נכון. כדי להמר צריך לנחש את שם השיר. |
+| betNeedsArtist | {player} named the title. To bet, name the artist. | שם השיר כבר נוחש נכון. כדי להמר צריך לנחש את המבצע. |
 | bettorNameIt | {name}, name the artist or the title | {name}, נחשו את המבצע או את שם השיר |
+| bettorNameTitle / bettorNameArtist | {name}, name the title / {name}, name the artist | {name}, נחשו את שם השיר / {name}, נחשו את המבצע |
+| bettorNameOpenLegend | Only this part is still open | רק החלק הזה עוד פתוח |
 | checkGuess | Check | בדיקה |
 | canBet | You can bet! | אפשר להמר! |
 | cannotBet | Not this time. Pass the phone on. | לא הפעם. העבירו את הטלפון הלאה. |
@@ -430,6 +437,7 @@ The current line, "Correct!" or "Wrong, it was 2003", stays. Below it, up to 3 s
 | acceptGuess | We accept it | מקבלים את התשובה |
 | outcomeCardToken | +1 card · +1 token | ‎+1 קלף · ‎+1 אסימון |
 | outcomeCardOnly | +1 card (tokens full) | ‎+1 קלף (האסימונים מלאים) |
+| outcomeCard | +1 card | ‎+1 קלף |
 | outcomeLostToken | −1 token: {names} | ‎−1 אסימון: {names} |
 | outcomeKeptToken | Correct bet, but {name} bet first | הימור נכון, אבל {name} הקדימו |
 | stolenBy | {name} wins the card! | הקלף עובר ל-{name}! |
@@ -503,13 +511,14 @@ Other server tests:
 
 **`rules.test.ts`**
 - Token cap and floor; `spendTokens` by 3.
-- `namesCorrect` needs both; `earnsBet` needs one.
+- `namesCorrect` needs both; `namedAny` needs one; `earnsBet` needs one of the parts still open (`openParts`).
 - `freeBetSlots` and `betBlock`, one test for each condition.
 - `canSkip`.
 - `settleTurn`, one test per outcome in §6.4, plus:
   - bets checked against the timeline before the card is added;
   - two right bettors, where the earlier bet wins;
-  - a winning bettor keeps the bet token and gets +1;
+  - a winning bettor keeps the bet token and gets nothing more;
+  - the current player's token needs a right spot and a right name;
   - tokens never below 0.
 - `anyReachedTarget`.
 - `findWinners`: cards first, then tokens, then a shared win; `wonOnTokens`.
@@ -564,11 +573,11 @@ Other server tests:
 - The response has only the two keys.
 
 **New `betting.spec.ts`**
-- Tokens start at 1, go up by 1 per card, and stop at 5.
+- Tokens start at 1. A card alone, or a right name with a wrong spot, gives none. A right spot with the artist named gives +1, up to 5.
 - Naming both correctly, with case and punctuation changes, blocks betting. This test uses real catalog songs, so the real server judges the names.
-- A bettor who names only the artist may bet; one who names neither may not and keeps their token.
+- A bettor who names only the artist may bet; one who names neither may not and keeps their token. When the current player named the artist, the bettor sees only the title field.
 - Bettors can go in any order, and the earlier right bet wins the card.
-- A won bet puts the card in the bettor's timeline, and the bettor ends with +1 token.
+- A won bet puts the card in the bettor's timeline, and the bettor gets the bet token back.
 - Wrong bets lose a token.
 - Taken spots cannot be picked.
 - The answer stays hidden during betting, and a bettor's fields are empty for the next bettor.

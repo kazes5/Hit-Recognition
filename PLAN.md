@@ -18,10 +18,10 @@ A party game for one shared phone (web app), based on the Hitster board game. Th
 5. **Winner:** the first player to reach the target score. Players can also end the game early, and the most cards wins.
 
 **Tokens, naming and bets** (a "Tokens & bets" switch in Setup, on by default; full rules in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md)):
-- **Tokens:** every player starts with 1 token and gets +1 for every card they win, up to 5.
-- **Naming:** after picking a spot, the current player can type the artist and the title, then taps **Lock in**. If both are right, the card is revealed at once and nobody can bet. Naming never gives a token.
-- **Betting:** otherwise the other players may bet, first come, first served. A bettor must name the artist or the title correctly first. A bet costs 1 token and goes on a free spot of the current player's timeline. Each player gets one try per turn.
-- **Outcome:** the current player right: they get the card and +1 token. The current player wrong: the earliest right bet wins the card into the bettor's own timeline, with the bet token back and +1. Wrong bets lose their token. After Reveal, "We accept it" can accept the current player's rejected names and cancel the bets.
+- **Tokens:** every player starts with 1 token, up to 5. A player earns +1 only on their own turn, for a right spot **and** a right artist or title. A card alone gives no token.
+- **Naming:** after picking a spot, the current player can type the artist and the title, then taps **Lock in** (or **Reveal** when nobody can bet). If both are right, the card is revealed at once and nobody can bet.
+- **Betting:** otherwise the other players may bet, first come, first served. A bettor must first correctly name a part the current player did not get right (the artist or the title when both are open). A bet costs 1 token and goes on a free spot of the current player's timeline. Each player gets one try per turn.
+- **Outcome:** the current player right: they get the card, and +1 token if they named the artist or the title right. The current player wrong: no token for them; the earliest right bet wins the card into the bettor's own timeline, with the bet token back. Wrong bets lose their token. After Reveal, "We accept it" can accept the current player's rejected names and cancel the bets.
 - **Skip:** before Lock in, a player can pay 3 tokens to skip the song and get a new one.
 - **Winner:** every player is checked after each turn, because a bettor can reach the target on someone else's turn. When the game is ended early and players are tied on cards, more tokens wins.
 
@@ -196,13 +196,13 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owner answered all 13 rule questions on 2026-10-04.
 
 **Rules**
-- **Tokens:** every player starts with 1 token and gets +1 for every card they win, up to 5.
-- **Naming:** on their turn, a player can also type the artist and the song title. The app checks both without showing the answer. Naming never gives a token.
+- **Tokens:** every player starts with 1 token, up to 5. The only way to earn one: on your own turn, place the card on the right spot **and** name the artist or the title correctly (+1). A card alone gives no token.
+- **Naming:** on their turn, a player can also type the artist and the song title. The app checks both without showing the answer. It is offered on every turn, also when nobody can bet.
 - **Bets:** allowed only if the current player did not name both correctly.
   - **First come, first served:** whoever takes the phone first bets first.
-  - **To bet,** a player must name the artist or the title correctly.
+  - **To bet,** a player must correctly name a part the current player did not get right: the artist or the title when both are open, otherwise only the open one.
   - A bet costs 1 token and goes on a free spot of the current player's timeline, different from every other spot taken.
-  - **If the current player is wrong and a bettor is right,** the earliest right bettor wins the card. It goes into the bettor's own timeline. The bettor gets their bet token back, plus +1 for the card.
+  - **If the current player is wrong and a bettor is right,** the earliest right bettor wins the card. It goes into the bettor's own timeline. The bettor gets their bet token back (no extra token).
   - **A wrong bet** loses its token.
 - **Skip:** the current player can skip a song for 3 tokens.
 - **Winner:** the winner check covers every player. When the game is ended early and players are tied on cards, more tokens wins.
@@ -221,12 +221,14 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 4. End-to-end tests and docs. ✅ Done: `e2e/tests/betting.spec.ts` (14 tests on each of phone and desktop), new screenshots of the betting screens, and the docs (CONTRACTS §6, DESIGN, QA). The older specs play with the switch on, except `gameplay.spec.ts`, which keeps testing the classic rules with it off.
 5. A "We accept it" button and English spellings of Hebrew artist names. ✅ Done (209 songs with English spellings; 42 alternative titles).
 
+**Rule update (2026-10-04, after PR #6):** the owner changed two rules. (1) A token is earned only for a right spot together with a right artist or title on your own turn; winning a card (or a bet) no longer gives one. (2) A bettor may only name the part the current player did not get right. Naming is now also offered when nobody can bet (Reveal checks the names). Tests: web 296, e2e 117 (betting.spec 14 on each project).
+
 **Still to check by hand:** the keyboard over the footer and iPhone Safari on a real phone (docs/QA.md, TC-47 to TC-53).
 
 ### Suggested order
 
 1. Merge 9.5 when the owner approves.
 2. Allow the production domain and run the smoke tests (9.5).
-3. 9.6, tokens and bets: done on branch `claude/game-tokens-betting-plan-ddfipg`. Next: a real-phone check, then the pull request.
+3. 9.6, tokens and bets: merged (PR #6). The rule update above is on branch `claude/game-tokens-betting-plan-ddfipg`. Next: a real-phone check.
 4. Finish 9.1 (about 95 songs left, mostly Hebrew). 9.2 and 9.3 are done.
 5. Then milestone 8, Spotify and Apple Music.

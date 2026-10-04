@@ -85,7 +85,7 @@ describe('SetupScreen: Tokens & bets switch', () => {
     expect(toggle).toHaveAttribute('aria-checked', 'true');
     expect(toggle).toHaveAccessibleName('Tokens & bets');
     expect(toggle).toHaveAccessibleDescription(
-      'Start with 1 token. Name the artist or the title on your turn for +1 (max 5). Skip a song for 3 tokens.',
+      'Start with 1 token. Place the card right and name the artist or the title for +1 (max 5). Skip a song for 3 tokens.',
     );
   });
 

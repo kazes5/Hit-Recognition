@@ -321,7 +321,7 @@ export function GameScreen() {
                   {nameOpen && (
                     <NameGuessFields
                       idPrefix="guess"
-                      legend={t(betsPossible ? 'nameItLegend' : 'nameItLegendSolo')}
+                      legend={t('nameItLegend')}
                       artist={guessArtist}
                       title={guessTitle}
                       onArtistChange={setGuessArtist}

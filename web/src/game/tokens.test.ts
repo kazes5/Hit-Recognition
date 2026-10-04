@@ -303,14 +303,19 @@ describe('settleTurn', () => {
     expect(r.players.slice(1)).toEqual(players.slice(1));
   });
 
-  it('naming the artist or the title earns the current player +1 token, whatever the spot', () => {
+  it('a right spot with the artist or the title right earns the current player +1 token', () => {
     const artistOnly = guess(true, false);
     const right = setup(table(), 1, [], { guess: artistOnly });
     expect(right.namedToken).toBe(true);
     expect(right.players[0]?.tokens).toBe(2);
+    expect(setup(table(), 1, [], { guess: guess(false, true) }).players[0]?.tokens).toBe(2);
+    // A wrong spot earns nothing, even with a right name.
     const wrongSpot = setup(table(), 0, [], { guess: guess(false, true) });
     expect(wrongSpot.cardWinnerIndex).toBeNull();
-    expect(wrongSpot.players[0]?.tokens).toBe(2);
+    expect(wrongSpot.namedToken).toBe(false);
+    expect(wrongSpot.players[0]?.tokens).toBe(1);
+    // Named both but placed wrong: the card is out and no token.
+    expect(setup(table(), 2, [], { guess: guess(true, true) }).players[0]?.tokens).toBe(1);
     // Both right is still one token.
     expect(setup(table(), 1, [], { guess: guess(true, true) }).players[0]?.tokens).toBe(2);
     // Neither right: no token.
@@ -443,14 +448,16 @@ describe('settleTurn', () => {
     const wrong = setup(players, 0, bets, { accepted: true, guess: guess(false, false) });
     expect(wrong.cardWinnerIndex).toBeNull();
     expect(wrong.bets.map((b) => b.outcome)).toEqual(['refunded', 'refunded']);
-    // The accepted names count as right: the current player gets the naming token.
-    expect(wrong.namedToken).toBe(true);
-    expect(wrong.players.map((p) => p.tokens)).toEqual([2, 1, 1, 1]);
+    // The accepted names count as right, but the spot was wrong: no token.
+    expect(wrong.namedToken).toBe(false);
+    expect(wrong.players.map((p) => p.tokens)).toEqual([1, 1, 1, 1]);
     expect(wrong.players.map((p) => p.timeline.length)).toEqual([2, 1, 1, 1]);
 
-    const right = setup(players, 1, [{ playerIndex: 1, slotIndex: 0 }], { accepted: true, guess: guess(true, false) });
+    // A right spot with accepted names earns the token, even if the app judged both names wrong.
+    const right = setup(players, 1, [{ playerIndex: 1, slotIndex: 0 }], { accepted: true, guess: guess(false, false) });
     expect(right.cardWinnerIndex).toBe(0);
     expect(right.bets).toEqual([{ playerIndex: 1, slotIndex: 0, outcome: 'refunded' }]);
+    expect(right.namedToken).toBe(true);
     expect(right.players.map((p) => p.tokens)).toEqual([2, 1, 1, 1]);
     expect(right.players[0]?.timeline).toHaveLength(3);
   });

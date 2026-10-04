@@ -115,7 +115,7 @@ describe('Scoreboard with tokens', () => {
     expect(within(rows[0]!).getByTestId('token-meter')).toHaveAccessibleName('2 of 5 tokens');
     expect(within(rows[1]!).getByTestId('token-meter')).toHaveTextContent('Max');
     expect(screen.getByTestId('scoreboard')).toHaveTextContent(
-      'Start with 1 token. Name the artist or the title on your turn for +1 (max 5).',
+      'Start with 1 token. Place the card right and name the artist or the title for +1 (max 5).',
     );
   });
 

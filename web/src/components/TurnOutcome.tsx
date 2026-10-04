@@ -27,7 +27,7 @@ interface TurnOutcomeProps {
 
 interface Row {
   players: number[];
-  kind: 'won' | 'named' | BetOutcome;
+  kind: 'won' | BetOutcome;
   text: ReactNode;
 }
 
@@ -50,24 +50,16 @@ export function TurnOutcome({ result, players, currentPlayerIndex, onAccept }: T
   const names = (indices: number[]) => nameList(indices.map((i) => players[i]?.name ?? ''));
   const group = (outcome: BetOutcome) => bets.filter((b) => b.outcome === outcome).map((b) => b.playerIndex);
 
-  // Tokens come only from naming: the current player's artist or title (or names accepted by the table).
-  const namedToken = !!guess && (!!result.accepted || namedAny(guess));
+  // A token only comes with the current player's right spot and a right artist or title (or names accepted by the table).
+  const namedToken = winner === currentPlayerIndex && !!guess && (!!result.accepted || namedAny(guess));
   const currentFull = (before[currentPlayerIndex]?.tokens ?? 0) >= MAX_TOKENS;
 
   const rows: Row[] = [];
   if (winner !== null) {
-    const withToken = winner === currentPlayerIndex && namedToken;
     rows.push({
       players: [winner],
       kind: 'won',
-      text: tNode(withToken ? (currentFull ? 'outcomeCardOnly' : 'outcomeCardToken') : 'outcomeCard'),
-    });
-  }
-  if (namedToken && winner !== currentPlayerIndex) {
-    rows.push({
-      players: [currentPlayerIndex],
-      kind: 'named',
-      text: tNode(currentFull ? 'outcomeNamedFull' : 'outcomeNamedToken'),
+      text: tNode(namedToken ? (currentFull ? 'outcomeCardOnly' : 'outcomeCardToken') : 'outcomeCard'),
     });
   }
   const right = group('right');
@@ -119,7 +111,7 @@ export function TurnOutcome({ result, players, currentPlayerIndex, onAccept }: T
 
       {rows.length > 0 && (
         <ul className="outcome-list">
-          {rows.slice(0, 4).map((row) => (
+          {rows.slice(0, 3).map((row) => (
             <li
               key={row.kind}
               className={`outcome-row outcome-row--${row.kind}`}
@@ -131,13 +123,13 @@ export function TurnOutcome({ result, players, currentPlayerIndex, onAccept }: T
                 {row.players.map((i) => (
                   <span
                     key={i}
-                    className={`avatar${row.kind === 'won' || row.kind === 'named' ? (i === currentPlayerIndex ? ' avatar--pick' : ' avatar--bet') : ''}`}
+                    className={`avatar${row.kind === 'won' ? (i === currentPlayerIndex ? ' avatar--pick' : ' avatar--bet') : ''}`}
                   >
                     {initials[i]}
                   </span>
                 ))}
               </span>
-              {row.kind === 'won' || row.kind === 'named' || row.kind === 'refunded' || row.kind === 'right' ? (
+              {row.kind === 'won' || row.kind === 'refunded' || row.kind === 'right' ? (
                 <>
                   <span className="outcome-row__who">{names(row.players)}</span>
                   <span className="outcome-row__what">{row.text}</span>

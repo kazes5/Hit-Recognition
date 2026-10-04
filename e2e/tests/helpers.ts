@@ -335,7 +335,9 @@ export async function placeAndReveal(page: Page, index: number, opts: PlaceOptio
   const revealBtn = tid(page, 'btn-reveal');
   await expect(lock.or(revealBtn)).toBeEnabled();
   if (!(await lock.isVisible())) {
-    if (opts.name || opts.bets?.length) throw new Error('placeAndReveal: names/bets given, but nobody can bet');
+    if (opts.bets?.length) throw new Error('placeAndReveal: bets given, but nobody can bet');
+    // Nobody could bet: names can still be typed (they earn a token); Reveal checks them first.
+    if (opts.name) await typeNames(page, opts.name);
     return reveal(page);
   }
   const next = await lockIn(page, opts.name);

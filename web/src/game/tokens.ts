@@ -25,7 +25,7 @@ export function namesCorrect(guess: NameGuess | null): boolean {
   return !!guess && guess.artistCorrect && guess.titleCorrect;
 }
 
-/** The current player named the artist or the title: that earns them a token. */
+/** The current player named the artist or the title (with a right spot, that earns them a token). */
 export function namedAny(guess: NameGuess | null): boolean {
   return !!guess && (guess.artistCorrect || guess.titleCorrect);
 }
@@ -109,7 +109,7 @@ export interface TurnSettlement {
   correct: boolean;
   cardWinnerIndex: number | null;
   bets: SettledBet[];
-  /** The current player earned a token for naming. */
+  /** The current player earned a token: a right spot and a right name. */
   namedToken: boolean;
 }
 
@@ -117,9 +117,9 @@ export interface TurnSettlement {
  * Settles a revealed turn. Every spot is checked against the current player's
  * timeline before the card is added. The card goes to the current player if
  * their spot is right, else to the earliest bet on a right spot, else to nobody.
- * Tokens: the current player gets +1 for naming the artist or the title,
- * whatever the spot; winning a card gives no token (a winning bettor keeps the
- * bet token). A wrong bet loses its token; a right bet that did not get the
+ * Tokens: the current player gets +1 only for a right spot together with a
+ * right artist or title; a card alone gives no token (a winning bettor keeps
+ * the bet token). A wrong bet loses its token; a right bet that did not get the
  * card keeps it. `accepted` ("We accept it") counts the typed names as right
  * and cancels every bet. Tokens only change with `tokensAndBets` on.
  */
@@ -135,9 +135,9 @@ export function settleTurn(input: {
   accepted?: boolean;
 }): TurnSettlement {
   const { players, current, song, pickedSlot, bets, tokensAndBets, guess = null, accepted = false } = input;
-  const namedToken = tokensAndBets && !!guess && (accepted || namedAny(guess));
   const base = players[current]?.timeline ?? [];
   const correct = isPlacementCorrect(base, pickedSlot, song.year);
+  const namedToken = tokensAndBets && correct && !!guess && (accepted || namedAny(guess));
   const isRight = (bet: Bet) => isPlacementCorrect(base, bet.slotIndex, song.year);
   const firstRightBet = accepted ? undefined : bets.find(isRight);
   const cardWinnerIndex = correct ? current : (firstRightBet?.playerIndex ?? null);

@@ -1330,7 +1330,6 @@ body {
 .outcome-row__who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 600; }
 .outcome-row__what { font-weight: 700; text-align: end; }
 .outcome-row--won .outcome-row__what { color: var(--color-success); white-space: nowrap; }
-.outcome-row--named .outcome-row__what { color: var(--color-token); white-space: nowrap; }
 .outcome-row--lost .outcome-row__what { flex: 1; min-width: 0; text-align: start; color: #ff7a8a; }
 .outcome-row--right .outcome-row__what,
 .outcome-row--refunded .outcome-row__what { color: var(--color-text-muted); font-weight: 500; }
