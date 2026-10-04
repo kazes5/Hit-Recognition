@@ -38,6 +38,14 @@ async function drainCatalog(request: APIRequestContext): Promise<Song[]> {
   throw new Error('catalog never exhausted');
 }
 
+/** Contributor keys of a credit, split like server/src/selection.ts splitArtistKeys. */
+function contributorKeys(artist: string): string[] {
+  let parts = artist.split(/\s*(?:&|\+|,)\s*|\s+(?:feat\.?|ft\.?|featuring|and|x|vs\.?)\s+/i);
+  if (/[\u0590-\u05FF]/.test(artist)) parts = parts.flatMap((p) => p.split(/\s+ו(?=[א-ת])/));
+  const keys = parts.map((p) => p.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^the /, '')).filter((k) => k.length > 0);
+  return keys.length > 0 ? [...new Set(keys)] : [artist.toLowerCase()];
+}
+
 test.describe('API', () => {
   test('GET /api/health → 200 {status:"ok"}', async ({ request }) => {
     const res = await request.get('/api/health');
@@ -88,23 +96,23 @@ test.describe('API', () => {
 
   test('POST /api/songs/next prefers artists not yet used (case-insensitive)', async ({ request }) => {
     const all = await drainCatalog(request);
-    // While draining with growing excludeArtists, artist credits must not repeat until (nearly) all are used.
-    // The server merges credit variants that share a contributor ("Lady Gaga" / "Lady Gaga & Bradley Cooper"),
-    // so the number of distinct groups is slightly below the number of distinct credit strings.
     const distinct = new Set(all.map((s) => s.artist.toLowerCase()));
+    // While draining with growing excludeArtists, the server repeats a contributor only once no
+    // remaining song has all-new contributors. Contributors are split like the server does
+    // ("Lady Gaga & Bradley Cooper", "יזהר כהן והאלפבתא"). At the first repeat, count the songs that
+    // still look all-new here; the server also knows catalog-only artistKeys the client can't see
+    // (e.g. "Mark Ronson" includes Bruno Mars), so a couple of such songs are allowed.
     const seen = new Set<string>();
-    let firstRepeat = all.length;
+    let freshAtFirstRepeat = 0;
     for (const [i, s] of all.entries()) {
-      const k = s.artist.toLowerCase();
-      if (seen.has(k)) {
-        firstRepeat = i;
+      const keys = contributorKeys(s.artist);
+      if (keys.some((k) => seen.has(k))) {
+        freshAtFirstRepeat = all.slice(i + 1).filter((r) => contributorKeys(r.artist).every((k) => !seen.has(k))).length;
         break;
       }
-      seen.add(k);
+      for (const k of keys) seen.add(k);
     }
-    expect(firstRepeat, 'server repeated an artist while unused artists were left').toBeGreaterThanOrEqual(
-      Math.floor(distinct.size * 0.9),
-    );
+    expect(freshAtFirstRepeat, 'server repeated an artist while songs by unused artists were left').toBeLessThanOrEqual(2);
 
     // Exclude every artist but one (sent in UPPER CASE) → must get that artist.
     const byArtist = new Map<string, Song[]>();
@@ -132,6 +140,31 @@ test.describe('API', () => {
     // Every artist excluded → still returns a song.
     const res2 = await next(request, { excludeArtists: [...distinct] });
     expect(res2.status()).toBe(200);
+  });
+
+  test('POST /api/songs/next caps a performer at 2 per game (one excludeArtists entry per dealt song)', async ({ request }) => {
+    const all = await drainCatalog(request);
+    const A = all[0]!.artist;
+    const others = [...new Set(all.map((s) => s.artist))].filter((a) => a.toLowerCase() !== A.toLowerCase());
+    const aIds = all.filter((s) => s.artist.toLowerCase() === A.toLowerCase()).map((s) => s.id);
+
+    // [A, A] never returns A while other songs exist.
+    for (let i = 0; i < 20; i++) {
+      const res = await next(request, { excludeArtists: [A, A.toUpperCase()] });
+      expect(res.status()).toBe(200);
+      const { song } = (await res.json()) as { song: Song };
+      expect(song.artist.toLowerCase()).not.toBe(A.toLowerCase());
+    }
+
+    // [A] with every other artist already dealt twice: only A is under the cap, so A is returned.
+    const one = await next(request, { excludeArtists: [A, ...others, ...others] });
+    expect(one.status()).toBe(200);
+    expect(((await one.json()) as { song: Song }).song.artist.toLowerCase()).toBe(A.toLowerCase());
+
+    // Everyone dealt twice: nobody is under the cap, so the soft fallback still returns a song.
+    const two = await next(request, { excludeArtists: [A, A, ...others, ...others] });
+    expect(two.status()).toBe(200);
+    expect(aIds.length).toBeGreaterThan(0);
   });
 
   test('POST /api/songs/next honours languages filter', async ({ request }) => {

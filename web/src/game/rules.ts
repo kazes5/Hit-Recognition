@@ -103,10 +103,12 @@ export function canStartGame(names: readonly string[], target: number): boolean 
   return isValidTarget(target);
 }
 
-/** Adds an artist to the used list unless already present (case-insensitive). */
+/**
+ * Appends an artist to the used list. Always appends (no de-duplication): the list holds one entry
+ * per dealt song and the server counts occurrences to enforce the per-game artist limit.
+ */
 export function addUsedArtist(artists: readonly string[], artist: string): string[] {
-  const lower = artist.toLocaleLowerCase();
-  return artists.some((a) => a.toLocaleLowerCase() === lower) ? [...artists] : [...artists, artist];
+  return [...artists, artist];
 }
 
 export function addUsedId(ids: readonly number[], id: number): number[] {

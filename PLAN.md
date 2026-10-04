@@ -19,7 +19,7 @@ A party game for one shared phone (web app), based on the Hitster board game. Th
 
 **Rules for picking songs**
 - A song is never played twice in the same game.
-- The app avoids picking an artist who has already appeared in the game. It only repeats an artist when no other artist is left.
+- At most 2 songs by the same artist in one game. The app first picks artists not seen yet, then artists seen once. A 3rd song by the same artist comes only when nothing else is left.
 - Songs with the same year as a card already on the timeline count as correct on either side of it.
 
 ---
@@ -72,7 +72,7 @@ The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is
 
 - **Today:** 576 songs (210 Hebrew, 366 English), from the 1950s to the 2020s. Goal: about 670 (see section 9.1).
 - Genres: pop, classic and light rock.
-- Automatic tests check the list: no duplicate ids or songs, at most 3 songs per artist, and enough songs in each decade.
+- Automatic tests check the list: no duplicate ids or songs, at most 10 songs per artist, and enough songs in each decade.
 - Still to do: a script that checks every song has a working preview. It needs internet access to Apple, so it has to run outside this sandbox.
 
 ---
@@ -107,7 +107,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | # | Milestone | Status |
 |---|---|---|
 | 1 | **Setup:** web + server projects, theme (colors and fonts), Hebrew/English text, RTL support | ✅ Done |
-| 2 | **Song list:** 576 songs with years checked, no repeated artists | ✅ Done. More songs still planned (section 9.1) |
+| 2 | **Song list:** 576 songs with years checked, at most 10 songs per artist | ✅ Done. More songs still planned (section 9.1) |
 | 3 | **Game logic:** players, turns, song picking without repeats, placement check, score, winner, with tests | ✅ Done |
 | 4 | **UI:** all screens in section 6, the card, the timeline, the neon look from the box cover | ✅ Done |
 | 5 | **Audio:** 30-second preview, replay, skip to another song if a preview fails | ✅ Done, but real previews are still untested (the build sandbox cannot reach Apple) |
@@ -115,7 +115,10 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 246 server unit tests, 116 web unit tests, 84 Playwright end-to-end tests (phone and desktop sizes). All pass.
+**Tests today:** 172 server unit tests, 120 web unit tests, 83 Playwright end-to-end tests (phone and desktop sizes). All pass. Branch `prod-smoke` adds 8 smoke tests (section 9.5).
+
+**Branch waiting to be merged** (pushed, no PR yet, held back by the owner):
+- `prod-smoke`: smoke tests for the live site, section 9.5.
 
 **Open checks:**
 - Play a song on the live Railway site on a phone. This confirms the real 30-second previews, and that audio starts on an iPhone.
@@ -131,7 +134,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 - Online multiplayer across several phones.
 - Using tokens to buy a card (from the original game).
 
-Tokens, naming the artist and title, betting on another player's card, and skipping a song for 3 tokens are now planned in step 9.4.
+Tokens, naming the artist and title, betting on another player's card, and skipping a song for 3 tokens are now planned in step 9.6.
 
 ---
 
@@ -141,12 +144,12 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 
 - **Goal:** grow the list from 367 to about 670 songs.
 - **Done:** 576 songs now (+209: 100 English, 109 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
-- **Still short:** about 95 songs. Second research run (focus on 2000–2025): 47 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 3-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
-- **To finish:** raise the search limit (the `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` setting) and rerun the research, mainly for Hebrew songs from the 1950s–60s, the 1990s and the 2010s–20s.
+- **Still short:** about 95 songs. Second research run (focus on 2000–2025): 47 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 10-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
+- **To finish:** the search limit is now raised to 1000 per session (`.claude/settings.json`, merged to `main`). Rerun the research for the rest, mainly Hebrew songs from the 1950s–60s and the 2000s (2003–2009 is thinnest).
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.
   - The year is the original release year and is checked against a source before adding.
-  - At most 3 songs per artist.
+  - At most 10 songs per artist.
 - **Done when:** about 670 songs, the catalog test passes, and the end-to-end tests still pass.
 
 ### 9.2 Winner at up to 30 cards ✅ Done
@@ -165,7 +168,21 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 - **Checked:** unit tests (server 13 new, web 4 new) and 7 new Playwright tests for the cover, including "no request before Reveal" and "no scrolling on a small phone". A placeholder record image is used in tests.
 - **Not checked:** real Apple covers. The sandbox cannot reach Apple, so the first real test is on the live site.
 
-### 9.4 Tokens, naming and bets 🟡 Step 1 of 5 done
+### 9.4 Songs per performer: 10 in the list, 2 per game ✅ Done
+
+- **List:** at most 10 songs per performer in `songs.json` (was 3). Collaboration credits count for every singer in the credit.
+- **Game:** at most 2 songs by the same performer in one game. The app sends one entry per dealt song, and the server counts them. It picks performers not dealt yet first, then those dealt once, and a 3rd song only when nothing else is left, so a game never gets stuck.
+- **Checked:** 142 server and 120 web unit tests, and all 83 Playwright tests pass.
+- **Known gap:** a game saved before this change lost its repeated entries, so a performer can reach 3 songs once in such a resumed game.
+
+### 9.5 Smoke tests for the live site 🟡 Done on branch `prod-smoke`, not merged; not yet run on production
+
+- `e2e/tests/smoke.spec.ts`, run with `npm run smoke`. Read-only and light: API health and stats, home, settings and setup in both languages, and one real turn (preview found, audio responds, reveal, cover if shown). Screenshots go to the test report.
+- **Checked:** 8 of 8 pass against a local server.
+- **Blocked:** the sandbox's network policy blocks `hit-recognition-production.up.railway.app`. The owner needs to add that domain under Allowed domains in the cloud environment's network settings. Then run `E2E_BASE_URL=https://hit-recognition-production.up.railway.app npm run smoke`.
+- Running them on production would also close two open checks above: real previews and real covers. iPhone Safari still needs a real phone.
+
+### 9.6 Tokens, naming and bets 🟡 Step 1 of 5 done
 
 The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owner answered all 13 rule questions on 2026-10-04.
 
@@ -197,6 +214,8 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 
 ### Suggested order
 
-1. Finish 9.1 (the remaining ~150 songs, mostly Hebrew). 9.2 and 9.3 are done.
-2. 9.4, tokens and bets. The rules are confirmed, so it can start.
-3. Then milestone 8, Spotify and Apple Music.
+1. Merge 9.5 when the owner approves.
+2. Allow the production domain and run the smoke tests (9.5).
+3. 9.6, tokens and bets: in progress on branch `claude/game-tokens-betting-plan-ddfipg`. A pull request is opened only when the whole feature works.
+4. Finish 9.1 (about 95 songs left, mostly Hebrew). 9.2 and 9.3 are done.
+5. Then milestone 8, Spotify and Apple Music.

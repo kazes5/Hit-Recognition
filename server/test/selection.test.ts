@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  MAX_SONGS_PER_ARTIST_IN_GAME,
   normalizeArtistKey,
   parseNextSongRequest,
   selectNextSong,
@@ -128,6 +129,97 @@ describe('artist contributor keys (QA #6)', () => {
       () => 0,
     );
     expect(s?.id).toBe(11);
+  });
+});
+
+describe('in-game cap per performer', () => {
+  const both = ['he', 'en'] as ('he' | 'en')[];
+  const rs = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99];
+  const pool = [
+    song({ id: 1, artist: 'A' }),
+    song({ id: 2, artist: 'A' }),
+    song({ id: 3, artist: 'A' }),
+    song({ id: 4, artist: 'B' }),
+    song({ id: 5, artist: 'C' }),
+  ];
+  const pick = (list: typeof pool, excludeArtists: string[], excludeIds: number[], r: number) =>
+    selectNextSong(list, { excludeIds, excludeArtists, languages: both }, () => r);
+
+  it('caps at 2 songs per performer', () => {
+    expect(MAX_SONGS_PER_ARTIST_IN_GAME).toBe(2);
+  });
+
+  it('a single entry still allows that artist when only it is left', () => {
+    for (const r of rs) expect(pick(pool, ['A'], [4, 5], r)?.artist).toBe('A');
+  });
+
+  it('prefers count-0 artists over count-1 artists', () => {
+    for (const r of rs) expect(pick(pool, ['A'], [], r)?.artist).not.toBe('A');
+    for (const r of rs) expect(pick(pool, ['A', 'B'], [], r)?.artist).toBe('C');
+  });
+
+  it('two entries for one artist prefer other artists (case/whitespace-insensitive)', () => {
+    const abba = [
+      song({ id: 1, artist: 'ABBA' }),
+      song({ id: 2, artist: 'ABBA' }),
+      song({ id: 3, artist: 'ABBA' }),
+      song({ id: 4, artist: 'Queen' }),
+    ];
+    for (const list of [['ABBA', 'ABBA'], ['ABBA', 'abba'], [' abba ', 'ABBA']]) {
+      for (const r of rs) {
+        const s = pick(abba, list, [], r);
+        expect(s?.id, list.join('|')).toBe(4);
+      }
+    }
+  });
+
+  it('two entries never return that artist while others exist', () => {
+    for (const r of rs) expect(pick(pool, ['A', 'A'], [], r)?.artist).not.toBe('A');
+  });
+
+  it('falls back to the capped artist when only it is left', () => {
+    for (const r of rs) expect(pick(pool, ['A', 'A'], [1, 2, 4, 5], r)?.id).toBe(3);
+    expect(pick(pool, ['A', 'A'], [1, 2, 3, 4, 5], 0)).toBeNull();
+  });
+
+  it('prefers an artist at 1 over one at the cap when no fresh artist is left', () => {
+    for (const r of rs) expect(pick(pool, ['A', 'A', 'B'], [5], r)?.artist).toBe('B');
+  });
+
+  it('counts a collab credit for each contributor', () => {
+    const list = [
+      song({ id: 1, artist: 'Lady Gaga' }),
+      song({ id: 2, artist: 'Lady Gaga & Bradley Cooper' }),
+      song({ id: 3, artist: 'Bradley Cooper' }),
+      song({ id: 4, artist: 'Other' }),
+    ];
+    // Gaga (1) + Gaga & Cooper (1) -> Gaga has 2, Cooper has 1.
+    for (const r of rs) {
+      expect(pick(list, ['Lady Gaga', 'Lady Gaga & Bradley Cooper'], [], r)?.id).toBe(4);
+      // Only Cooper-credited songs left: song 3 (Cooper at 1) beats song 2 (Gaga at 2).
+      expect(pick(list, ['Lady Gaga', 'Lady Gaga & Bradley Cooper'], [1, 4], r)?.id).toBe(3);
+    }
+  });
+
+  it('expands catalog artistKeys: two Mark Ronson entries cap Bruno Mars songs', () => {
+    const list = [
+      { ...song({ id: 1, artist: 'Mark Ronson' }), artistKeys: ['Mark Ronson', 'Bruno Mars'] },
+      song({ id: 2, artist: 'Bruno Mars' }),
+      song({ id: 3, artist: 'Other' }),
+    ];
+    for (const r of rs) {
+      expect(pick(list, ['Mark Ronson', 'Mark Ronson'], [], r)?.id).toBe(3);
+      expect(pick(list, ['Mark Ronson'], [], r)?.id).toBe(3);
+    }
+    for (const r of rs) expect([1, 2]).toContain(pick(list, ['Mark Ronson', 'Mark Ronson'], [3], r)?.id);
+  });
+
+  it('deduped legacy lists behave as before (one entry per artist, under the cap)', () => {
+    for (const r of rs) {
+      expect(pick(pool, ['A', 'B'], [], r)?.artist).toBe('C');
+      expect(pick(pool, ['A', 'B', 'C'], [], r)?.artist).toBeDefined();
+      expect(pick(pool, ['A', 'B', 'C'], [4, 5], r)?.artist).toBe('A');
+    }
   });
 });
 

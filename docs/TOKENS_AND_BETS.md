@@ -1,6 +1,6 @@
 # Tokens, naming and bets: plan
 
-**Status:** step 1 (checking names on the server) is done; steps 2–5 are not started. The owner has answered all rule questions (section 2). This is step 9.4 in [PLAN.md](../PLAN.md).
+**Status:** step 1 (checking names on the server) is done; steps 2–5 are not started. The owner has answered all rule questions (section 2). This is step 9.6 in [PLAN.md](../PLAN.md).
 
 This plan adds four things to the game:
 - every player has **tokens**;

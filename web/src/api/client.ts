@@ -20,6 +20,7 @@ export class ApiError extends Error {
 
 export interface NextSongRequest {
   excludeIds?: number[];
+  /** One entry per dealt song (duplicates kept); the server counts occurrences per artist. */
   excludeArtists?: string[];
   languages?: Language[];
 }

@@ -45,6 +45,22 @@ describe('gameReducer: setup → dealing', () => {
     expect(s.usedArtists).toEqual(['X', 'Y']);
   });
 
+  it('keeps one usedArtists entry per dealt song, even for the same artist', () => {
+    let s = gameReducer(initialGameState, { type: 'START_GAME', names: ['A', 'B'], targetScore: 5 });
+    s = gameReducer(s, { type: 'DEAL_CARD', song: song(1970, { id: 1, artist: 'ABBA' }) });
+    s = gameReducer(s, { type: 'DEAL_CARD', song: song(1980, { id: 2, artist: 'abba' }) });
+    expect(s.usedArtists).toEqual(['ABBA', 'abba']);
+  });
+
+  it('MARK_USED followed by SONG_READY for the same song adds a single artist entry', () => {
+    const base = startedGame();
+    const n = base.usedArtists.length;
+    const sg = song(1990, { id: 70, artist: 'Queen' });
+    let s = gameReducer(base, { type: 'MARK_USED', song: sg });
+    s = gameReducer(s, { type: 'SONG_READY', song: sg, previewUrl: '/a.mp3' });
+    expect(s.usedArtists).toHaveLength(n + 1);
+  });
+
   it('ignores DEAL_CARD outside dealing', () => {
     const s = startedGame();
     expect(gameReducer(s, { type: 'DEAL_CARD', song: song(1990) })).toBe(s);

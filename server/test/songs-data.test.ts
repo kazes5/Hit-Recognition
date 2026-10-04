@@ -6,6 +6,9 @@ import { buildKnownNames, isArtistCorrect, isTitleCorrect } from '../src/guess.j
 import { songArtistKeys } from '../src/selection.js';
 import { decadeOf } from '../src/stats.js';
 
+/** Catalog cap: songs per performer (counting every contributor of a credit). */
+const MAX_SONGS_PER_ARTIST = 10;
+
 const file = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../data/songs.json');
 const songs = loadCatalog(file); // throws on any schema problem (ids, fields, years, language, genre)
 
@@ -52,10 +55,10 @@ describe('data/songs.json', () => {
     expect(new Set(keys).size).toBe(songs.length);
   });
 
-  it('has at most 3 songs per artist (counting every contributor of a credit)', () => {
+  it('has at most 10 songs per artist (counting every contributor of a credit)', () => {
     const perKey = new Map<string, number>();
     for (const s of songs) for (const k of songArtistKeys(s)) perKey.set(k, (perKey.get(k) ?? 0) + 1);
-    expect([...perKey].filter(([, n]) => n > 3)).toEqual([]);
+    expect([...perKey].filter(([, n]) => n > MAX_SONGS_PER_ARTIST)).toEqual([]);
   });
 
   it('writes Hebrew songs in Hebrew script and English songs in Latin script', () => {
