@@ -94,5 +94,33 @@ describe('data/songs.json', () => {
       });
       expect(wrong).toEqual([]);
     });
+
+    it("accepts every song's own aliases", () => {
+      const rejected: string[] = [];
+      for (const s of songs) {
+        for (const a of s.artistAliases ?? []) if (!isArtistCorrect(s, a, known)) rejected.push(`${s.id} artist "${a}"`);
+        for (const t of s.titleAliases ?? []) if (!isTitleCorrect(s, t, known)) rejected.push(`${s.id} title "${t}"`);
+      }
+      expect(rejected).toEqual([]);
+    });
+
+    it("never accepts one song's aliases for a different song", () => {
+      const keys = new Map(songs.map((s) => [s, songArtistKeys(s)]));
+      const wrong: string[] = [];
+      for (const s of songs) {
+        const own = keys.get(s)!;
+        for (const other of songs) {
+          if (other === s) continue;
+          const sharesArtist = keys.get(other)!.some((key) => own.includes(key));
+          for (const a of sharesArtist ? [] : (other.artistAliases ?? [])) {
+            if (isArtistCorrect(s, a, known)) wrong.push(`${s.id} artist <- ${other.id} "${a}"`);
+          }
+          for (const t of other.titleAliases ?? []) {
+            if (isTitleCorrect(s, t, known)) wrong.push(`${s.id} title <- ${other.id} "${t}"`);
+          }
+        }
+      }
+      expect(wrong).toEqual([]);
+    });
   });
 });

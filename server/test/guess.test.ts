@@ -65,9 +65,9 @@ describe('artist and title guesses on real songs', () => {
     [387, 'artist', 'Tones', false],
     [110, 'artist', 'Bruno Mars', true],
     [110, 'artist', 'Mark Ronson feat. Bruno Mars', true],
-    [152, 'title', 'Nothing Compares to You', false],
+    [152, 'title', 'Nothing Compares to You', true],
     [152, 'artist', 'Sinead OConnor', true],
-    [409, 'artist', 'Pink', false],
+    [409, 'artist', 'Pink', true],
     [409, 'artist', 'Nate Ruess', true],
     [4, 'artist', 'קושניר ודטנר', true],
     [4, 'artist', 'דטנר', false],
@@ -76,7 +76,7 @@ describe('artist and title guesses on real songs', () => {
     [165, 'artist', 'הנחל', true],
     [165, 'artist', 'להקת הנח"ל', true],
     [260, 'title', 'מי שמאמינ', true],
-    [260, 'artist', 'Eyal Golan', false],
+    [260, 'artist', 'Eyal Golan', true],
     [349, 'title', 'יָרֵחַ', true],
     [339, 'artist', 'דוד ברוזה', true],
     [72, 'title', 'אבניבי', true],
@@ -109,6 +109,92 @@ describe('artist and title guesses on real songs', () => {
       artistCorrect: false,
       titleCorrect: true,
     });
+  });
+});
+
+describe('aliases in songs.json', () => {
+  const songsBy = (artist: string) => {
+    const found = catalog.filter((c) => c.artist === artist);
+    if (found.length === 0) throw new Error(`no song by ${artist} in songs.json`);
+    return found;
+  };
+
+  it.each([
+    ['Eyal Golan', 'אייל גולן'],
+    ['Shlomo Artzi', 'שלמה ארצי'],
+    ['Arik Einstein', 'אריק איינשטיין'],
+    ['Omer Adam', 'עומר אדם'],
+    ['Noa Kirel', 'נועה קירל'],
+    ['Sarit Hadad', 'שרית חדד'],
+    ['Sarit Haddad', 'שרית חדד'],
+    ['Shalom Hanoch', 'שלום חנוך'],
+    ['Zohar Argov', 'זוהר ארגוב'],
+    ['Ofra Haza', 'עפרה חזה'],
+    ['Kaveret', 'כוורת'],
+    ['Mashina', 'משינה'],
+    ['Teapacks', 'טיפקס'],
+    ['Hadag Nahash', 'הדג נחש'],
+    ['Rita', 'ריטה'],
+    ['Yehoram Gaon', 'יהורם גאון'],
+    ['Chava Alberstein', 'חוה אלברשטיין'],
+    ['Ishay Ribo', 'ישי ריבו'],
+    ['Eden Ben Zaken', 'עדן בן זקן'],
+    ['Idan Raichel Project', 'הפרויקט של עידן רייכל'],
+    ['Dana International', 'דנה אינטרנשיונל'],
+    ['David DOr', "דוד ד'אור"],
+    ['Hanan Ben Ari', 'חנן בן ארי'],
+    ['shlomi shabat', 'שלומי שבת'],
+    ['Milk & Honey', 'חלב ודבש'],
+    ['High Windows', 'החלונות הגבוהים'],
+    ['Static and Ben El Tavori', 'סטטיק ובן אל תבורי'],
+    ['Eyal Golen', 'אייל גולן'],
+  ])('accepts %j for every song by %s', (latin, hebrew) => {
+    for (const s of songsBy(hebrew)) expect(isArtistCorrect(s, latin, known), `song ${s.id}`).toBe(true);
+  });
+
+  it.each([
+    [106, 'Static'],
+    [106, 'סטטיק'],
+    [351, 'Static'],
+    [539, 'סטטיק'],
+    [106, 'Ben El Tavori'],
+    [106, 'בן אל תבורי'],
+    [570, 'Subliminal'],
+    [570, 'סאבלימינל'],
+    [576, 'Odeya'],
+    [576, 'אודיה'],
+    [409, 'P!nk'],
+    [409, 'Pink & Nate Ruess'],
+    [300, 'Pink'],
+    [322, 'Shlomi Shabat'],
+    [447, 'Shlomi Shabat'],
+    [261, 'נועה קירל'],
+    [45, 'טיפקס'],
+  ] as const)('song %i accepts the performer %j on their own', (id, guess) => {
+    expect(isArtistCorrect(byId(id), guess, known)).toBe(true);
+  });
+
+  it.each([
+    [201, 'Pink'], // Pink Floyd, not P!nk
+    [526, 'Shlomi Shabat'], // Shlomi Shaban & Chava Alberstein
+    [526, 'Shlomi Shabbat'],
+    [531, 'Shlomi Shaban'],
+    [98, 'Eden'], // Eden Golan, not the band Eden
+    [316, 'Adam'], // Omer Adam, not the singer Adam
+    [65, 'Ilan & Ilanit'],
+  ] as const)('song %i rejects the look-alike performer %j', (id, guess) => {
+    expect(isArtistCorrect(byId(id), guess, known)).toBe(false);
+  });
+
+  it.each([
+    [152, 'Nothing Compares to You'],
+    [100, 'Mambo Number 5'],
+    [345, 'לאהוב אותך'],
+    [260, 'Mi Shemamin'],
+    [21, 'Jerusalem of Gold'],
+    [128, 'Hallelujah'],
+  ] as const)('song %i accepts the title %j', (id, guess) => {
+    expect(isTitleCorrect(byId(id), guess, known)).toBe(true);
   });
 });
 
