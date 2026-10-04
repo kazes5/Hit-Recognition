@@ -1,13 +1,17 @@
 import { useState, type FormEvent } from 'react';
 import { canStartGame, isValidTarget, normalizeName, validateNewPlayerName, type NameError } from '../game/rules';
-import { DEFAULT_TARGET, MAX_PLAYERS, MAX_TARGET, MIN_TARGET } from '../game/types';
+import { TokenIcon } from '../components/TokenMeter';
+import { DEFAULT_TARGET, MAX_PLAYERS, MAX_TARGET, MAX_TOKENS, MIN_TARGET } from '../game/types';
 import { useI18n } from '../i18n/I18nProvider';
 import type { MessageKey } from '../i18n/dictionaries';
+import { loadTokensAndBets, saveTokensAndBets } from '../store/settings';
 
 interface SetupScreenProps {
   initialNames?: string[];
   initialTarget?: number;
-  onStart: (names: string[], targetScore: number) => void;
+  /** The "Tokens & bets" switch; defaults to what this phone last chose (on the first time). */
+  initialTokensAndBets?: boolean;
+  onStart: (names: string[], targetScore: number, tokensAndBets: boolean) => void;
   onBack: () => void;
 }
 
@@ -17,12 +21,25 @@ const NAME_ERRORS: Record<NameError, MessageKey> = {
   tooMany: 'errorNameTooMany',
 };
 
-export function SetupScreen({ initialNames = [], initialTarget = DEFAULT_TARGET, onStart, onBack }: SetupScreenProps) {
+export function SetupScreen({
+  initialNames = [],
+  initialTarget = DEFAULT_TARGET,
+  initialTokensAndBets,
+  onStart,
+  onBack,
+}: SetupScreenProps) {
   const { t } = useI18n();
   const [names, setNames] = useState<string[]>(initialNames);
   const [draft, setDraft] = useState('');
   const [nameError, setNameError] = useState<NameError | null>(null);
   const [targetText, setTargetText] = useState(String(initialTarget));
+  const [tokensAndBets, setTokensAndBets] = useState(() => initialTokensAndBets ?? loadTokensAndBets());
+
+  const toggleTokens = () => {
+    const next = !tokensAndBets;
+    setTokensAndBets(next);
+    saveTokensAndBets(next);
+  };
 
   const target = Number(targetText);
   const targetValid = targetText.trim() !== '' && isValidTarget(target);
@@ -137,6 +154,30 @@ export function SetupScreen({ initialNames = [], initialTarget = DEFAULT_TARGET,
               : t('errorTargetRange', { min: MIN_TARGET, max: MAX_TARGET })}
           </p>
         </div>
+
+        <section className={`rule-box${tokensAndBets ? '' : ' rule-box--off'}`}>
+          <div className="rule-box__top">
+            <span className="rule-box__title" id="tokens-bets-label">
+              <TokenIcon />
+              {t('tokensAndBets')}
+            </span>
+            <button
+              type="button"
+              role="switch"
+              className="switch"
+              data-testid="toggle-tokens-bets"
+              aria-checked={tokensAndBets}
+              aria-labelledby="tokens-bets-label"
+              aria-describedby="tokens-bets-rule"
+              onClick={toggleTokens}
+            >
+              <span className="switch__knob" aria-hidden="true" />
+            </button>
+          </div>
+          <p id="tokens-bets-rule" className="rule-box__text">
+            {t('tokenRule', { max: MAX_TOKENS })}
+          </p>
+        </section>
       </div>
 
       <footer className="screen__footer">
@@ -145,7 +186,7 @@ export function SetupScreen({ initialNames = [], initialTarget = DEFAULT_TARGET,
           className="btn btn--primary"
           data-testid="btn-start-game"
           disabled={!canStart}
-          onClick={() => onStart(names, target)}
+          onClick={() => onStart(names, target, tokensAndBets)}
         >
           {t('startGame')}
         </button>

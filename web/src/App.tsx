@@ -17,6 +17,8 @@ function Screens() {
   const [saved, setSaved] = useState<GameState | null>(() => loadSavedGame());
   const [setupNames, setSetupNames] = useState<string[]>([]);
   const [setupTarget, setSetupTarget] = useState(DEFAULT_TARGET);
+  // "Play again" keeps the last game's switch; a new game uses what this phone remembers.
+  const [setupTokens, setSetupTokens] = useState<boolean | undefined>(undefined);
 
   const goHome = () => {
     setSaved(loadSavedGame());
@@ -31,6 +33,7 @@ function Screens() {
           onNewGame={() => {
             setSetupNames([]);
             setSetupTarget(DEFAULT_TARGET);
+            setSetupTokens(undefined);
             setView('setup');
           }}
           onResume={() => {
@@ -46,9 +49,10 @@ function Screens() {
         <SetupScreen
           initialNames={setupNames}
           initialTarget={setupTarget}
+          initialTokensAndBets={setupTokens}
           onBack={goHome}
-          onStart={(names, targetScore) => {
-            dispatch({ type: 'START_GAME', names, targetScore });
+          onStart={(names, targetScore, tokensAndBets) => {
+            dispatch({ type: 'START_GAME', names, targetScore, tokensAndBets });
             setView('game');
           }}
         />
@@ -63,9 +67,11 @@ function Screens() {
           <WinnerScreen
             players={state.players}
             targetScore={state.targetScore}
+            tokensAndBets={state.tokensAndBets}
             onPlayAgain={() => {
               setSetupNames(state.players.map((p) => p.name));
               setSetupTarget(state.targetScore);
+              setSetupTokens(state.tokensAndBets);
               dispatch({ type: 'RESET' });
               setView('setup');
             }}

@@ -25,7 +25,7 @@ describe('SetupScreen', () => {
     expect(screen.getByTestId('input-player-name')).toHaveValue('');
     expect(screen.getByTestId('btn-start-game')).toBeEnabled();
     await user.click(screen.getByTestId('btn-start-game'));
-    expect(onStart).toHaveBeenCalledWith(['Dana'], 10);
+    expect(onStart).toHaveBeenCalledWith(['Dana'], 10, true);
   });
 
   it('adds players with Enter and trims names', async () => {
@@ -72,6 +72,6 @@ describe('SetupScreen', () => {
     await user.type(input, '5');
     expect(screen.getByTestId('btn-start-game')).toBeEnabled();
     await user.click(screen.getByTestId('btn-start-game'));
-    expect(onStart).toHaveBeenCalledWith(['A'], 5);
+    expect(onStart).toHaveBeenCalledWith(['A'], 5, true);
   });
 });

@@ -47,10 +47,16 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+/** Picks the last spot and reveals; with tokens and bets on and someone able to bet, locks in first (no bets). */
 async function placeLastAndReveal(user: ReturnType<typeof userEvent.setup>) {
   await waitFor(() => expect(screen.getByTestId('btn-play')).toBeEnabled());
   const slots = screen.getAllByTestId('timeline-slot');
   await user.click(slots[slots.length - 1]!);
+  const lockIn = screen.queryByTestId('btn-lock-in');
+  if (lockIn) {
+    await user.click(lockIn);
+    expect(screen.getByTestId('bet-panel')).toBeInTheDocument();
+  }
   await user.click(screen.getByTestId('btn-reveal'));
 }
 
