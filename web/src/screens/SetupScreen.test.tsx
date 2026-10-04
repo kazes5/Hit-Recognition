@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { I18nProvider } from '../i18n/I18nProvider';
+import { loadTokensAndBets, saveTokensAndBets, TOKENS_BETS_STORAGE_KEY } from '../store/settings';
 import { SetupScreen } from './SetupScreen';
 
 function setup(props: Partial<Parameters<typeof SetupScreen>[0]> = {}) {
@@ -73,5 +74,63 @@ describe('SetupScreen', () => {
     expect(screen.getByTestId('btn-start-game')).toBeEnabled();
     await user.click(screen.getByTestId('btn-start-game'));
     expect(onStart).toHaveBeenCalledWith(['A'], 5, true);
+  });
+});
+
+describe('SetupScreen: Tokens & bets switch', () => {
+  it('is on by default, with the one-line rule', () => {
+    setup();
+    const toggle = screen.getByTestId('toggle-tokens-bets');
+    expect(toggle).toHaveAttribute('role', 'switch');
+    expect(toggle).toHaveAttribute('aria-checked', 'true');
+    expect(toggle).toHaveAccessibleName('Tokens & bets');
+    expect(toggle).toHaveAccessibleDescription(
+      'Start with 1 token, +1 for every card (max 5). Skip a song for 3 tokens.',
+    );
+  });
+
+  it('turning it off is passed to onStart and remembered on this phone', async () => {
+    const { user, onStart } = setup({ initialNames: ['A', 'B'] });
+    await user.click(screen.getByTestId('toggle-tokens-bets'));
+    expect(screen.getByTestId('toggle-tokens-bets')).toHaveAttribute('aria-checked', 'false');
+    expect(localStorage.getItem(TOKENS_BETS_STORAGE_KEY)).toBe('off');
+    await user.click(screen.getByTestId('btn-start-game'));
+    expect(onStart).toHaveBeenCalledWith(['A', 'B'], 10, false);
+    cleanup();
+
+    setup();
+    expect(screen.getByTestId('toggle-tokens-bets')).toHaveAttribute('aria-checked', 'false');
+    await userEvent.click(screen.getByTestId('toggle-tokens-bets'));
+    expect(localStorage.getItem(TOKENS_BETS_STORAGE_KEY)).toBe('on');
+  });
+
+  it('"Play again" can pass the last game\'s value, whatever the phone remembers', () => {
+    localStorage.setItem(TOKENS_BETS_STORAGE_KEY, 'on');
+    setup({ initialTokensAndBets: false });
+    expect(screen.getByTestId('toggle-tokens-bets')).toHaveAttribute('aria-checked', 'false');
+  });
+
+  it('works in Hebrew', () => {
+    render(
+      <I18nProvider initialLang="he">
+        <SetupScreen onStart={() => {}} onBack={() => {}} />
+      </I18nProvider>,
+    );
+    expect(screen.getByTestId('toggle-tokens-bets')).toHaveAccessibleName('אסימונים והימורים');
+  });
+});
+
+describe('tokens-and-bets setting', () => {
+  it('defaults to on and survives broken storage', () => {
+    expect(loadTokensAndBets()).toBe(true);
+    saveTokensAndBets(false);
+    expect(loadTokensAndBets()).toBe(false);
+    localStorage.setItem(TOKENS_BETS_STORAGE_KEY, 'garbage');
+    expect(loadTokensAndBets()).toBe(true);
+    const spy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    expect(loadTokensAndBets()).toBe(true);
+    spy.mockRestore();
   });
 });
