@@ -1,6 +1,7 @@
 import { existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import express, { type ErrorRequestHandler, type Express, type RequestHandler, type Response } from 'express';
+import { buildKnownNames, judgeGuess, parseGuessRequest } from './guess.js';
 import type { PreviewProvider } from './preview/types.js';
 import { parseNextSongRequest, selectNextSong, type Rng } from './selection.js';
 import { computeStats } from './stats.js';
@@ -41,6 +42,7 @@ function isDirectory(dir: string): boolean {
 export function createApp(options: AppOptions): Express {
   const { songs, previewProvider, staticDir, rng = Math.random } = options;
   const songsById = new Map(songs.map((s) => [s.id, s]));
+  const knownNames = buildKnownNames(songs);
   const stats = computeStats(songs);
   const mockWav = createSilentWav(2);
   const mockCover = Buffer.from(createMockCoverSvg(), 'utf8');
@@ -109,6 +111,23 @@ export function createApp(options: AppOptions): Express {
       coverUrl = null; // never surface provider errors to the client
     }
     res.json({ coverUrl });
+  });
+
+  api.post('/songs/:id/guess', (req, res) => {
+    const raw = req.params.id;
+    const song = /^\d+$/.test(raw) ? songsById.get(Number(raw)) : undefined;
+    if (!song) {
+      sendError(res, 404, 'SONG_NOT_FOUND', `Unknown song id: ${raw}`);
+      return;
+    }
+    const parsed = parseGuessRequest(req.body);
+    if (!parsed.ok) {
+      sendError(res, 400, 'INVALID_REQUEST', parsed.message);
+      return;
+    }
+    // Only the two booleans go back: never the artist, title, year or aliases.
+    const { artistCorrect, titleCorrect } = judgeGuess(song, parsed.value, knownNames);
+    res.json({ artistCorrect, titleCorrect });
   });
 
   api.get('/mock-cover', (_req, res) => {

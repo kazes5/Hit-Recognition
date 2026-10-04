@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '../src/catalog.js';
+import { buildKnownNames, isArtistCorrect, isTitleCorrect } from '../src/guess.js';
 import { songArtistKeys } from '../src/selection.js';
 import { decadeOf } from '../src/stats.js';
 
@@ -66,5 +67,29 @@ describe('data/songs.json', () => {
         expect(hebrew.test(s.artist) || hebrew.test(s.title), `song ${s.id}`).toBe(false);
       }
     }
+  });
+
+  describe('guess checking', () => {
+    const known = buildKnownNames(songs);
+
+    it("accepts every song's own artist and title as typed on the card", () => {
+      const rejected = songs.filter((s) => !isArtistCorrect(s, s.artist, known) || !isTitleCorrect(s, s.title, known));
+      expect(rejected.map((s) => s.id)).toEqual([]);
+    });
+
+    it("rejects other songs' artists and titles", () => {
+      const wrong: string[] = [];
+      songs.forEach((s, i) => {
+        for (let k = 1; k <= 25; k++) {
+          const other = songs[(i + k * 17) % songs.length]!;
+          const sharesArtist = songArtistKeys(other).some((key) => songArtistKeys(s).includes(key));
+          if (!sharesArtist && isArtistCorrect(s, other.artist, known)) wrong.push(`${s.id} artist <- ${other.id}`);
+          if (other.title.toLowerCase() !== s.title.toLowerCase() && isTitleCorrect(s, other.title, known)) {
+            wrong.push(`${s.id} title <- ${other.id}`);
+          }
+        }
+      });
+      expect(wrong).toEqual([]);
+    });
   });
 });

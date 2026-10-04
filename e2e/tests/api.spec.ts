@@ -209,6 +209,36 @@ test.describe('API', () => {
     expect(await res.json()).toMatchObject({ error: 'SONG_NOT_FOUND' });
   });
 
+  test('POST /api/songs/:id/guess judges artist and title and returns only two booleans', async ({ request }) => {
+    const { song } = (await (await next(request, {})).json()) as { song: Song };
+    const right = await request.post(`/api/songs/${song.id}/guess`, { data: { artist: song.artist, title: song.title } });
+    expect(right.status()).toBe(200);
+    expect(await right.json()).toEqual({ artistCorrect: true, titleCorrect: true });
+
+    const loose = await request.post(`/api/songs/${song.id}/guess`, {
+      data: { artist: `  ${song.artist.toUpperCase()} `, title: 'zz no such song zz' },
+    });
+    expect(await loose.json()).toEqual({ artistCorrect: true, titleCorrect: false });
+
+    const wrong = await request.post(`/api/songs/${song.id}/guess`, { data: {} });
+    const text = await wrong.text();
+    expect(JSON.parse(text)).toEqual({ artistCorrect: false, titleCorrect: false });
+    expect(text).not.toContain(String(song.year));
+  });
+
+  test('POST /api/songs/:id/guess → 404 for an unknown id, 400 for a bad body', async ({ request }) => {
+    const unknown = await request.post('/api/songs/987654321/guess', { data: { artist: 'ABBA' } });
+    expect(unknown.status()).toBe(404);
+    expect(await unknown.json()).toMatchObject({ error: 'SONG_NOT_FOUND' });
+
+    const { song } = (await (await next(request, {})).json()) as { song: Song };
+    for (const data of [{ artist: 5 }, { title: 'x'.repeat(201) }]) {
+      const res = await request.post(`/api/songs/${song.id}/guess`, { data });
+      expect(res.status(), JSON.stringify(data).slice(0, 40)).toBe(400);
+      expect(await res.json()).toMatchObject({ error: 'INVALID_REQUEST' });
+    }
+  });
+
   test('GET /api/mock-cover is a non-empty SVG image', async ({ request }) => {
     const res = await request.get('/api/mock-cover');
     expect(res.status()).toBe(200);

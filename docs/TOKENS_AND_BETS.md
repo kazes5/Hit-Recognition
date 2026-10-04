@@ -1,6 +1,6 @@
 # Tokens, naming and bets: plan
 
-**Status:** planned, not started. The owner has answered all rule questions (section 2). This is step 9.4 in [PLAN.md](../PLAN.md).
+**Status:** step 1 (checking names on the server) is done; steps 2–5 are not started. The owner has answered all rule questions (section 2). This is step 9.4 in [PLAN.md](../PLAN.md).
 
 This plan adds four things to the game:
 - every player has **tokens**;
@@ -155,10 +155,13 @@ Move `normalizeText`, `normalizeArtist`, `normalizeTitleCore` and `HEBREW_AND` f
   | up to 20 | 3 |
   | longer | 4 |
 
+- **Another song's exact name is not a typo.** A guess that is exactly another artist or title in the catalog is never accepted as a typo of this song's name. Typing "Believe" means Cher's song, not a slip for "Believer". Checking every pair of songs in the catalog found three such near-misses, and this rule removes all of them.
+
 **Title is correct** if the guess matches any one of:
 - the full title;
 - the title without the part in brackets;
-- the text inside the brackets on its own ("I Feel Good");
+- the text inside the brackets on its own, if it has at least three words ("I Feel Good" yes; "(Tell Me)" or "(I Just)" no);
+- the title without a trailing `, Part 2`;
 - a `titleAliases` entry.
 
 A part of the title does **not** count: "Wake Me Up" alone is wrong.
@@ -171,6 +174,7 @@ A part of the title does **not** count: "Wake Me Up" alone is wrong.
   - A credited artist only counts on its own if it has at least two words after a leading "the" is removed, or if it is listed in the catalog's `artistKeys`.
   - This stops "Earth" from matching *Earth, Wind & Fire*, or "חלב" from matching *חלב ודבש*.
   - If any name in the guess is wrong, the artist is wrong.
+  - **Known gap:** four solo artists appear in the catalog only inside a duet, under a one-word name: סטטיק, סאבלימינל, אודיה and P!nk. Guessing that name alone is rejected until step 5 adds them as `artistKeys` or aliases.
 
 **Do not reuse `artistMatches` as it is.** It accepts "and the" for *Kool & the Gang*, and it accepts made-up featured artists.
 
@@ -293,8 +297,7 @@ rankPlayers(players: readonly Player[]): Player[][]  // by cards, then tokens; e
 
 ## 6. Screens
 
-**Mockups:** the [UI design canvas](https://claude.ai/artifact/4FzDZZfJcLzt3MD3NQ8Ujz) has 12 phone screens: the turn flow, every result, the scoreboard, setup, a Hebrew (RTL) betting screen and a sheet of the new parts. It is private to the owner until shared.
-- **Out of date:** screens 3 and 4 and the Hebrew betting screen still show the old seat-order round. They need the "Who's betting?" list, the bettor's naming step and the skip button.
+**Mockups:** the [UI design canvas](https://claude.ai/artifact/4FzDZZfJcLzt3MD3NQ8Ujz) has 12 phone screens: the turn flow, every result, the scoreboard, setup, a Hebrew (RTL) betting screen and a sheet of the new parts. It is private to the owner until shared. It shows the first-come, first-served betting round (who's betting, a bettor names the song, pick a spot, all bets in), "Not this time", and the skip button with its confirmation.
 
 **Design decisions (approved by the owner):**
 - **The bet button is gold, not pink.** "Bet 1 token" uses the token gold (`--color-token`) with dark text and a token icon, so spending a token looks different from the main pink action. Every other main action (Lock in, Check, Reveal, Next player) stays pink.
@@ -478,6 +481,8 @@ The current line, "Correct!" or "Wrong, it was 2003", stays. Below it, up to 3 s
 | 4 | artist "דטנר" | ✗ |
 | 447 | artist "ליאור נרקיס עם שלומי שבת" | ✓ |
 | 64 | title "אני ואתה" | ✗ (that is song 35's title) |
+| 134 | title "Believe" | ✗ (that is song 181's title) |
+| 526 | artist "שלומי שבת" | ✗ (a different singer from שלומי שבן) |
 | any | empty guess | ✗, not an error |
 
 Other server tests:
@@ -488,7 +493,7 @@ Other server tests:
 - `catalog.test.ts`: aliases are checked.
 - `songs-data.test.ts`:
   - every song's own artist and title are judged correct;
-  - a sample of other songs' artists are judged wrong.
+  - a sample of other songs' artists and titles are judged wrong.
 
 ### Web (Vitest)
 
@@ -579,7 +584,7 @@ Each step is finished with all tests passing before the next one starts.
 
 | # | Step | Main files | Done when |
 |---|---|---|---|
-| 1 | **Checking names on the server:** shared text cleanup, the matching rules, the `/guess` endpoint, and the empty alias fields | `server/src/text.ts`, `guess.ts`, `app.ts`, `types.ts`, `catalog.ts`, `docs/CONTRACTS.md` §4 and §8 | server tests and `api.spec.ts` pass, including the cases in §8 |
+| 1 ✅ | **Checking names on the server:** shared text cleanup, the matching rules, the `/guess` endpoint, and the empty alias fields | `server/src/text.ts`, `guess.ts`, `app.ts`, `types.ts`, `catalog.ts`, `docs/CONTRACTS.md` §4 and §8 | server tests and `api.spec.ts` pass, including the cases in §8 |
 | 2 | **Game rules:** tokens, skipping, the bettor flow, settling a turn, the winner check for every player, the token tie-break, saved-game migration, the on/off switch in the state | `web/src/game/*`, `web/src/api/client.ts` (`checkGuess`), `web/src/test/fixtures.ts` | unit tests pass and the type check is clean |
 | 3 | **Screens:** token meter, skip button and confirmation, naming fields, Lock in, the three betting screens, timeline markers, result rows, scoreboard, winner screen, setup switch, Hebrew and English text. The mockup canvas is updated first. | `GameScreen.tsx`, `Timeline.tsx`, `Scoreboard.tsx`, `WinnerScreen.tsx`, `SetupScreen.tsx`, new `TokenMeter`, `NameGuess`, `BetPanel`, `TurnOutcome`, `SkipSong`, `dictionaries.ts`, `I18nProvider.tsx`, `theme.css`, `index.html` | screen tests pass, and it works by hand at 360×640 in Hebrew and English |
 | 4 | **End-to-end tests and docs** | `e2e/tests/*`, `PLAN.md` §1, §6 and §8, `docs/DESIGN.md`, `docs/QA.md`, `docs/CONTRACTS.md` §6 | all Playwright tests pass (phone and desktop) |

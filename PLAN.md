@@ -115,7 +115,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 131 server unit tests, 116 web unit tests, 82 Playwright end-to-end tests (phone and desktop sizes). All pass.
+**Tests today:** 246 server unit tests, 116 web unit tests, 84 Playwright end-to-end tests (phone and desktop sizes). All pass.
 
 **Open checks:**
 - Play a song on the live Railway site on a phone. This confirms the real 30-second previews, and that audio starts on an iPhone.
@@ -165,7 +165,7 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 - **Checked:** unit tests (server 13 new, web 4 new) and 7 new Playwright tests for the cover, including "no request before Reveal" and "no scrolling on a small phone". A placeholder record image is used in tests.
 - **Not checked:** real Apple covers. The sandbox cannot reach Apple, so the first real test is on the live site.
 
-### 9.4 Tokens, naming and bets ⬜ Planned (rules confirmed)
+### 9.4 Tokens, naming and bets 🟡 Step 1 of 5 done
 
 The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owner answered all 13 rule questions on 2026-10-04.
 
@@ -186,10 +186,10 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 - **Betting:** a "Who's betting?" screen lists the players who may bet. Each one taps their name, names the song, then picks a spot.
 - **On/off:** a "Tokens & bets" switch in Setup, on by default.
 - **Saved games:** games saved before this change are migrated, not lost.
-- **Mockups:** the [UI design canvas](https://claude.ai/artifact/4FzDZZfJcLzt3MD3NQ8Ujz). Its betting screens still need updating for the new betting round.
+- **Mockups:** the [UI design canvas](https://claude.ai/artifact/4FzDZZfJcLzt3MD3NQ8Ujz), updated for the first-come, first-served betting round and the skip button.
 
 **Steps:**
-1. Check names on the server.
+1. Check names on the server. ✅ Done: `POST /api/songs/:id/guess`, with 85 new server unit tests and 2 new end-to-end API tests.
 2. Game rules.
 3. Screens.
 4. End-to-end tests and docs.
