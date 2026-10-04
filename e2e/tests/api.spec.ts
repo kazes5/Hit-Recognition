@@ -38,12 +38,23 @@ async function drainCatalog(request: APIRequestContext): Promise<Song[]> {
   throw new Error('catalog never exhausted');
 }
 
+/**
+ * Catalog-only `artistKeys` that link a credit to a performer under another name
+ * (server/data/songs.json). The client cannot see them, so the test lists them.
+ */
+const HIDDEN_KEYS: Record<string, string[]> = {
+  'mark ronson': ['bruno mars'],
+  teapacks: ['טיפקס'],
+  'noa kirel': ['נועה קירל'],
+};
+
 /** Contributor keys of a credit, split like server/src/selection.ts splitArtistKeys. */
 function contributorKeys(artist: string): string[] {
   let parts = artist.split(/\s*(?:&|\+|,)\s*|\s+(?:feat\.?|ft\.?|featuring|and|x|vs\.?)\s+/i);
   if (/[\u0590-\u05FF]/.test(artist)) parts = parts.flatMap((p) => p.split(/\s+ו(?=[א-ת])/));
   const keys = parts.map((p) => p.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^the /, '')).filter((k) => k.length > 0);
-  return keys.length > 0 ? [...new Set(keys)] : [artist.toLowerCase()];
+  const all = keys.length > 0 ? keys : [artist.toLowerCase()];
+  return [...new Set(all.flatMap((k) => [k, ...(HIDDEN_KEYS[k] ?? [])]))];
 }
 
 test.describe('API', () => {
@@ -100,8 +111,8 @@ test.describe('API', () => {
     // While draining with growing excludeArtists, the server repeats a contributor only once no
     // remaining song has all-new contributors. Contributors are split like the server does
     // ("Lady Gaga & Bradley Cooper", "יזהר כהן והאלפבתא"). At the first repeat, count the songs that
-    // still look all-new here; the server also knows catalog-only artistKeys the client can't see
-    // (e.g. "Mark Ronson" includes Bruno Mars), so a couple of such songs are allowed.
+    // still look all-new here. The catalog-only artistKeys that link names (HIDDEN_KEYS) are
+    // applied; a couple of songs are still allowed in case more such links are added.
     const seen = new Set<string>();
     let freshAtFirstRepeat = 0;
     for (const [i, s] of all.entries()) {
@@ -115,12 +126,18 @@ test.describe('API', () => {
     expect(freshAtFirstRepeat, 'server repeated an artist while songs by unused artists were left').toBeLessThanOrEqual(2);
 
     // Exclude every artist but one (sent in UPPER CASE) → must get that artist.
+    // The kept artist shares no contributor with any other credit (excluding "X & Y" also excludes Y).
     const byArtist = new Map<string, Song[]>();
     for (const s of all) {
       const k = s.artist.toLowerCase();
       byArtist.set(k, [...(byArtist.get(k) ?? []), s]);
     }
-    const [keep] = [...byArtist.keys()];
+    const keyOwners = new Map<string, Set<string>>();
+    for (const a of byArtist.keys()) {
+      for (const k of contributorKeys(a)) keyOwners.set(k, (keyOwners.get(k) ?? new Set()).add(a));
+    }
+    const keep = [...byArtist.keys()].find((a) => contributorKeys(a).every((k) => keyOwners.get(k)!.size === 1))!;
+    expect(keep).toBeDefined();
     const excludeArtists = [...new Set(all.map((s) => s.artist))]
       .filter((a) => a.toLowerCase() !== keep)
       .map((a) => a.toUpperCase());
