@@ -72,19 +72,21 @@ Rules: `docs/TOKENS_AND_BETS.md`. Automated: `e2e/tests/betting.spec.ts`. Use 3 
 | ID | Area | Steps | Expected |
 |---|---|---|---|
 | TC-31 | Setup | Open Setup. Turn "Tokens & bets" off, go back, open Setup again, reload. | On by default. Off is remembered. With it off, the turn has Reveal, no ◉, no naming, no skip. |
-| TC-32 | Tokens | Start a game. Win cards until you have 5, then win one more. | Start at 1; +1 per card; the 6th card gives no token ("+1 card (tokens full)"); the meter shows "Max". |
+| TC-32 | Tokens | Start a game. (a) Place a card right without naming. (b) Place a card wrong, with the artist named right. (c) Place cards right with the artist or the title named right until you have 5, then once more. | Start at 1. (a) "+1 card", no token. (b) No token. (c) "+1 card · +1 token" each time; at 5, "+1 card (tokens full)"; the meter shows "Max". |
 | TC-33 | Lock in | Pick no spot. Open "Name artist + title". | Lock in stays disabled, with "Pick a spot on the timeline first". |
 | TC-34 | Naming both | Name both right (try other case, no apostrophes, a small typo), Lock in. | The card is revealed at once. "Named it! No bets allowed." Names shown with ✓ ✓. |
-| TC-35 | Named, wrong spot | Name both right, pick a wrong spot. | Card discarded, no bets, no tokens move. |
-| TC-36 | Bets open | Name one part wrong (or nothing), Lock in. | "Bets are open!". Nothing says which part was wrong. The answer is nowhere on screen. |
-| TC-37 | Bettor allowed | Bob taps his name, types only the artist right, Check. | "You can bet!". Free spots light up; Ann's spot shows a pink "A" and cannot be picked. |
+| TC-35 | Named, wrong spot | Name both right, pick a wrong spot. | Card discarded, no bets, no tokens move (a token needs the right spot too). |
+| TC-36 | Bets open | Name one part wrong (or nothing), Lock in. | "Bets are open!". With nothing right: "To bet, name the artist or the title." With the artist right: "Ann named the artist. To bet, name the title." (and the other way round). The answer is nowhere on screen. |
+| TC-37 | Bettor allowed | Ann named nothing right. Bob taps his name, types only the artist right, Check. | "You can bet!". Free spots light up; Ann's spot shows a pink "A" and cannot be picked. |
+| TC-37b | Only the open part | Ann named the artist right, the title wrong. Bob taps his name. | "Bob, name the title", one field only ("Only this part is still open"). The right title lets him bet; the artist cannot be used. |
 | TC-38 | Fields cleared | After Bob's Check, Carol taps her name. | Carol's fields are empty. Bob's typing is gone. |
 | TC-39 | Bettor denied | Carol names neither right. | "Not this time. Pass the phone on." Her token is kept. Her button shows "tried". |
 | TC-40 | Cancel | A bettor taps Cancel before Check; another taps Cancel after Check. | Before Check: the try is kept. After Check: the try is used. No request without typed text. |
-| TC-41 | Any order, earlier wins | Two songs share a year so two spots are right. Carol bets first, then Bob, both right; Ann wrong. | Carol wins the card (into her own timeline, sorted, gold outline, "Added to Carol's timeline"), +1 token. Bob: "Correct bet, but Carol bet first", keeps his token. |
-| TC-42 | Wrong bet | Ann right, Bob bets wrong. | Ann +1 card +1 token. Bob −1 token. |
+| TC-41 | Any order, earlier wins | Two songs share a year so two spots are right. Carol bets first, then Bob, both right; Ann wrong. | Carol wins the card (into her own timeline, sorted, gold outline, "Added to Carol's timeline"), "+1 card", her bet token back (no +1). Bob: "Correct bet, but Carol bet first", keeps his token. |
+| TC-42 | Wrong bet | Ann right with the title named right, Bob bets wrong. | Ann "+1 card · +1 token". Bob −1 token. |
 | TC-43 | Nobody right | Ann wrong, every bet wrong. | "Nobody got it. The card is out." Each bettor −1. |
-| TC-44 | We accept it | Ann types names that are fair but rejected; bets are placed; Reveal. Tap "We accept it". | Bet tokens come back; a card won by a bettor is taken back; Ann's spot alone decides. The button is gone afterwards. |
+| TC-44 | We accept it | Ann types names that are fair but rejected; bets are placed; Reveal. Tap "We accept it". | Bet tokens come back; a card won by a bettor is taken back; Ann's spot alone decides the card, and she gets +1 token only if her spot was right. The button is gone afterwards. |
+| TC-45a | Naming with nobody to bet | 1-player game (or nobody else has a token). Pick the right spot, open "Name artist + title", type the artist right, Reveal. | Reveal checks the name ("Checking…"), no betting round; "+1 card · +1 token". |
 | TC-45 | Skip | With 3+ tokens, pick a spot, tap "Skip · 3". Tap "Keep listening"; then Skip again and confirm. | Keep listening costs nothing. Skip: −3 tokens, a new song, the spot is cleared. No skip button with 2 tokens or during betting. |
 | TC-46 | Winner / resume | (a) Bob reaches the target by a won bet on Ann's turn. (b) Reload during betting, with a bettor mid-naming. (c) End the game early with players tied on cards. | (a) Next says "See the winner", Bob wins. (b) Same round, same bets; the unchecked bettor's try is unused. (c) More tokens wins ("Tied on cards; more tokens wins."); still tied, shared win. |
 

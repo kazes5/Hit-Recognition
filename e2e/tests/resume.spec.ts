@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import {
   addPlayer,
   freshStart,
+  mockGuess,
   mockSongQueue,
   placeAndReveal,
   readScores,
@@ -27,6 +28,7 @@ test('reload mid-game → btn-resume restores players, timelines, scores and cur
     song(607, 2020, 'Resume G', 'Turn G'),
   ];
   await mockSongQueue(page, q);
+  await mockGuess(page, q);
   await freshStart(page);
   await tid(page, 'btn-new-game').click();
   await addPlayer(page, 'Alice');
@@ -36,13 +38,13 @@ test('reload mid-game → btn-resume restores players, timelines, scores and cur
   await tid(page, 'btn-start-game').click();
 
   await waitForTurn(page, 'Alice');
-  expect(await placeAndReveal(page, 0)).toBe(true);
+  expect(await placeAndReveal(page, 0, { name: { artist: 'Resume C' } })).toBe(true);
   await tid(page, 'btn-next').click();
   await waitForTurn(page, 'Bob');
   const bobTimeline = await timelineIds(page);
   const scores = await readScores(page);
   expect(scores).toEqual({ Alice: 2, Bob: 1 });
-  // Tokens & bets is on by default: +1 token for Alice's card.
+  // Tokens & bets is on by default: +1 token for Alice naming the artist.
   const tokens = await readTokens(page);
   expect(tokens).toEqual({ Alice: 2, Bob: 1 });
 

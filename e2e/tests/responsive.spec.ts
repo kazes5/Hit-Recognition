@@ -146,12 +146,15 @@ async function shootBetting(page: Page, info: TestInfo, lang: 'en' | 'he'): Prom
     song(811, 1990, 'Whitney Houston', 'Greatest Love Of All'), // Alice's start card
     song(812, 2000, 'Coldplay', 'Yellow'), // Bart's
     song(813, 1970, 'Simon & Garfunkel', 'The Boxer'), // Carol's
-    t1, // Alice places it after 1990 (wrong); Bart bets before 1990 and wins it
-    song(815, 2010, 'Katy Perry', 'Firework'), // Bart: after 2000, right → 3 tokens
+    t1, // Alice places it after 1990 (wrong) and names the artist; Bart names the title, bets before 1990 and wins it
+    song(815, 2010, 'Katy Perry', 'Firework'), // Bart: after 2000, names the artist → 2 tokens
     song(816, 1960, 'Elvis Presley', "It's Now or Never"), // Carol: before 1970
     song(817, 1995, 'Oasis', 'Wonderwall'), // Alice: after 1990
-    song(818, 1985, 'a-ha', 'Take On Me'), // Bart's next turn: he skips it
-    song(819, 1950, 'Nat King Cole', 'Mona Lisa'),
+    song(818, 1985, 'a-ha', 'Take On Me'), // Bart: between 1980 and 2000, names the artist → 3 tokens
+    song(819, 1950, 'Nat King Cole', 'Mona Lisa'), // Carol: before 1960
+    song(820, 2006, 'Amy Winehouse', 'Rehab'), // Alice: after 1995
+    song(821, 1974, 'ABBA', 'Waterloo'), // Bart's next turn: he skips it
+    song(822, 1965, 'The Beatles', 'Help!'),
   ];
   await mockSongQueue(page, queue);
   await mockGuess(page, queue);
@@ -174,9 +177,10 @@ async function shootBetting(page: Page, info: TestInfo, lang: 'en' | 'he'): Prom
   expect(await lockIn(page)).toBe('betting');
   await checkScreen(page, info, p('10-who-is-betting'));
 
-  // Bart grabs the phone, names the artist and bets before 1990.
+  // Bart grabs the phone. Alice got the artist right, so only the title is open: he names it and bets before 1990.
   await bettorButton(page, 1).click();
-  await tid(page, 'input-guess-artist').fill(t1.artist);
+  await expect(tid(page, 'input-guess-artist')).toHaveCount(0);
+  await tid(page, 'input-guess-title').fill(t1.title);
   await checkScreen(page, info, p('11-bettor-naming'));
   expect(await checkBettorName(page, {})).toBe(true);
   await placeBet(page, 0);
@@ -187,10 +191,18 @@ async function shootBetting(page: Page, info: TestInfo, lang: 'en' | 'he'): Prom
   await checkScreen(page, info, p('12-won-bet'));
   await tid(page, 'btn-next').click();
 
-  // Bart (2 tokens) places right → 3 tokens; Carol and Alice play plain turns.
-  for (const index of [2, 0, 1]) {
+  // Two rounds: Bart names the artist on each of his turns (+1 token each); Carol and Alice play plain turns.
+  const turns: { index: number; artist?: string }[] = [
+    { index: 2, artist: 'Katy Perry' },
+    { index: 0 },
+    { index: 1 },
+    { index: 1, artist: 'a-ha' },
+    { index: 0 },
+    { index: 2 },
+  ];
+  for (const { index, artist } of turns) {
     await waitForTurn(page);
-    expect(await placeAndReveal(page, index)).toBe(true);
+    expect(await placeAndReveal(page, index, artist ? { name: { artist } } : {})).toBe(true);
     await tid(page, 'btn-next').click();
   }
 

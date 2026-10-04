@@ -250,7 +250,8 @@ describe('App flow', () => {
       screen.getAllByTestId('score-row').map((r) => [r.getAttribute('data-score'), r.getAttribute('data-tokens')]),
     ).toEqual([
       ['1', '1'],
-      ['2', '2'],
+      // Ben won the card and kept his stake; winning a card earns no token.
+      ['2', '1'],
     ]);
   });
 

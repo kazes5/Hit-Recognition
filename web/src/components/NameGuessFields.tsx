@@ -13,8 +13,11 @@ interface NameGuessFieldsProps {
   onArtistChange: (value: string) => void;
   onTitleChange: (value: string) => void;
   disabled?: boolean;
-  /** Focus the artist field when the fields appear. */
+  /** Focus the first field when the fields appear. */
   autoFocus?: boolean;
+  /** A bettor only sees the parts the current player did not get right. */
+  showArtist?: boolean;
+  showTitle?: boolean;
   children?: ReactNode;
 }
 
@@ -32,14 +35,17 @@ export function NameGuessFields({
   onTitleChange,
   disabled = false,
   autoFocus = false,
+  showArtist = true,
+  showTitle = true,
   children,
 }: NameGuessFieldsProps) {
   const { t } = useI18n();
   const artistRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (autoFocus) artistRef.current?.focus();
-  }, [autoFocus]);
+    if (autoFocus) (showArtist ? artistRef : titleRef).current?.focus();
+  }, [autoFocus, showArtist]);
 
   const common = {
     type: 'text',
@@ -56,31 +62,36 @@ export function NameGuessFields({
   return (
     <fieldset className="guess-fields">
       <legend>{legend}</legend>
-      <div className="field">
-        <label htmlFor={`${idPrefix}-artist`}>{t('guessArtist')}</label>
-        <input
-          {...common}
-          ref={artistRef}
-          id={`${idPrefix}-artist`}
-          name={`${idPrefix}-artist`}
-          data-testid="input-guess-artist"
-          placeholder={t('guessArtistPlaceholder')}
-          value={artist}
-          onChange={(e) => onArtistChange(e.target.value)}
-        />
-      </div>
-      <div className="field">
-        <label htmlFor={`${idPrefix}-title`}>{t('guessTitle')}</label>
-        <input
-          {...common}
-          id={`${idPrefix}-title`}
-          name={`${idPrefix}-title`}
-          data-testid="input-guess-title"
-          placeholder={t('guessTitlePlaceholder')}
-          value={title}
-          onChange={(e) => onTitleChange(e.target.value)}
-        />
-      </div>
+      {showArtist && (
+        <div className="field">
+          <label htmlFor={`${idPrefix}-artist`}>{t('guessArtist')}</label>
+          <input
+            {...common}
+            ref={artistRef}
+            id={`${idPrefix}-artist`}
+            name={`${idPrefix}-artist`}
+            data-testid="input-guess-artist"
+            placeholder={t('guessArtistPlaceholder')}
+            value={artist}
+            onChange={(e) => onArtistChange(e.target.value)}
+          />
+        </div>
+      )}
+      {showTitle && (
+        <div className="field">
+          <label htmlFor={`${idPrefix}-title`}>{t('guessTitle')}</label>
+          <input
+            {...common}
+            ref={titleRef}
+            id={`${idPrefix}-title`}
+            name={`${idPrefix}-title`}
+            data-testid="input-guess-title"
+            placeholder={t('guessTitlePlaceholder')}
+            value={title}
+            onChange={(e) => onTitleChange(e.target.value)}
+          />
+        </div>
+      )}
       {children}
     </fieldset>
   );

@@ -25,9 +25,29 @@ export function namesCorrect(guess: NameGuess | null): boolean {
   return !!guess && guess.artistCorrect && guess.titleCorrect;
 }
 
-/** A bettor must name the artist or the title to bet. */
-export function earnsBet(artistCorrect: boolean, titleCorrect: boolean): boolean {
-  return artistCorrect || titleCorrect;
+/** The current player named the artist or the title (with a right spot, that earns them a token). */
+export function namedAny(guess: NameGuess | null): boolean {
+  return !!guess && (guess.artistCorrect || guess.titleCorrect);
+}
+
+/** What a bettor may still name: only the parts the current player did not get right. */
+export interface OpenParts {
+  artist: boolean;
+  title: boolean;
+}
+
+export function openParts(guess: NameGuess | null): OpenParts {
+  return { artist: !guess?.artistCorrect, title: !guess?.titleCorrect };
+}
+
+/**
+ * A bettor must name a part the current player did not get right: the title
+ * if the current player named the artist, the artist if they named the title,
+ * either one if they named neither.
+ */
+export function earnsBet(artistCorrect: boolean, titleCorrect: boolean, guess: NameGuess | null = null): boolean {
+  const open = openParts(guess);
+  return (open.artist && artistCorrect) || (open.title && titleCorrect);
 }
 
 /** Slots of a timeline with `timelineLength` cards that nobody has taken yet. */
@@ -89,16 +109,19 @@ export interface TurnSettlement {
   correct: boolean;
   cardWinnerIndex: number | null;
   bets: SettledBet[];
+  /** The current player earned a token: a right spot and a right name. */
+  namedToken: boolean;
 }
 
 /**
  * Settles a revealed turn. Every spot is checked against the current player's
  * timeline before the card is added. The card goes to the current player if
  * their spot is right, else to the earliest bet on a right spot, else to nobody.
- * The card winner gets +1 token (a winning bettor keeps the bet token). A
- * wrong bet loses its token; a right bet that did not get the card keeps it.
- * `accepted` ("We accept it") cancels every bet: no token moves for bets.
- * Tokens only change with `tokensAndBets` on.
+ * Tokens: the current player gets +1 only for a right spot together with a
+ * right artist or title; a card alone gives no token (a winning bettor keeps
+ * the bet token). A wrong bet loses its token; a right bet that did not get the
+ * card keeps it. `accepted` ("We accept it") counts the typed names as right
+ * and cancels every bet. Tokens only change with `tokensAndBets` on.
  */
 export function settleTurn(input: {
   players: readonly Player[];
@@ -107,11 +130,14 @@ export function settleTurn(input: {
   pickedSlot: number;
   bets: readonly Bet[];
   tokensAndBets: boolean;
+  /** The current player's checked names, if they typed any. */
+  guess?: NameGuess | null;
   accepted?: boolean;
 }): TurnSettlement {
-  const { players, current, song, pickedSlot, bets, tokensAndBets, accepted = false } = input;
+  const { players, current, song, pickedSlot, bets, tokensAndBets, guess = null, accepted = false } = input;
   const base = players[current]?.timeline ?? [];
   const correct = isPlacementCorrect(base, pickedSlot, song.year);
+  const namedToken = tokensAndBets && correct && !!guess && (accepted || namedAny(guess));
   const isRight = (bet: Bet) => isPlacementCorrect(base, bet.slotIndex, song.year);
   const firstRightBet = accepted ? undefined : bets.find(isRight);
   const cardWinnerIndex = correct ? current : (firstRightBet?.playerIndex ?? null);
@@ -124,15 +150,13 @@ export function settleTurn(input: {
 
   const next = players.map((player, i) => {
     let { timeline, tokens } = player;
-    if (i === cardWinnerIndex) {
-      timeline = insertCard(timeline, song);
-      if (tokensAndBets) tokens = awardToken(tokens);
-    }
+    if (i === cardWinnerIndex) timeline = insertCard(timeline, song);
+    if (i === current && namedToken) tokens = awardToken(tokens);
     if (tokensAndBets && settled.some((b) => b.playerIndex === i && b.outcome === 'lost')) {
       tokens = spendTokens(tokens);
     }
     return timeline === player.timeline && tokens === player.tokens ? player : { ...player, timeline, tokens };
   });
 
-  return { players: next, correct, cardWinnerIndex, bets: settled };
+  return { players: next, correct, cardWinnerIndex, bets: settled, namedToken };
 }

@@ -112,6 +112,8 @@ export function GameScreen() {
   const canReveal = isTurn && hasSlot;
   // Lock in replaces Reveal whenever someone could bet on this card.
   const betsPossible = isTurn && tokensOn && anyoneCouldBet(state);
+  // Naming earns a token, so it is offered whenever tokens are on, even when nobody could bet.
+  const namingPossible = isTurn && tokensOn;
   const skipAllowed = isTurn && canSkip(state);
   const typed = guessArtist.trim() !== '' || guessTitle.trim() !== '';
 
@@ -302,7 +304,7 @@ export function GameScreen() {
               />
             </section>
 
-            {betsPossible && (
+            {namingPossible && (
               <div className="name-it">
                 <button
                   type="button"
@@ -371,10 +373,14 @@ export function GameScreen() {
                 type="button"
                 className="btn btn--primary btn--block"
                 data-testid="btn-reveal"
-                disabled={!canReveal}
-                onClick={() => dispatch({ type: 'REVEAL' })}
+                disabled={!canReveal || locking}
+                onClick={() => {
+                  // Typed names are checked first (they can earn a token); with nobody to bet, Lock in reveals at once.
+                  if (namingPossible && nameOpen && typed) void lockIn(true);
+                  else dispatch({ type: 'REVEAL' });
+                }}
               >
-                {t('reveal')}
+                {locking ? t('checking') : t('reveal')}
               </button>
             )}
           </footer>

@@ -68,35 +68,43 @@ test('the Setup switch is on by default and remembered on the phone', async ({ p
   await expect(tid(page, 'toggle-tokens-bets')).toHaveAttribute('aria-checked', 'false');
 });
 
-test('tokens start at 1, +1 for every card won, never above 5', async ({ page }) => {
-  const turns = [1991, 1992, 1993, 1994, 1995, 1996].map((y, i) => song(911 + i, y, `Solo ${i}`, `Tune ${i}`));
+test('tokens start at 1, +1 only for a right spot with the artist or the title named, never above 5', async ({ page }) => {
+  const turns = [1991, 1992, 1993, 1994, 1995, 1996, 1997].map((y, i) => song(911 + i, y, `Solo ${i}`, `Tune ${i}`));
   await mockSongQueue(page, [START[0], ...turns]);
+  await mockGuess(page, turns);
   await startGame(page, ['Solo'], 10);
 
   // The starting card gives no token.
   await expectTokens(page, 1);
   expect(await readTokens(page)).toEqual({ Solo: 1 });
 
-  // A wrong placement gives nothing.
+  // A wrong placement gives nothing, even with the artist named right.
   await waitForTurn(page, 'Solo');
-  expect(await placeAndReveal(page, 0)).toBe(false); // 1991 before 1990
+  expect(await placeAndReveal(page, 0, { name: { artist: turns[0]!.artist } })).toBe(false); // 1991 before 1990
+  await expect(tid(page, 'guess-artist-result')).toHaveAttribute('data-correct', 'true');
   await tid(page, 'btn-next').click();
   await waitForTurn(page, 'Solo');
   await expectTokens(page, 1);
 
-  // Each card won: +1, up to 5. The 5th token is "Max"; a 6th card adds no token.
-  for (const expected of [2, 3, 4, 5, 5]) {
+  // A card won without naming: still no token. Cards never earn tokens.
+  expect(await placeAndReveal(page, (await timelineIds(page)).length)).toBe(true);
+  await expect(outcomeRow(page, 'won')).toHaveText(/\+1 card$/);
+  await tid(page, 'btn-next').click();
+  await waitForTurn(page, 'Solo');
+  await expectTokens(page, 1);
+
+  // A right spot with the artist named right: +1 each turn, up to 5 (nobody can bet in a 1-player game, so Reveal checks the name).
+  for (const [i, expected] of [2, 3, 4, 5, 5].entries()) {
     const cards = await timelineIds(page);
-    expect(await placeAndReveal(page, cards.length)).toBe(true); // always the newest year
-    if (expected === 5 && cards.length === 5) {
-      await expect(outcomeRow(page, 'won')).toContainText(/tokens full/i);
-    }
+    const full = expected === 5 && i === 4;
+    expect(await placeAndReveal(page, cards.length, { name: { artist: turns[i + 2]!.artist } })).toBe(true);
+    if (full) await expect(outcomeRow(page, 'won')).toContainText(/tokens full/i);
     await tid(page, 'btn-next').click();
     await waitForTurn(page, 'Solo');
     await expectTokens(page, expected);
   }
   expect(await readTokens(page)).toEqual({ Solo: 5 });
-  expect(await readScores(page)).toEqual({ Solo: 6 });
+  expect(await readScores(page)).toEqual({ Solo: 7 });
   await tid(page, 'btn-scoreboard').click();
   await expect(tid(page, 'scoreboard').getByTestId('token-meter')).toHaveAttribute('data-tokens', '5');
   await expect(tid(page, 'scoreboard').getByTestId('token-meter')).toContainText(/max/i);
@@ -138,6 +146,7 @@ test('naming both right (real server matching, case and punctuation changed) rev
   await expect(tid(page, 'result-named')).toBeVisible();
   await expect(tid(page, 'result-stolen')).toHaveCount(0);
   expect(await timelineIds(page)).toEqual([START[1].id]);
+  // The card is out, and a wrong spot earns no token, even with both names right.
   expect(await readTokens(page)).toEqual({ Alice: 2, Bob: 1 });
   expect(await readScores(page)).toEqual({ Alice: 2, Bob: 1 });
 });
@@ -215,12 +224,12 @@ test('a bettor naming only the artist may bet; one naming neither may not and ke
   await expect(tid(page, 'bet-legend').locator('li[data-marker="bet"]')).toContainText('Bob');
   expect(calls.map((c) => c.id)).toEqual([s1.id, s1.id]);
 
-  // Alice was right: she gets the card and a token; Bob's wrong bet loses his token; Carol keeps hers.
+  // Alice was right: she gets the card (no token: she did not name); Bob's wrong bet loses his token; Carol keeps hers.
   expect(await reveal(page)).toBe(true);
   await expect(outcomeRow(page, 'won')).toHaveAttribute('data-player', '0');
   await expect(outcomeRow(page, 'lost')).toHaveAttribute('data-player', '1');
   await expect(tid(page, 'result-stolen')).toHaveCount(0);
-  expect(await readTokens(page)).toEqual({ Alice: 2, Bob: 0, Carol: 1 });
+  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 0, Carol: 1 });
   expect(await readScores(page)).toEqual({ Alice: 2, Bob: 1, Carol: 1 });
 });
 
@@ -284,7 +293,8 @@ test('bettors go in any order; the earlier right bet wins the card into their ow
     await tid(page, 'btn-next').click();
   }
   await waitForTurn(page, 'Alice');
-  expect(await readTokens(page)).toEqual({ Alice: 2, Bob: 2, Carol: 2 });
+  // Three right cards without naming: no tokens earned.
+  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 1, Carol: 1 });
 
   // Carol grabs the phone before Bob: seat order does not matter.
   expect(
@@ -303,8 +313,8 @@ test('bettors go in any order; the earlier right bet wins the card into their ow
   // The result shows Carol's timeline, with the card sorted by year (not at the spot she bet on).
   await expect(tid(page, 'timeline')).toHaveAttribute('data-owner', '2');
   expect(await timelineIds(page)).toEqual([953, 903, 954]);
-  // Carol: bet token back +1 for the card. Bob: right, but later; keeps his token.
-  expect(await readTokens(page)).toEqual({ Alice: 2, Bob: 2, Carol: 3 });
+  // Carol: the bet token comes back (a card earns no token). Bob: right, but later; keeps his token.
+  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 1, Carol: 1 });
   expect(await readScores(page)).toEqual({ Alice: 2, Bob: 2, Carol: 3 });
 });
 
@@ -329,7 +339,7 @@ test('a won bet puts the card in the bettor’s timeline, and a bettor can win t
   await expect(tid(page, 'timeline')).toHaveAttribute('data-owner', '1');
   expect(await timelineIds(page)).toEqual([961, 902]);
   await expect(outcomeRow(page, 'won')).toHaveAttribute('data-player', '1');
-  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 2 });
+  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 1 });
   await tid(page, 'btn-next').click();
 
   await waitForTurn(page, 'Bob');
@@ -361,7 +371,7 @@ test('when nobody has a token left to bet, the turn goes straight to Reveal', as
   // Bob bets on the wrong spot and loses his only token.
   expect(await placeAndReveal(page, 1, { bets: [{ player: 1, artist: 'drain', slot: 0 }] })).toBe(true);
   await expect(outcomeRow(page, 'lost')).toHaveAttribute('data-player', '1');
-  expect(await readTokens(page)).toEqual({ Alice: 2, Bob: 0 });
+  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 0 });
   await tid(page, 'btn-next').click();
 
   // Bob's turn: Alice has tokens, so Bob locks in.
@@ -370,15 +380,14 @@ test('when nobody has a token left to bet, the turn goes straight to Reveal', as
   expect(await placeAndReveal(page, 1)).toBe(false);
   await tid(page, 'btn-next').click();
 
-  // Alice's turn: Bob has no token, so there is no naming and no Lock in, just Reveal.
+  // Alice's turn: Bob has no token, so there is no Lock in, just Reveal. Naming is still offered
+  // (with a right spot it earns a token): Reveal checks her title, and she earns +1 with no betting round.
   await waitForTurn(page, 'Alice');
-  await expect(tid(page, 'btn-name-it')).toHaveCount(0);
   await expect(tid(page, 'btn-lock-in')).toHaveCount(0);
-  await slot(page, 2).click();
-  await expect(tid(page, 'btn-reveal')).toBeEnabled();
-  expect(await reveal(page)).toBe(true);
+  await expect(tid(page, 'btn-name-it')).toBeVisible();
+  expect(await placeAndReveal(page, 2, { name: { title: 'three' } })).toBe(true);
   await expect(tid(page, 'bet-panel')).toHaveCount(0);
-  expect(await readTokens(page)).toEqual({ Alice: 3, Bob: 0 });
+  expect(await readTokens(page)).toEqual({ Alice: 2, Bob: 0 });
 });
 
 test('skipping a song costs 3 tokens and plays a new song', async ({ page }) => {
@@ -391,16 +400,17 @@ test('skipping a song costs 3 tokens and plays a new song', async ({ page }) => 
     song(985, 1999, 'Spare', 'Spare'),
   ];
   const mock = await mockSongQueue(page, q);
+  await mockGuess(page, q);
   await startGame(page, ['Solo'], 10);
 
-  // With 1 or 2 tokens there is no skip button.
+  // With 1 or 2 tokens there is no skip button. Naming the artist earns the tokens.
   await waitForTurn(page, 'Solo');
   await expect(tid(page, 'btn-skip-song')).toHaveCount(0);
-  expect(await placeAndReveal(page, 1)).toBe(true);
+  expect(await placeAndReveal(page, 1, { name: { artist: 'Skip A' } })).toBe(true);
   await tid(page, 'btn-next').click();
   await waitForTurn(page, 'Solo');
   await expect(tid(page, 'btn-skip-song')).toHaveCount(0);
-  expect(await placeAndReveal(page, 2)).toBe(true);
+  expect(await placeAndReveal(page, 2, { name: { artist: 'Skip B' } })).toBe(true);
   await tid(page, 'btn-next').click();
 
   // 3 tokens: the button shows. "Keep listening" closes the sheet at no cost.
@@ -426,7 +436,8 @@ test('skipping a song costs 3 tokens and plays a new song', async ({ page }) => 
   await expect(tid(page, 'btn-skip-song')).toHaveCount(0);
   expect(await placeAndReveal(page, 3)).toBe(true);
   await expect(tid(page, 'revealed-card').getByTestId('card-title')).toHaveText('New');
-  expect(await readTokens(page)).toEqual({ Solo: 1 });
+  // A card without naming earns nothing.
+  expect(await readTokens(page)).toEqual({ Solo: 0 });
 });
 
 test('a reload in the middle of betting resumes the same round', async ({ page }) => {
@@ -473,7 +484,7 @@ test('a reload in the middle of betting resumes the same round', async ({ page }
   await expect(slot(page, 0)).toHaveAttribute('data-marker', 'bet');
   expect(await reveal(page)).toBe(false);
   await expect(tid(page, 'result-stolen')).toContainText('Bob');
-  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 2, Carol: 1 });
+  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 1, Carol: 1 });
 });
 
 test('"We accept it" settles the turn again: bet tokens back, a stolen card taken back', async ({ page }) => {
@@ -496,14 +507,15 @@ test('"We accept it" settles the turn again: bet tokens back, a stolen card take
   await expect(tid(page, 'guess-artist-result')).toHaveAttribute('data-correct', 'false');
   await expect(tid(page, 'guess-title-result')).toHaveAttribute('data-correct', 'true');
   await expect(tid(page, 'result-stolen')).toContainText('Carol');
-  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 1, Carol: 2 });
+  // Alice's title was right, but her spot was wrong: no token. Carol gets the card and her bet token back.
+  expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 1, Carol: 1 });
   expect(await readScores(page)).toEqual({ Alice: 1, Bob: 1, Carol: 2 });
 
   await tid(page, 'btn-accept-guess').click();
   await expect(tid(page, 'btn-accept-guess')).toHaveCount(0);
   await expect(tid(page, 'result-stolen')).toHaveCount(0);
   await expect(outcomeRow(page, 'refunded')).toHaveAttribute('data-player', '2');
-  // As if no bets were placed: Alice was wrong, so the card is out.
+  // As if no bets were placed: Alice's spot was wrong, so the card is out and she earns no token.
   expect(await readTokens(page)).toEqual({ Alice: 1, Bob: 1, Carol: 1 });
   expect(await readScores(page)).toEqual({ Alice: 1, Bob: 1, Carol: 1 });
   await tid(page, 'btn-next').click();

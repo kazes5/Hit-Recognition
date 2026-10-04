@@ -124,17 +124,34 @@ describe('GameScreen with tokens and bets: the turn', () => {
     expect(screen.getByTestId('btn-reveal')).toBeDisabled();
   });
 
-  it('when nobody could bet: Reveal, no naming, but Skip still works (e.g. a 1-player game)', async () => {
+  it('when nobody could bet: Reveal, no Lock in, Skip works; a card alone earns no token (e.g. a 1-player game)', async () => {
     const solo = tokenState({ players: [{ name: 'Solo', timeline: [song(1965, { id: 1 })], tokens: 3 }] });
+    const server = stubServer();
     const user = userEvent.setup();
     renderWithProviders(<GameScreen />, { state: solo });
-    expect(screen.queryByTestId('btn-name-it')).toBeNull();
     expect(screen.queryByTestId('btn-lock-in')).toBeNull();
     expect(screen.getByTestId('btn-skip-song')).toBeInTheDocument();
     await user.click(slots()[1]!);
     await user.click(screen.getByTestId('btn-reveal'));
     expect(screen.getByTestId('result-correct')).toBeInTheDocument();
-    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('4');
+    expect(server.guessCalls()).toHaveLength(0);
+    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('3');
+  });
+
+  it('when nobody could bet, naming is still offered: Reveal checks the names; a right spot with a right name earns a token', async () => {
+    const solo = tokenState({ players: [{ name: 'Solo', timeline: [song(1965, { id: 1 })], tokens: 1 }] });
+    const server = stubServer([{ artistCorrect: true, titleCorrect: false }]);
+    const user = userEvent.setup();
+    renderWithProviders(<GameScreen />, { state: solo });
+    await user.click(screen.getByTestId('btn-name-it'));
+    expect(screen.getByRole('group', { name: 'Optional: right spot + a right name = +1 token' })).toBeInTheDocument();
+    await user.type(screen.getByTestId('input-guess-artist'), 'Ivri Lider');
+    await user.click(slots()[1]!);
+    await user.click(screen.getByTestId('btn-reveal'));
+    expect(await screen.findByTestId('result-correct')).toBeInTheDocument();
+    expect(server.guessCalls()).toEqual([{ url: '/api/songs/50/guess', body: { artist: 'Ivri Lider', title: '' } }]);
+    expect(screen.getAllByTestId('outcome-row').map((r) => r.textContent)).toEqual(['SSolo+1 card · +1 token']);
+    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('2');
   });
 
   it('hides Skip with fewer than 3 tokens', () => {
@@ -205,7 +222,9 @@ describe('GameScreen with tokens and bets: the turn', () => {
       expect(input).not.toHaveAttribute('list');
       expect(input).toHaveClass('input');
     }
-    expect(screen.getByRole('group', { name: 'Name both to block bets (optional)' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('group', { name: 'Optional: right spot + a right name = +1 token' }),
+    ).toBeInTheDocument();
     await user.type(artist, '  Ivri Lider ');
     await user.type(title, 'Leonardo X');
     // Typing never calls the server
@@ -326,6 +345,42 @@ describe('GameScreen with tokens and bets: the betting round', () => {
     expect(screen.getByTestId('hidden-card')).toBeInTheDocument();
     expect(screen.getByTestId('btn-play')).toBeEnabled();
     expect(screen.getByTestId('btn-reveal')).toBeEnabled();
+  });
+
+  it('Ann named the artist: bettors are told so, see only the title field, and only the title is sent', async () => {
+    const server = stubServer([{ artistCorrect: false, titleCorrect: true }]);
+    const user = userEvent.setup();
+    renderWithProviders(<GameScreen />, { state: bettingState({ guess: guess(true, false) }) });
+    expect(screen.getByTestId('bet-needs')).toHaveTextContent('Ann named the artist. To bet, name the title.');
+    await user.click(bettor(1));
+    expect(screen.getByRole('heading', { name: 'Bob, name the title' })).toHaveFocus();
+    expect(screen.queryByTestId('input-guess-artist')).toBeNull();
+    expect(screen.getByRole('group', { name: 'Only this part is still open' })).toBeInTheDocument();
+    await user.type(screen.getByTestId('input-guess-title'), 'Leonardo');
+    await user.click(screen.getByTestId('btn-check-guess'));
+    await screen.findByTestId('bet-allowed');
+    expect(server.guessCalls()[0]!.body).toEqual({ artist: '', title: 'Leonardo' });
+  });
+
+  it('Ann named the title: naming the artist is the only way to bet', async () => {
+    // The server says the bettor's artist is wrong: no bet, even though the title is right (Ann already had it).
+    const server = stubServer([{ artistCorrect: false, titleCorrect: true }]);
+    const user = userEvent.setup();
+    renderWithProviders(<GameScreen />, { state: bettingState({ guess: guess(false, true) }) });
+    expect(screen.getByTestId('bet-needs')).toHaveTextContent('Ann named the title. To bet, name the artist.');
+    await user.click(bettor(1));
+    expect(screen.getByRole('heading', { name: 'Bob, name the artist' })).toBeInTheDocument();
+    expect(screen.queryByTestId('input-guess-title')).toBeNull();
+    await user.type(screen.getByTestId('input-guess-artist'), 'Somebody');
+    await user.click(screen.getByTestId('btn-check-guess'));
+    expect(await screen.findByTestId('bet-denied')).toHaveTextContent('Not this time');
+    expect(server.guessCalls()[0]!.body).toEqual({ artist: 'Somebody', title: '' });
+  });
+
+  it('Ann named neither: bettors may name either part', () => {
+    stubServer();
+    renderWithProviders(<GameScreen />, { state: bettingState({ guess: guess(false, false) }) });
+    expect(screen.getByTestId('bet-needs')).toHaveTextContent('To bet, name the artist or the title.');
   });
 
   it('a bettor names one part right, picks a free spot and bets 1 token', async () => {
@@ -476,8 +531,9 @@ describe('GameScreen with tokens and bets: the result', () => {
     expect(screen.getByTestId('result-wrong')).toHaveTextContent('Wrong, it was 1997');
     expect(screen.getByTestId('result-stolen')).toHaveTextContent('Bob wins the card!');
     expect(screen.getByTestId('result-stolen').querySelector('bdi')).toHaveTextContent('Bob');
+    // Bob gets the card (no token for a card); Ann named the artist but placed wrong, so no token.
     expect(rows()).toEqual([
-      ['won', '1', 'BBob+1 card · +1 token'],
+      ['won', '1', 'BBob+1 card'],
       ['lost', '2', 'C−1 token: Carol'],
     ]);
     // The current player's typed names, with ✓/✗
@@ -494,7 +550,7 @@ describe('GameScreen with tokens and bets: the result', () => {
     expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('3');
     expect(await openScoreboardTokens(user)).toEqual([
       ['Ann', '3'],
-      ['Bob', '3'],
+      ['Bob', '2'],
       ['Carol', '0'],
       ['Dana', '0'],
     ]);
@@ -513,7 +569,7 @@ describe('GameScreen with tokens and bets: the result', () => {
     ]);
   });
 
-  it('right spot with bets: +1 card · +1 token for the current player, losers grouped in one row', async () => {
+  it('right spot with bets, no names: +1 card for the current player, losers grouped in one row', async () => {
     await reveal(
       bettingState({
         selectedSlot: 1,
@@ -526,14 +582,14 @@ describe('GameScreen with tokens and bets: the result', () => {
     );
     expect(screen.getByTestId('result-correct')).toBeInTheDocument();
     expect(rows()).toEqual([
-      ['won', '0', 'AAnn+1 card · +1 token'],
+      ['won', '0', 'AAnn+1 card'],
       ['lost', '1,2', 'BC−1 token: Bob, Carol'],
     ]);
     // No names typed: nothing to accept
     expect(screen.queryByTestId('btn-accept-guess')).toBeNull();
     expect(screen.getByTestId('timeline')).toHaveAttribute('data-owner', '0');
     expect(screen.getByText(/'s timeline/)).toHaveTextContent("Ann's timeline");
-    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('4');
+    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('3');
   });
 
   it('two right bets: the earlier one wins, the later one keeps the token', async () => {
@@ -549,7 +605,7 @@ describe('GameScreen with tokens and bets: the result', () => {
     await reveal(s);
     expect(screen.getByTestId('result-stolen')).toHaveTextContent('Bob wins the card!');
     expect(rows()).toEqual([
-      ['won', '1', 'BBob+1 card · +1 token'],
+      ['won', '1', 'BBob+1 card'],
       ['right', '2', 'CCarolCorrect bet, but Bob bet first'],
     ]);
   });
@@ -562,19 +618,28 @@ describe('GameScreen with tokens and bets: the result', () => {
     expect(rows()).toEqual([['lost', '1', 'B−1 token: Bob']]);
     expect(screen.getByRole('heading', { name: "Were Ann's names right?" })).toBeInTheDocument();
     await user.click(screen.getByTestId('btn-accept-guess'));
+    // Bob gets his bet back. Ann's spot was wrong, so the accepted names earn her no token.
     expect(rows()).toEqual([['refunded', '1', 'BBobbet cancelled, token back']]);
+    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('3');
     expect((await openScoreboardTokens(user))[1]).toEqual(['Bob', '2']);
   });
 
-  it('no "We accept it" without bets', async () => {
+  it('no "We accept it" without bets; a wrong spot earns no token, even with a right name', async () => {
     await reveal(bettingState({ guess: guess(true, false) }));
     expect(screen.getByTestId('result-wrong')).toBeInTheDocument();
     expect(screen.queryByTestId('btn-accept-guess')).toBeNull();
-    expect(screen.queryAllByTestId('outcome-row')).toHaveLength(0);
+    expect(screen.queryAllByTestId('outcome-row')).toEqual([]);
+    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('3');
+  });
+
+  it('no names, no token: a card alone shows "+1 card"', async () => {
+    await reveal(bettingState({ selectedSlot: 1 }));
+    expect(rows()).toEqual([['won', '0', 'AAnn+1 card']]);
+    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('3');
   });
 
   it('tokens full: "+1 card (tokens full)"', async () => {
-    const s = bettingState({ selectedSlot: 1 });
+    const s = bettingState({ selectedSlot: 1, guess: guess(false, true) });
     s.players[0] = { ...s.players[0]!, tokens: 5 };
     await reveal(s);
     expect(rows()).toEqual([['won', '0', 'AAnn+1 card (tokens full)']]);
@@ -621,7 +686,7 @@ describe('GameScreen with tokens and bets: Hebrew', () => {
     expect(stolen).toHaveTextContent('הקלף עובר ל-Mike!');
     expect(stolen.querySelector('bdi')).toHaveTextContent('Mike');
     const [won, lost] = screen.getAllByTestId('outcome-row');
-    expect(won!.querySelectorAll('[dir="ltr"]')).toHaveLength(2);
+    expect(won!.querySelectorAll('[dir="ltr"]')).toHaveLength(1);
     expect(won!.querySelector('[dir="ltr"]')).toHaveTextContent('+1');
     expect(lost!.querySelector('[dir="ltr"]')).toHaveTextContent('−1');
     expect(lost!.querySelector('bdi')).toHaveTextContent('דני');

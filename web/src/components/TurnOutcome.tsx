@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { namesCorrect } from '../game/tokens';
+import { namedAny, namesCorrect } from '../game/tokens';
 import { MAX_TOKENS, type BetOutcome, type Player, type TurnResult } from '../game/types';
 import { nameList } from '../i18n/formatNode';
 import { useI18n } from '../i18n/I18nProvider';
@@ -50,10 +50,17 @@ export function TurnOutcome({ result, players, currentPlayerIndex, onAccept }: T
   const names = (indices: number[]) => nameList(indices.map((i) => players[i]?.name ?? ''));
   const group = (outcome: BetOutcome) => bets.filter((b) => b.outcome === outcome).map((b) => b.playerIndex);
 
+  // A token only comes with the current player's right spot and a right artist or title (or names accepted by the table).
+  const namedToken = winner === currentPlayerIndex && !!guess && (!!result.accepted || namedAny(guess));
+  const currentFull = (before[currentPlayerIndex]?.tokens ?? 0) >= MAX_TOKENS;
+
   const rows: Row[] = [];
   if (winner !== null) {
-    const full = (before[winner]?.tokens ?? 0) >= MAX_TOKENS;
-    rows.push({ players: [winner], kind: 'won', text: tNode(full ? 'outcomeCardOnly' : 'outcomeCardToken') });
+    rows.push({
+      players: [winner],
+      kind: 'won',
+      text: tNode(namedToken ? (currentFull ? 'outcomeCardOnly' : 'outcomeCardToken') : 'outcomeCard'),
+    });
   }
   const right = group('right');
   if (right.length > 0) {
