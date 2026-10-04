@@ -325,7 +325,7 @@ function BettorNameStep({ audio, errorBanner, playerIndex }: StepProps & { playe
               {tNode('bettorNameIt', { name: bettor.name })}
             </h2>
           </div>
-          <p className="bet-box__sub">
+          <p className="bet-box__meta">
             <TokenMeter tokens={bettor.tokens} />
             {t('bettorOneTry')}
           </p>

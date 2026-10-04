@@ -1059,7 +1059,7 @@ body {
 
 /* Footer with two buttons (Cancel + Check / Bet) */
 .screen__footer--row { flex-direction: row; }
-.screen__footer--row > .btn { flex: 1 1 0; min-width: 0; padding-inline: var(--space-3); }
+.screen__footer--row > .btn { flex: 1 1 auto; min-width: 0; padding-inline: var(--space-3); white-space: nowrap; }
 .screen__footer-hint { margin: 0; text-align: center; font-size: var(--fs-sm); color: var(--color-text-muted); }
 
 /* Skip confirmation sheet */
@@ -1208,7 +1208,8 @@ body {
 .bet-box__mini > .song-card { --card-size: 44px; border-width: 1.5px; }
 .bet-box__mini > .song-card > .equalizer { display: none; }
 .bet-box__lead { margin: 0; font-size: 15px; }
-.bet-box__sub { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-muted); }
+.bet-box__sub { margin: 0; font-size: 13px; color: var(--color-text-muted); }
+.bet-box__meta { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-muted); }
 .bet-box__who { display: flex; align-items: center; gap: 10px; }
 .bet-box--ok { border-color: rgb(62 224 143 / 0.6); background: linear-gradient(180deg, rgb(62 224 143 / 0.08), rgb(62 224 143 / 0.02)); box-shadow: 0 0 18px rgb(62 224 143 / 0.15); }
 .bet-box--ok .bet-box__kicker { color: var(--color-success); }
@@ -1382,7 +1383,7 @@ body {
   text-align: start;
 }
 .score-table--tokens th:nth-child(2) { width: 8.5em; }
-.score-table--tokens th:last-child { width: 4em; text-align: end; }
+.score-table--tokens th:last-child { width: 5em; text-align: end; }
 .score-table__tokens { white-space: nowrap; }
 .score-table__rule { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: 13px; color: var(--color-text-muted); }
 
