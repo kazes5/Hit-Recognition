@@ -239,6 +239,12 @@ anyReachedTarget(players: readonly Player[], target: number): boolean
 
 ## 6. Screens
 
+**Mockups:** the [UI design canvas](https://claude.ai/artifact/4FzDZZfJcLzt3MD3NQ8Ujz) has 12 phone screens: the turn flow, every result, the scoreboard, setup, a Hebrew (RTL) betting screen and a sheet of the new parts. It is private to the owner until shared.
+
+**Design decisions (approved by the owner):**
+- **The bet button is gold, not pink.** "Bet 1 token" uses the token gold (`--color-token`) with dark text and a token icon, so spending a token looks different from the main pink action. Every other main action (Lock in, Reveal, Next player) stays pink.
+- **Taken spots show the player's initial.** During betting, a taken spot shows a disc with the player's initial: pink for the current player's pick, gold for a bet. Full names would not fit on small phones. If two players share an initial, the disc shows two letters. A legend under the timeline gives the full names.
+
 ### 6.1 Showing tokens
 - **Token icon.** A small gold disc with a "♪" and a glow, in a new colour token `--color-token: #ffd166`.
 - **Token meter.** Shows 5 pips, filled for each token held. Screen readers hear "3 of 5 tokens". With 5 tokens it shows "Max".
