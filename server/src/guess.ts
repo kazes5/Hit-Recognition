@@ -143,8 +143,10 @@ export function isArtistCorrect(song: GuessSong, guess: string, known?: KnownNam
 
   const parts = splitContributors(guess);
   if (parts.length === 0) return false;
-  const credit = splitContributors(song.artist);
-  if (credit.length > 1 && parts.length === credit.length && matchesDistinct(parts, credit, others)) return true;
+  for (const name of names) {
+    const credit = splitContributors(name);
+    if (credit.length > 1 && parts.length === credit.length && matchesDistinct(parts, credit, others)) return true;
+  }
   return matchesDistinct(parts, soloContributors(song), others);
 }
 

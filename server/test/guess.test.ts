@@ -69,6 +69,8 @@ describe('artist and title guesses on real songs', () => {
     [152, 'artist', 'Sinead OConnor', true],
     [409, 'artist', 'Pink', true],
     [409, 'artist', 'Nate Ruess', true],
+    [409, 'artist', 'Nate Ruess & Pink', true], // an alias's names in any order
+    [106, 'artist', 'Ben El Tavori and Static', true],
     [4, 'artist', 'קושניר ודטנר', true],
     [4, 'artist', 'דטנר', false],
     [266, 'artist', 'דוד ד׳אור', true],
