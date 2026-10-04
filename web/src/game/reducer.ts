@@ -35,7 +35,7 @@ export type GameAction =
   | { type: 'LOCK_IN'; guess?: NameGuess | null }
   /** A player takes the phone to try to bet (first come, first served). */
   | { type: 'BETTOR_START'; playerIndex: number }
-  /** The server checked the active bettor's names: one right part earns the bet. Uses up their try. */
+  /** The server checked the active bettor's names: a right part the current player did not name earns the bet. Uses up their try. */
   | { type: 'BETTOR_JUDGED'; artistCorrect: boolean; titleCorrect: boolean }
   | { type: 'PLACE_BET'; slotIndex: number }
   /** The active bettor gives the phone back (after "Not this time", or Cancel). */
@@ -86,6 +86,7 @@ function reveal(state: GameState): GameState {
     pickedSlot,
     bets: state.bets,
     tokensAndBets: state.tokensAndBets,
+    guess: state.guess,
   });
   const lastResult: TurnResult = { song, slotIndex: pickedSlot, correct: settled.correct };
   if (state.tokensAndBets) {
@@ -217,7 +218,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       if (state.phase !== 'betting' || !active || active.allowed !== null) return state;
       return {
         ...state,
-        activeBettor: { ...active, allowed: earnsBet(action.artistCorrect, action.titleCorrect) },
+        activeBettor: { ...active, allowed: earnsBet(action.artistCorrect, action.titleCorrect, state.guess) },
         triedThisTurn: [...state.triedThisTurn, active.playerIndex],
       };
     }
@@ -263,6 +264,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         pickedSlot: r.slotIndex,
         bets: r.bets.map(({ playerIndex, slotIndex }) => ({ playerIndex, slotIndex })),
         tokensAndBets: state.tokensAndBets,
+        guess: r.guess,
         accepted: true,
       });
       return {

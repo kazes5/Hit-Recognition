@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { checkGuess } from '../api/client';
-import { betBlock, eligibleBettors, freeBetSlots, type BetBlock } from '../game/tokens';
+import { betBlock, eligibleBettors, freeBetSlots, openParts, type BetBlock, type OpenParts } from '../game/tokens';
 import type { GameState } from '../game/types';
 import { ordinal, type MessageKey } from '../i18n/dictionaries';
 import { useI18n } from '../i18n/I18nProvider';
@@ -13,6 +13,17 @@ import { PlayButton, type AudioControls } from './PlayButton';
 import { HiddenCard } from './SongCard';
 import { Timeline, type SlotMarker } from './Timeline';
 import { TokenIcon, TokenMeter } from './TokenMeter';
+
+/** What a bettor must name, given what the current player already got right. */
+function needsKey(parts: OpenParts): MessageKey {
+  if (parts.artist && parts.title) return 'betNeedsName';
+  return parts.title ? 'betNeedsTitle' : 'betNeedsArtist';
+}
+
+function nameItKey(parts: OpenParts): MessageKey {
+  if (parts.artist && parts.title) return 'bettorNameIt';
+  return parts.title ? 'bettorNameTitle' : 'bettorNameArtist';
+}
 
 const BLOCK_REASONS: Record<BetBlock, MessageKey> = {
   current: 'reasonTried',
@@ -61,7 +72,7 @@ export function useBetAnnouncement(): string {
       : `${t('betsAllIn')} ${t('betsAllInHint', { player: current })}`;
   }
   const name = state.players[active.playerIndex]?.name ?? '';
-  if (active.allowed === null) return t('bettorNameIt', { name });
+  if (active.allowed === null) return t(nameItKey(openParts(state.guess)), { name });
   return active.allowed ? `${t('canBet')} ${t('pickFreeSpot', { name })}` : t('cannotBet');
 }
 
@@ -194,7 +205,9 @@ function WhoIsBetting({ audio, errorBanner }: StepProps) {
           {open ? (
             <>
               <p className="bet-box__lead">{tNode('betHint', { player: current.name })}</p>
-              <p className="bet-box__sub">{t('betNeedsName')}</p>
+              <p className="bet-box__sub" data-testid="bet-needs">
+                {tNode(needsKey(openParts(state.guess)), { player: current.name })}
+              </p>
             </>
           ) : (
             <p className="bet-box__lead">
@@ -281,7 +294,9 @@ function BettorNameStep({ audio, errorBanner, playerIndex }: StepProps & { playe
   const [failed, setFailed] = useState(false);
   const mounted = useMountedRef();
   const songId = state.currentSong?.id;
-  const typed = artist.trim() !== '' || title.trim() !== '';
+  // Only the parts the current player did not get right count, so only those are asked and sent.
+  const parts = openParts(state.guess);
+  const typed = (parts.artist && artist.trim() !== '') || (parts.title && title.trim() !== '');
   const headingRef = useFocusOnMount<HTMLHeadingElement>();
 
   const check = async () => {
@@ -289,7 +304,10 @@ function BettorNameStep({ audio, errorBanner, playerIndex }: StepProps & { playe
     setChecking(true);
     setFailed(false);
     try {
-      const judged = await checkGuess(songId, { artist: artist.trim(), title: title.trim() });
+      const judged = await checkGuess(songId, {
+        artist: parts.artist ? artist.trim() : '',
+        title: parts.title ? title.trim() : '',
+      });
       if (!mounted.current) return;
       // Cleared so the next player cannot read them.
       setArtist('');
@@ -322,7 +340,7 @@ function BettorNameStep({ audio, errorBanner, playerIndex }: StepProps & { playe
               {initials[playerIndex]}
             </span>
             <h2 ref={headingRef} tabIndex={-1}>
-              {tNode('bettorNameIt', { name: bettor.name })}
+              {tNode(nameItKey(parts), { name: bettor.name })}
             </h2>
           </div>
           <p className="bet-box__meta">
@@ -336,11 +354,13 @@ function BettorNameStep({ audio, errorBanner, playerIndex }: StepProps & { playe
         </div>
         <NameGuessFields
           idPrefix="bettor-guess"
-          legend={t('bettorNameLegend')}
+          legend={t(parts.artist && parts.title ? 'bettorNameLegend' : 'bettorNameOpenLegend')}
           artist={artist}
           title={title}
           onArtistChange={setArtist}
           onTitleChange={setTitle}
+          showArtist={parts.artist}
+          showTitle={parts.title}
           disabled={checking}
         />
       </div>

@@ -77,7 +77,8 @@ describe('persistence: tokens and bets (version 2)', () => {
     const s = run(
       bettingGame(),
       { type: 'BETTOR_START', playerIndex: 2 },
-      { type: 'BETTOR_JUDGED', artistCorrect: true, titleCorrect: false },
+      // Ann named the artist, so only the title earns a bet.
+      { type: 'BETTOR_JUDGED', artistCorrect: false, titleCorrect: true },
     );
     expect(s.phase).toBe('betting');
     expect(s.bets).toEqual([{ playerIndex: 1, slotIndex: 1 }]);
@@ -92,7 +93,8 @@ describe('persistence: tokens and bets (version 2)', () => {
     const done = run(loaded as GameState, { type: 'PLACE_BET', slotIndex: 0 }, { type: 'REVEAL' });
     expect(done.phase).toBe('result');
     expect(done.lastResult?.cardWinnerIndex).toBe(1);
-    expect(done.players.map((p) => p.tokens)).toEqual([1, 2, 0]);
+    // Ann +1 for naming the artist; Ben gets the card and his stake back; Cat loses hers.
+    expect(done.players.map((p) => p.tokens)).toEqual([2, 1, 0]);
   });
 
   it('keeps a bettor whose names were checked, allowed or not', () => {
@@ -126,7 +128,8 @@ describe('persistence: tokens and bets (version 2)', () => {
     expect(loaded).toEqual(s);
     const accepted = gameReducer(loaded as GameState, { type: 'ACCEPT_GUESS' });
     expect(accepted.lastResult?.accepted).toBe(true);
-    expect(accepted.players).toEqual(s.lastResult?.playersBefore);
+    expect(accepted.players.map((p) => p.timeline)).toEqual(s.lastResult?.playersBefore?.map((p) => p.timeline));
+    expect(accepted.players.map((p) => p.tokens)).toEqual([2, 1, 1]);
   });
 
   it('migrates a version 1 save: 1 token each, tokens and bets off, and the game still plays', () => {

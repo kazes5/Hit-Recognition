@@ -114,7 +114,9 @@ describe('Scoreboard with tokens', () => {
     expect(cells[2]).toHaveTextContent(/^2$/);
     expect(within(rows[0]!).getByTestId('token-meter')).toHaveAccessibleName('2 of 5 tokens');
     expect(within(rows[1]!).getByTestId('token-meter')).toHaveTextContent('Max');
-    expect(screen.getByTestId('scoreboard')).toHaveTextContent('Start with 1 token, +1 for every card (max 5).');
+    expect(screen.getByTestId('scoreboard')).toHaveTextContent(
+      'Start with 1 token. Name the artist or the title on your turn for +1 (max 5).',
+    );
   });
 
   it('without the switch: two cells, no tokens, as before', () => {

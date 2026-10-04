@@ -9,7 +9,9 @@ import {
   earnsBet,
   eligibleBettors,
   freeBetSlots,
+  namedAny,
   namesCorrect,
+  openParts,
   settleTurn,
   spendTokens,
 } from './tokens';
@@ -78,11 +80,36 @@ describe('namesCorrect / earnsBet', () => {
     expect(namesCorrect(null)).toBe(false);
   });
 
-  it('earnsBet needs the artist or the title', () => {
+  it('namedAny needs the artist or the title', () => {
+    expect(namedAny(null)).toBe(false);
+    expect(namedAny(guess(false, false))).toBe(false);
+    expect(namedAny(guess(true, false))).toBe(true);
+    expect(namedAny(guess(false, true))).toBe(true);
+  });
+
+  it('openParts: a bettor may only name what the current player did not get right', () => {
+    expect(openParts(null)).toEqual({ artist: true, title: true });
+    expect(openParts(guess(false, false))).toEqual({ artist: true, title: true });
+    expect(openParts(guess(true, false))).toEqual({ artist: false, title: true });
+    expect(openParts(guess(false, true))).toEqual({ artist: true, title: false });
+  });
+
+  it('earnsBet: the current player named the artist, so only the title counts', () => {
+    const artistNamed = guess(true, false);
+    expect(earnsBet(false, true, artistNamed)).toBe(true);
+    expect(earnsBet(true, false, artistNamed)).toBe(false);
+    expect(earnsBet(true, true, artistNamed)).toBe(true);
+    const titleNamed = guess(false, true);
+    expect(earnsBet(true, false, titleNamed)).toBe(true);
+    expect(earnsBet(false, true, titleNamed)).toBe(false);
+  });
+
+  it('earnsBet needs the artist or the title when the current player named neither', () => {
     expect(earnsBet(true, true)).toBe(true);
     expect(earnsBet(true, false)).toBe(true);
     expect(earnsBet(false, true)).toBe(true);
     expect(earnsBet(false, false)).toBe(false);
+    expect(earnsBet(true, false, guess(false, false))).toBe(true);
   });
 });
 
@@ -242,7 +269,12 @@ describe('canSkip', () => {
 describe('settleTurn', () => {
   /** Ann (current) holds 1990 and 2010; the song is from 2000, so only slot 1 is right. */
   const SONG_YEAR = 2000;
-  const setup = (players: Player[], pickedSlot: number, bets: Bet[], extra: { accepted?: boolean; tokensAndBets?: boolean } = {}) => {
+  const setup = (
+    players: Player[],
+    pickedSlot: number,
+    bets: Bet[],
+    extra: { accepted?: boolean; tokensAndBets?: boolean; guess?: NameGuess | null } = {},
+  ) => {
     const card = song(SONG_YEAR, { id: 4242 });
     const result = settleTurn({
       players,
@@ -251,6 +283,7 @@ describe('settleTurn', () => {
       pickedSlot,
       bets,
       tokensAndBets: extra.tokensAndBets ?? true,
+      guess: extra.guess,
       accepted: extra.accepted,
     });
     return { ...result, card };
@@ -258,15 +291,32 @@ describe('settleTurn', () => {
   const years = (p: Player | undefined) => p?.timeline.map((c) => c.year);
   const table = () => [player('Ann', [1990, 2010]), player('Ben', [1980]), player('Cat', [2005]), player('Dan', [1970])];
 
-  it('current right, no bets: the card and +1 token', () => {
+  it('current right, no names, no bets: the card but no token (cards never earn tokens)', () => {
     const players = table();
     const r = setup(players, 1, []);
     expect(r.correct).toBe(true);
     expect(r.cardWinnerIndex).toBe(0);
     expect(r.bets).toEqual([]);
+    expect(r.namedToken).toBe(false);
     expect(years(r.players[0])).toEqual([1990, 2000, 2010]);
-    expect(r.players[0]?.tokens).toBe(2);
+    expect(r.players[0]?.tokens).toBe(1);
     expect(r.players.slice(1)).toEqual(players.slice(1));
+  });
+
+  it('naming the artist or the title earns the current player +1 token, whatever the spot', () => {
+    const artistOnly = guess(true, false);
+    const right = setup(table(), 1, [], { guess: artistOnly });
+    expect(right.namedToken).toBe(true);
+    expect(right.players[0]?.tokens).toBe(2);
+    const wrongSpot = setup(table(), 0, [], { guess: guess(false, true) });
+    expect(wrongSpot.cardWinnerIndex).toBeNull();
+    expect(wrongSpot.players[0]?.tokens).toBe(2);
+    // Both right is still one token.
+    expect(setup(table(), 1, [], { guess: guess(true, true) }).players[0]?.tokens).toBe(2);
+    // Neither right: no token.
+    const none = setup(table(), 1, [], { guess: guess(false, false) });
+    expect(none.namedToken).toBe(false);
+    expect(none.players[0]?.tokens).toBe(1);
   });
 
   it('current right: every wrong bettor loses their token', () => {
@@ -279,7 +329,7 @@ describe('settleTurn', () => {
       { playerIndex: 1, slotIndex: 0, outcome: 'lost' },
       { playerIndex: 2, slotIndex: 2, outcome: 'lost' },
     ]);
-    expect(r.players.map((p) => p.tokens)).toEqual([2, 0, 0, 1]);
+    expect(r.players.map((p) => p.tokens)).toEqual([1, 0, 0, 1]);
     // A wrong bet takes nothing from the bettor's timeline.
     expect(years(r.players[1])).toEqual([1980]);
     expect(years(r.players[2])).toEqual([2005]);
@@ -294,12 +344,12 @@ describe('settleTurn', () => {
     ]);
     expect(r.cardWinnerIndex).toBe(0);
     expect(r.bets.map((b) => b.outcome)).toEqual(['right', 'lost']);
-    expect(r.players.map((p) => p.tokens)).toEqual([2, 1, 0]);
+    expect(r.players.map((p) => p.tokens)).toEqual([1, 1, 0]);
     expect(r.players[0]?.timeline).toHaveLength(4);
     expect(r.players[1]).toBe(players[1]);
   });
 
-  it("current wrong, one right bettor: the card goes into the bettor's own sorted timeline, +1 token, stake kept", () => {
+  it("current wrong, one right bettor: the card goes into the bettor's own sorted timeline and the stake comes back", () => {
     const players = table();
     const r = setup(players, 0, [
       { playerIndex: 1, slotIndex: 2 },
@@ -314,7 +364,7 @@ describe('settleTurn', () => {
     // Cat held 2005: the 2000 card goes first, by year, not at the slot she bet on.
     expect(years(r.players[2])).toEqual([2000, 2005]);
     expect(r.players[2]?.timeline[0]).toBe(r.card);
-    expect(r.players.map((p) => p.tokens)).toEqual([1, 0, 2, 1]);
+    expect(r.players.map((p) => p.tokens)).toEqual([1, 0, 1, 1]);
     // The current player keeps what they had.
     expect(r.players[0]).toBe(players[0]);
   });
@@ -329,7 +379,7 @@ describe('settleTurn', () => {
     ]);
     expect(r.cardWinnerIndex).toBe(2);
     expect(r.bets.map((b) => b.outcome)).toEqual(['won', 'right', 'lost']);
-    expect(r.players.map((p) => p.tokens)).toEqual([1, 1, 2, 0]);
+    expect(r.players.map((p) => p.tokens)).toEqual([1, 1, 1, 0]);
     expect(r.players[1]?.timeline).toHaveLength(1);
     expect(r.players[2]?.timeline).toHaveLength(2);
   });
@@ -367,8 +417,9 @@ describe('settleTurn', () => {
     expect(r.players[1]?.tokens).toBe(0);
   });
 
-  it('caps tokens at 5 for the current player and for a winning bettor', () => {
-    const current = setup([player('Ann', [1990, 2010], 5), player('Ben', [1980], 1)], 1, []);
+  it('caps the naming token at 5; a winning bettor keeps their tokens as they were', () => {
+    const current = setup([player('Ann', [1990, 2010], 5), player('Ben', [1980], 1)], 1, [], { guess: guess(true, false) });
+    expect(current.namedToken).toBe(true);
     expect(current.players[0]?.tokens).toBe(5);
     expect(current.players[0]?.timeline).toHaveLength(3);
 
@@ -389,13 +440,15 @@ describe('settleTurn', () => {
       { playerIndex: 1, slotIndex: 2 },
       { playerIndex: 2, slotIndex: 1 },
     ];
-    const wrong = setup(players, 0, bets, { accepted: true });
+    const wrong = setup(players, 0, bets, { accepted: true, guess: guess(false, false) });
     expect(wrong.cardWinnerIndex).toBeNull();
     expect(wrong.bets.map((b) => b.outcome)).toEqual(['refunded', 'refunded']);
-    expect(wrong.players.map((p) => p.tokens)).toEqual([1, 1, 1, 1]);
+    // The accepted names count as right: the current player gets the naming token.
+    expect(wrong.namedToken).toBe(true);
+    expect(wrong.players.map((p) => p.tokens)).toEqual([2, 1, 1, 1]);
     expect(wrong.players.map((p) => p.timeline.length)).toEqual([2, 1, 1, 1]);
 
-    const right = setup(players, 1, [{ playerIndex: 1, slotIndex: 0 }], { accepted: true });
+    const right = setup(players, 1, [{ playerIndex: 1, slotIndex: 0 }], { accepted: true, guess: guess(true, false) });
     expect(right.cardWinnerIndex).toBe(0);
     expect(right.bets).toEqual([{ playerIndex: 1, slotIndex: 0, outcome: 'refunded' }]);
     expect(right.players.map((p) => p.tokens)).toEqual([2, 1, 1, 1]);
@@ -404,7 +457,7 @@ describe('settleTurn', () => {
 
   it('with the switch off, no token ever changes', () => {
     const players = table();
-    const right = setup(players, 1, [], { tokensAndBets: false });
+    const right = setup(players, 1, [], { tokensAndBets: false, guess: guess(true, true) });
     expect(right.cardWinnerIndex).toBe(0);
     expect(right.players[0]?.timeline).toHaveLength(3);
     expect(right.players.map((p) => p.tokens)).toEqual([1, 1, 1, 1]);
@@ -428,7 +481,7 @@ describe('settleTurn', () => {
     });
     expect(r.correct).toBe(false);
     expect(r.cardWinnerIndex).toBe(0);
-    expect(r.players.map((p) => p.tokens)).toEqual([2, 1, 0]);
+    expect(r.players.map((p) => p.tokens)).toEqual([1, 1, 0]);
     expect(r.players.map((p) => p.timeline.length)).toEqual([2, 2, 1]);
   });
 

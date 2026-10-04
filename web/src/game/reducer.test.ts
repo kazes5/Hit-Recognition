@@ -234,14 +234,20 @@ describe('gameReducer: tokens and bets', () => {
   const play = (s: GameState, year: number, slot: number) =>
     run(s, { type: 'SONG_READY', song: song(year), previewUrl: '/x' }, { type: 'SELECT_SLOT', index: slot });
 
-  /** A bettor takes the phone, names one part right and bets on `slotIndex`. */
-  const bet = (s: GameState, playerIndex: number, slotIndex: number) =>
-    run(
+  /**
+   * A bettor takes the phone, names one part right and bets on `slotIndex`. The
+   * part is one the current player did not get right: the title if they named
+   * the artist, else the artist.
+   */
+  const bet = (s: GameState, playerIndex: number, slotIndex: number) => {
+    const titleOpenOnly = !!s.guess?.artistCorrect;
+    return run(
       s,
       { type: 'BETTOR_START', playerIndex },
-      { type: 'BETTOR_JUDGED', artistCorrect: true, titleCorrect: false },
+      { type: 'BETTOR_JUDGED', artistCorrect: !titleOpenOnly, titleCorrect: titleOpenOnly },
       { type: 'PLACE_BET', slotIndex },
     );
+  };
 
   const tokensOf = (s: GameState) => s.players.map((p) => p.tokens);
   const cardsOf = (s: GameState) => s.players.map((p) => p.timeline.length);
@@ -321,11 +327,11 @@ describe('gameReducer: tokens and bets', () => {
       expect(cardsOf(s)).toEqual([2, 1, 1]);
     });
 
-    it('named both but placed wrong: the card is out, and nobody could bet', () => {
+    it('named both but placed wrong: the card is out and nobody could bet, but naming still earns a token', () => {
       const s = run(play(tokenGame(), 1990, 1), { type: 'LOCK_IN', guess: guess(true, true) });
       expect(s.phase).toBe('result');
       expect(s.lastResult).toMatchObject({ correct: false, bets: [], cardWinnerIndex: null });
-      expect(tokensOf(s)).toEqual([1, 1, 1]);
+      expect(tokensOf(s)).toEqual([2, 1, 1]);
       expect(cardsOf(s)).toEqual([1, 1, 1]);
     });
 
@@ -339,11 +345,13 @@ describe('gameReducer: tokens and bets', () => {
       expect(tokensOf(s)).toEqual([2, 0, 0]);
     });
 
-    it('reveals at once in a 1-player game', () => {
+    it('reveals at once in a 1-player game; a card alone earns no token', () => {
       const s = run(play(tokenGame(['Solo']), 2010, 1), { type: 'LOCK_IN' });
       expect(s.phase).toBe('result');
       expect(s.lastResult?.correct).toBe(true);
-      expect(tokensOf(s)).toEqual([2]);
+      expect(tokensOf(s)).toEqual([1]);
+      const named = run(play(tokenGame(['Solo']), 2010, 1), { type: 'LOCK_IN', guess: guess(false, true) });
+      expect(tokensOf(named)).toEqual([2]);
     });
 
     it('with the switch off, reveals at once and ignores the guess', () => {
@@ -420,6 +428,25 @@ describe('gameReducer: tokens and bets', () => {
       expect(cancelled.bets).toEqual([]);
       expect(tokensOf(cancelled)).toEqual([1, 1, 1]);
       expect(gameReducer(cancelled, { type: 'BETTOR_START', playerIndex: 1 })).toBe(cancelled);
+    });
+
+    it('BETTOR_JUDGED: only a part the current player did not get right earns the bet', () => {
+      const locked = (g: NameGuess) =>
+        gameReducer(
+          run(play(board(tokenGame(), 0, [1980, 2000, 2020]), 2010, 0), { type: 'LOCK_IN', guess: g }),
+          { type: 'BETTOR_START', playerIndex: 1 },
+        );
+      // Ann named the artist: Ben's right artist does not count, his right title does.
+      const artistNamed = locked(guess(true, false));
+      expect(artistNamed.phase).toBe('betting');
+      const judge = (s: GameState, artistCorrect: boolean, titleCorrect: boolean) =>
+        gameReducer(s, { type: 'BETTOR_JUDGED', artistCorrect, titleCorrect }).activeBettor?.allowed;
+      expect(judge(artistNamed, true, false)).toBe(false);
+      expect(judge(artistNamed, false, true)).toBe(true);
+      // Ann named the title: only Ben's artist counts.
+      const titleNamed = locked(guess(false, true));
+      expect(judge(titleNamed, false, true)).toBe(false);
+      expect(judge(titleNamed, true, false)).toBe(true);
     });
 
     it('BETTOR_JUDGED: one right part allows the bet, none does not; the try is used either way', () => {
@@ -529,7 +556,7 @@ describe('gameReducer: tokens and bets', () => {
       const r = gameReducer(s, { type: 'REVEAL' });
       expect(r.phase).toBe('result');
       expect(r.lastResult).toMatchObject({ correct: true, guess: null, bets: [], cardWinnerIndex: 0 });
-      expect(tokensOf(r)).toEqual([2, 0, 0]);
+      expect(tokensOf(r)).toEqual([1, 0, 0]);
     });
 
     it('in the betting round, waits while a bettor holds the phone', () => {
@@ -578,7 +605,7 @@ describe('gameReducer: tokens and bets', () => {
       expect(cardsOf(s)).toEqual([4, 1, 1]);
     });
 
-    it("current player wrong, a bettor right: the card goes into the bettor's own timeline, +1 token", () => {
+    it("current player wrong, a bettor right: the card goes into the bettor's own timeline, the stake comes back", () => {
       let s = bet(openBets(), 1, 2); // Ben: right
       s = bet(s, 2, 3); // Cat: wrong
       s = gameReducer(s, { type: 'REVEAL' });
@@ -591,7 +618,7 @@ describe('gameReducer: tokens and bets', () => {
         ],
       });
       expect(s.players[1]?.timeline.map((c) => c.year)).toEqual([2000, 2010]);
-      expect(tokensOf(s)).toEqual([1, 2, 0]);
+      expect(tokensOf(s)).toEqual([1, 1, 0]);
       expect(cardsOf(s)).toEqual([3, 2, 1]);
       expect(s.usedIds).toContain(s.lastResult?.song.id);
     });
@@ -607,7 +634,7 @@ describe('gameReducer: tokens and bets', () => {
         [2, 'won'],
         [1, 'right'],
       ]);
-      expect(tokensOf(s)).toEqual([1, 1, 2]);
+      expect(tokensOf(s)).toEqual([1, 1, 1]);
       expect(cardsOf(s)).toEqual([3, 1, 2]);
     });
 
@@ -635,13 +662,14 @@ describe('gameReducer: tokens and bets', () => {
     });
 
     it('tokens never go above 5 over many turns', () => {
-      // Each turn the current player puts the newest song first (wrong) and the other bets last (right).
+      // Each turn the current player names the artist (+1 token) and puts the newest song first (wrong);
+      // the other player names the title and bets last (right), winning the card but no token.
       let s = tokenGame(['Ann', 'Ben'], 30);
       for (let turn = 1; turn <= 12; turn++) {
         const current = s.currentPlayerIndex;
         const other = 1 - current;
         const last = s.players[current]?.timeline.length ?? 0;
-        s = run(play(s, 2100 + turn, 0), { type: 'LOCK_IN' });
+        s = run(play(s, 2100 + turn, 0), { type: 'LOCK_IN', guess: guess(true, false) });
         s = gameReducer(bet(s, other, last), { type: 'REVEAL' });
         expect(s.lastResult?.cardWinnerIndex).toBe(other);
         for (const p of s.players) expect(p.tokens).toBeLessThanOrEqual(MAX_TOKENS);
@@ -652,7 +680,11 @@ describe('gameReducer: tokens and bets', () => {
 
       let solo = tokenGame(['Solo'], 30);
       for (let turn = 1; turn <= 8; turn++) {
-        solo = run(play(solo, 2000 + turn, solo.players[0]?.timeline.length ?? 0), { type: 'LOCK_IN' }, { type: 'NEXT' });
+        solo = run(
+          play(solo, 2000 + turn, solo.players[0]?.timeline.length ?? 0),
+          { type: 'LOCK_IN', guess: guess(false, true) },
+          { type: 'NEXT' },
+        );
         expect(solo.players[0]?.tokens).toBe(Math.min(MAX_TOKENS, 1 + turn));
       }
       expect(cardsOf(solo)).toEqual([9]);
@@ -746,7 +778,7 @@ describe('gameReducer: tokens and bets', () => {
       expect(tokensOf(s)).toEqual([0, 1, 1]);
       s = run(play(s, 2010, 1), { type: 'LOCK_IN' }, { type: 'REVEAL' });
       expect(s.lastResult?.correct).toBe(true);
-      expect(tokensOf(s)).toEqual([1, 1, 1]);
+      expect(tokensOf(s)).toEqual([0, 1, 1]);
       expect(cardsOf(s)).toEqual([2, 1, 1]);
     });
 
@@ -780,7 +812,8 @@ describe('gameReducer: tokens and bets', () => {
     it('cancels every bet and takes a stolen card back', () => {
       const before = stolen();
       expect(before.lastResult?.cardWinnerIndex).toBe(1);
-      expect(tokensOf(before)).toEqual([1, 2, 0]);
+      // Ann named the artist (+1); Ben named the title and won the card (stake back); Cat lost.
+      expect(tokensOf(before)).toEqual([2, 1, 0]);
       const s = gameReducer(before, { type: 'ACCEPT_GUESS' });
       expect(s.phase).toBe('result');
       expect(s.lastResult).toMatchObject({
@@ -792,9 +825,10 @@ describe('gameReducer: tokens and bets', () => {
           { playerIndex: 2, slotIndex: 3, outcome: 'refunded' },
         ],
       });
-      expect(tokensOf(s)).toEqual([1, 1, 1]);
+      // The accepted names earn Ann her naming token; every bet is refunded.
+      expect(tokensOf(s)).toEqual([2, 1, 1]);
       expect(cardsOf(s)).toEqual([3, 1, 1]);
-      expect(s.players).toEqual(before.lastResult?.playersBefore);
+      expect(s.players.map((p) => p.timeline)).toEqual(before.lastResult?.playersBefore?.map((p) => p.timeline));
     });
 
     it('gives the bet tokens back when the current player was right', () => {
@@ -803,7 +837,7 @@ describe('gameReducer: tokens and bets', () => {
         guess: guess(false, false),
       });
       s = gameReducer(bet(s, 1, 0), { type: 'REVEAL' });
-      expect(tokensOf(s)).toEqual([2, 0, 1]);
+      expect(tokensOf(s)).toEqual([1, 0, 1]);
       s = gameReducer(s, { type: 'ACCEPT_GUESS' });
       expect(s.lastResult).toMatchObject({ accepted: true, correct: true, cardWinnerIndex: 0 });
       expect(tokensOf(s)).toEqual([2, 1, 1]);
