@@ -20,6 +20,11 @@ Mood: a dark party room with neon signs, based on the box cover. Near-black matt
 | `--color-success` | `#3ee08f` | Correct |
 | `--color-error` | `#ff5a6e` | Wrong, errors |
 | `--color-card-ink` | `#1b1c1e` | Text on pastel cards |
+| `--color-token` | `#ffd166` | Tokens. **Gold means spending a token:** the token icon, the token meter, the "Bet 1 token" and "Skip · 3" buttons, bet markers, a won bet |
+| `--color-token-soft` | `#ffe3a3` | Token text on dark (the header chip, counts) |
+| `--color-token-ink` | `#2a1c00` | Text on gold |
+
+Every other main action stays pink. `--glow-token-box` is the gold glow.
 
 Card decade gradients (160°, light to slightly deeper):
 
@@ -58,7 +63,7 @@ The frontend picks the modifier as `song-card--d${Math.floor(year / 10) * 10}`, 
    - Header: the current player's `.player-badge` (name plus pink score pill) and a scoreboard `.btn--icon .btn--outline`.
    - `.turn-stage`: a compact row that wraps if needed. It holds the hidden card (`--card-size: 120px`; 96px on screens shorter than 700px, when the size is not set inline) with an `.equalizer` (`.equalizer--playing` animates it) under the "?". Beside it, `.turn-stage__controls`: `.speaker.speaker--small` (`.speaker--playing` while audio plays) above the "▶ Play / Replay" `.btn--outline`.
    - `.turn-timeline`: a `.turn-timeline__hint` line, then the `.timeline` in a faint framed well, centered when short. It contains the player's cards (`.song-card--small`) with a `.timeline-slot` before, between and after them; the chosen slot gets `.timeline-slot--selected`.
-   - Footer: `Reveal` `.btn--primary`, disabled until a slot is chosen.
+   - Footer: `Reveal` `.btn--primary`, disabled until a slot is chosen. With tokens and bets on and someone able to bet, it is `Lock in` instead (see "Tokens, naming and bets").
    - The sticky footer has `margin-block-start: auto` and `z-index` 5. `html` has `scroll-padding-block-end: var(--footer-h)`, so focus and `scrollIntoView` never land under the footer.
 4. **Result (same screen):** `.turn-stage.turn-stage--result` (a column). The hidden card becomes the revealed card with the decade gradient (add `.song-card--reveal` for the flip). Add `.song-card--correct` or `.song-card--wrong`. Below it: `.result--correct` "Correct!" or `.result--wrong` "Wrong, it was 2003". If correct, the card appears in the timeline with `.song-card--new`. Footer: `Next player` `.btn--primary`.
 5. **Scoreboard overlay:** `.overlay` > `.overlay__panel` (a bottom sheet with a cyan top edge). It holds a `.score-table` (fixed layout) with a row per player.
@@ -69,6 +74,32 @@ The frontend picks the modifier as `song-card--d${Math.floor(year / 10) * 10}`, 
 7. **Settings:** sections with a `.field__label` and a `.chip-group`: Language (עברית / English), Song languages (Hebrew / English / Both), Music source (Previews; Spotify and Apple shown as disabled chips "soon"). The active choice uses `.chip--active`, which adds a ✓. Back button in the header.
 
 Errors: `.error-banner` (⚠ plus red-tinted box) at the top of `.screen__body`.
+
+## Tokens, naming and bets
+
+Only shown when the Setup switch "Tokens & bets" is on (the default). Rules: `docs/TOKENS_AND_BETS.md`.
+
+- **Token icon** `.token-icon`: a small gold disc with a "♪" and a glow. Decorative (`aria-hidden`).
+- **Header chip** `.token-chip`: "◉ 3" beside the pink card-count pill in `.player-badge`. It has `role="img"` and the label "3 of 5 tokens".
+- **Token meter** `.token-meter`: 5 pips (`.token-meter__pip`, filled ones `.token-meter__pip--on`). At 5 it shows "Max" (`.token-meter__max`, and `.token-meter--full`); the scoreboard and Winner screen add the number (`.token-meter__count`). Always `direction: ltr`. Used in the "Who's betting?" list, the bettor screens, the scoreboard's Tokens column (`.score-table--tokens`, `.score-table__tokens`) and the Winner screen.
+- **Setup switch** `.rule-box` with a `.switch` (`role="switch"`, gold when on, ✓ in the knob) and a one-line rule (`.rule-box__text`). Off: `.rule-box--off` (grey).
+- **Naming** `.name-it`: a dashed cyan toggle `.name-it__toggle` ("✎ Name artist + title"; `--open` when open) under the timeline. It opens `.guess-fields`: a `<fieldset>` with a legend, two labelled 16px inputs and a 🔒 note (`.guess-fields__note`). When closed, `.name-it__who` says who can bet. The footer button is **Lock in** (pink).
+- **Skip** `.btn--sm.btn--token-outline` "♪ Skip · 3" beside Replay, only with 3+ tokens. Its sheet is an `.overlay__panel--token` (gold top edge) with `.skip-sheet`: the question, a hint, `.token-change` (meter now → meter after), a gold `.btn--token` "Skip · 3" and a ghost "Keep listening".
+- **Timeline markers** (betting only): a taken spot is `.timeline-slot--taken` plus `--pick` (pink bar and disc, the current player's spot) or `--bet` (gold). The disc shows the player's initial (two letters when initials clash) from `data-initials`. Taken spots are `aria-disabled` and cannot be picked.
+- **Legend** `.bet-legend` under the timeline: one `li` per marker, with a `.marker` disc (`.marker--pick` pink, `.marker--bet` gold, `.marker--mine` cyan ✓ for the bettor's choice, `.marker--free` "+" for free spots) and the full name ("Bob · 1st bet"). Long names get an ellipsis.
+- **Betting panel** (the screen gets `.screen--betting`, the body `.bet-stage`): a `.bet-box` (gold frame) on top.
+  - "Who's betting?": `.bet-box__kicker` "Bets are open!" (or "All bets are in!"), a mini hidden card with Replay (`.bet-box__mini`), the hint. Then the timeline with markers and the `.bettor-list` of `.bettor-btn` rows: an `.avatar` initial, the name, a meter and a gold "Bet ›" (`.bettor-btn__go`). A player who cannot try is greyed (`aria-disabled`) with a reason pill (`.bettor-btn__reason`: "tried", "no tokens", "no free spot"; `--bet` gold "1st bet"). Footer: Reveal (pink).
+  - A bettor's naming: `.bet-box__who` (large avatar, "Bob, name the artist or the title"), a meter and "one try" note, a compact hidden card (`.turn-stage--compact`), the same `.guess-fields`. Footer: Cancel (outline) and Check (pink).
+  - Allowed: `.bet-box--ok` (green) "✓ You can bet!", the free spots light up. Footer: Cancel and the gold **Bet 1 token** (`.btn--token`).
+  - Denied: `.bet-box--denied` with a ✗ icon, "Not this time. Pass the phone on.", and the kept token (`.bet-box__keep`). Footer: OK.
+- **Result rows** `.turn-outcome` under the result line:
+  - Badges `.result-badge--named` (cyan shield, "Named it! No bets allowed.") and `.result-badge--stolen` (gold, "Bob wins the card!").
+  - The current player's names with ✓/✗ (`.guess-result`, `__yes` green, `__no` red).
+  - Up to 3 `.outcome-row`s in `.outcome-list`: avatars, name(s) and what happened. `--won` green "+1 card · +1 token", `--lost` red "−1 token: …", `--right` and `--refunded` muted.
+  - `.accept-box`: "Were Ann's names right?" with the outline **We accept it** button.
+  - A card won by a bettor gets `.song-card--stolen` (gold outline and ♪ badge) in the bettor's timeline, with the hint `.turn-timeline__hint--stolen` "Added to Bob's timeline".
+- **Winner**: `.winner-note` (gold text) "Tied on cards; more tokens wins." when tokens broke a tie.
+- **Small phones (360×640):** the betting screens never scroll sideways; only the timeline does. Names are cut with "…".
 
 ## Card anatomy
 
@@ -133,3 +164,5 @@ Errors: `.error-banner` (⚠ plus red-tinted box) at the top of `.screen__body`.
 ## Extra classes (beyond CONTRACTS §5)
 
 `.neon-subtitle`, `.text-muted`, `.logo`, `.btn--block`, `.song-card--large`, `.song-card--correct`, `.song-card--wrong`, `.song-card--new`, `.song-card--reveal`, `.timeline__empty`, `.speaker--small`, `.equalizer`, `.error-banner`, `.field__label`, `.field__row`, `.chip-group`, `.player-list`, `.player-badge`, `.player-badge__score`, `.overlay`, `.overlay__panel`, `.score-table` (+ `tr.is-leader`), `.stack`, `.row`, `.center`, `.visually-hidden`, `.flip-rtl`, `.logo-heading`, `.screen__header--stacked`, `.turn-stage`, `.turn-stage--result`, `.turn-stage__controls`, `.turn-timeline`, `.turn-timeline__hint`, `.equalizer--playing`, `.cover`, `.cover__img`, `--cover-size`, `.score-table tr.is-current`. Token: `--footer-h`.
+
+Tokens and bets (see the section above): `--color-token`, `--color-token-soft`, `--color-token-ink`, `--glow-token-box`, `.token-icon`, `.token-chip`, `.token-meter` (+ `__pip`, `__pip--on`, `__count`, `__max`, `--full`), `.btn--token`, `.btn--token-outline`, `.btn--sm`, `.overlay__panel--token`, `.skip-sheet`, `.token-change`, `.name-it` (+ `__toggle`, `__toggle--open`, `__body`, `__who`), `.guess-fields` (+ `__note`), `.timeline-slot--taken` / `--pick` / `--bet`, `.bet-legend`, `.marker` (+ `--pick`, `--bet`, `--mine`, `--free`), `.avatar` (+ `--pick`, `--bet`, `--lg`), `.bet-stage`, `.bet-box` (+ `__top`, `__kicker`, `__mini`, `__lead`, `__sub`, `__meta`, `__who`, `__icon`, `__name`, `__keep`, `--ok`, `--denied`), `.bet-list-title`, `.bettor-list`, `.bettor-btn` (+ `__name`, `__go`, `__reason`, `__reason--bet`), `.turn-stage--compact`, `.turn-outcome` (+ `__plain`), `.result-badge` (+ `--named`, `--stolen`), `.guess-result` (+ `__part`, `__yes`, `__no`), `.outcome-list`, `.outcome-row` (+ `__avatars`, `__who`, `__what`, `--won`, `--lost`, `--right`, `--refunded`), `.accept-box`, `.song-card--stolen`, `.turn-timeline__hint--stolen`, `.score-table--tokens`, `.score-table__tokens`, `.score-table__rule`, `.winner-note`, `.rule-box` (+ `__top`, `__title`, `__text`, `--off`), `.switch`, `.switch__knob`.

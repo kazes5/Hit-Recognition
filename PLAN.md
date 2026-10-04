@@ -17,6 +17,14 @@ A party game for one shared phone (web app), based on the Hitster board game. Th
 4. **Score:** the number of cards on a player's timeline.
 5. **Winner:** the first player to reach the target score. Players can also end the game early, and the most cards wins.
 
+**Tokens, naming and bets** (a "Tokens & bets" switch in Setup, on by default; full rules in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md)):
+- **Tokens:** every player starts with 1 token and gets +1 for every card they win, up to 5.
+- **Naming:** after picking a spot, the current player can type the artist and the title, then taps **Lock in**. If both are right, the card is revealed at once and nobody can bet. Naming never gives a token.
+- **Betting:** otherwise the other players may bet, first come, first served. A bettor must name the artist or the title correctly first. A bet costs 1 token and goes on a free spot of the current player's timeline. Each player gets one try per turn.
+- **Outcome:** the current player right: they get the card and +1 token. The current player wrong: the earliest right bet wins the card into the bettor's own timeline, with the bet token back and +1. Wrong bets lose their token. After Reveal, "We accept it" can accept the current player's rejected names and cancel the bets.
+- **Skip:** before Lock in, a player can pay 3 tokens to skip the song and get a new one.
+- **Winner:** every player is checked after each turn, because a bettor can reach the target on someone else's turn. When the game is ended early and players are tied on cards, more tokens wins.
+
 **Rules for picking songs**
 - A song is never played twice in the same game.
 - At most 2 songs by the same artist in one game. The app first picks artists not seen yet, then artists seen once. A 3rd song by the same artist comes only when nothing else is left.
@@ -93,12 +101,13 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 ## 6. Screens
 
 1. **Home:** logo, *New Game*, *Settings*.
-2. **Players:** add or remove names, choose the target score.
-3. **Turn:** player name, hidden card with the playing speaker, replay button, the player's timeline with slots to choose from, **Reveal** button.
-4. **Result:** the revealed card plus ✅ "Correct!" or ❌ "Wrong, it was 2003", then *Next player*.
-5. **Scoreboard:** card counts for all players (available at any time).
-6. **Winner:** the final timelines and a *Play again* button.
-7. **Settings:** language, music source (Previews / Spotify / Apple Music), song languages (Hebrew / English / both).
+2. **Players:** add or remove names, choose the target score, and the "Tokens & bets" switch.
+3. **Turn:** player name with card count and tokens, hidden card with the playing speaker, replay button (and "Skip · 3" with 3+ tokens), the player's timeline with slots to choose from, an optional "Name artist + title", and the **Reveal** button (**Lock in** when someone could bet).
+4. **Betting** (after Lock in): "Bets are open!" with the current player's timeline (taken spots marked with initials: pink for the pick, gold for bets) and a "Who's betting?" list. A bettor taps their name, names the song, and gets "You can bet!" (pick a spot, "Bet 1 token") or "Not this time". *Reveal* ends the round.
+5. **Result:** the revealed card plus ✅ "Correct!" or ❌ "Wrong, it was 2003", then *Next player*. With tokens on: who won the card and what each player won or lost, the current player's names with ✓/✗, and "We accept it".
+6. **Scoreboard:** card counts and tokens for all players (available at any time).
+7. **Winner:** the final timelines (with tokens) and a *Play again* button.
+8. **Settings:** language, music source (Previews / Spotify / Apple Music), song languages (Hebrew / English / both).
 
 ---
 
@@ -115,7 +124,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 257 server unit tests, 120 web unit tests, 85 Playwright end-to-end tests (phone and desktop sizes). All pass. Branch `prod-smoke` adds 8 smoke tests (section 9.5).
+**Tests today:** 320 server unit tests, 286 web unit tests, 117 Playwright end-to-end tests (phone and desktop sizes). All pass. Branch `prod-smoke` adds 8 smoke tests (section 9.5).
 
 **Branch waiting to be merged** (pushed, no PR yet, held back by the owner):
 - `prod-smoke`: smoke tests for the live site, section 9.5.
@@ -134,7 +143,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 - Online multiplayer across several phones.
 - Using tokens to buy a card (from the original game).
 
-Tokens, naming the artist and title, betting on another player's card, and skipping a song for 3 tokens are now planned in step 9.6.
+Tokens, naming the artist and title, betting on another player's card, and skipping a song for 3 tokens are built (step 9.6).
 
 ---
 
@@ -182,7 +191,7 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 - **Blocked:** the sandbox's network policy blocks `hit-recognition-production.up.railway.app`. The owner needs to add that domain under Allowed domains in the cloud environment's network settings. Then run `E2E_BASE_URL=https://hit-recognition-production.up.railway.app npm run smoke`.
 - Running them on production would also close two open checks above: real previews and real covers. iPhone Safari still needs a real phone.
 
-### 9.6 Tokens, naming and bets 🟡 Steps 1–2 done, step 3 in progress
+### 9.6 Tokens, naming and bets ✅ Done (all 5 steps)
 
 The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owner answered all 13 rule questions on 2026-10-04.
 
@@ -208,14 +217,16 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 **Steps:**
 1. Check names on the server. ✅ Done: `POST /api/songs/:id/guess`, with 85 new server unit tests and 2 new end-to-end API tests.
 2. Game rules. ✅ Done: tokens, bets, skips, winner check for every player, token tie-break, saved-game migration; 113 new web unit tests.
-3. Screens.
-4. End-to-end tests and docs.
-5. A "We accept it" button and English spellings of Hebrew artist names. 🟡 Spellings done (209 songs; 42 alternative titles); the button comes with the screens.
+3. Screens. ✅ Done: token meter, skip, naming, Lock in, the betting screens, timeline markers, result rows, scoreboard, winner, setup switch, in Hebrew and English.
+4. End-to-end tests and docs. ✅ Done: `e2e/tests/betting.spec.ts` (14 tests on each of phone and desktop), new screenshots of the betting screens, and the docs (CONTRACTS §6, DESIGN, QA). The older specs play with the switch on, except `gameplay.spec.ts`, which keeps testing the classic rules with it off.
+5. A "We accept it" button and English spellings of Hebrew artist names. ✅ Done (209 songs with English spellings; 42 alternative titles).
+
+**Still to check by hand:** the keyboard over the footer and iPhone Safari on a real phone (docs/QA.md, TC-47 to TC-53).
 
 ### Suggested order
 
 1. Merge 9.5 when the owner approves.
 2. Allow the production domain and run the smoke tests (9.5).
-3. 9.6, tokens and bets: in progress on branch `claude/game-tokens-betting-plan-ddfipg`. A pull request is opened only when the whole feature works.
+3. 9.6, tokens and bets: done on branch `claude/game-tokens-betting-plan-ddfipg`. Next: a real-phone check, then the pull request.
 4. Finish 9.1 (about 95 songs left, mostly Hebrew). 9.2 and 9.3 are done.
 5. Then milestone 8, Spotify and Apple Music.

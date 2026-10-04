@@ -1,6 +1,6 @@
 # Tokens, naming and bets: plan
 
-**Status:** steps 1 and 2 are done, and so is the data half of step 5 (English spellings). Step 3 (screens) is in progress; then step 4 (end-to-end tests and docs) and the "We accept it" button. The owner has answered all rule questions (section 2). This is step 9.6 in [PLAN.md](../PLAN.md).
+**Status:** all five steps are done (section 9): the server check, the game rules, the screens, the end-to-end tests and docs, and "We accept it" with the aliases. The owner has answered all rule questions (section 2). This is step 9.6 in [PLAN.md](../PLAN.md). Where this plan and the code differ, the code and `docs/CONTRACTS.md` §6 win; the differences found while testing are fixed below.
 
 This plan adds four things to the game:
 - every player has **tokens**;
@@ -67,7 +67,7 @@ The game is still played on one shared phone. The steps marked **new** are added
 
 1. **Play.** The clip plays, and the card stays hidden. *(as today)*
 2. **Pick a spot** on your timeline. *(as today)*
-3. **Skip (new, optional).** With 3 or more tokens, a small **"Skip song · 3"** button sits next to Replay. Tapping it asks "Skip this song for 3 tokens?" first.
+3. **Skip (new, optional).** With 3 or more tokens, a small **"Skip · 3"** button sits next to Replay. Tapping it asks "Skip this song for 3 tokens?" first.
    - After a skip, a new song plays and the chosen spot is cleared.
    - A skip is only possible before Lock in.
 4. **Name it (new, optional).** A small button, **"Name artist + title"**, opens two text fields.
@@ -80,7 +80,7 @@ The game is still played on one shared phone. The steps marked **new** are added
 6. **Betting round (new), first come, first served.**
    1. **Who's betting?** The screen shows the current player's timeline and a button for each player who may still try. That means at least 1 token, no try yet this turn, and a free spot left.
       - Whoever grabs the phone first taps their own name.
-      - Players with 0 tokens, or who already tried, are shown greyed out with the reason.
+      - Players who cannot try are shown greyed out with the reason: "no tokens", "tried" or "no free spot". A player who bet shows "1st bet", "2nd bet" and so on.
    2. **Name it.** The bettor types the artist, the title, or both, and taps **Check**.
       - The app answers only **"You can bet!"** or **"Not this time"**. It never says which part was right.
       - The fields are cleared after Check, so the next player cannot read them.
@@ -88,7 +88,7 @@ The game is still played on one shared phone. The steps marked **new** are added
       - Taken spots show the player's initial: pink for the current player's pick, gold for a bet.
       - **Cancel** backs out at no cost. The try counts as used once the names were checked; Cancel before Check keeps it.
    4. **Next.** The screen goes back to "Who's betting?".
-   5. **End of the round.** It ends when someone taps **Reveal**, when nobody is left who may try, or when no free spot is left.
+   5. **End of the round.** It ends when someone taps **Reveal**. When nobody is left who may try (no tokens, all tried, or no free spot), the box says **"All bets are in!"** and asks to give the phone back to the current player to reveal.
 7. **Reveal.** The results are shown on the result screen. *(see §6)*
 8. **Next.** If any player reached the target, the Winner screen comes next.
 
@@ -191,7 +191,7 @@ songs.json has no aliases today. Typing a Hebrew artist in English letters will 
 Fuzzy matching will sometimes reject a fair answer.
 
 **For the current player:**
-- **When the button shows:** on the result screen, only when the names were judged not both correct.
+- **When the button shows:** on the result screen, only when the current player typed names that were not both judged correct, **and** bets were placed. With no bets there is nothing to settle again; with no typed names there is nothing to accept.
 - **What it does:** the group taps **"We accept it"**, and the turn is settled again as if no bets had been placed:
   - the bet tokens go back;
   - a card won by a bettor is taken back out of their timeline.
@@ -244,41 +244,44 @@ export interface TurnResult {
 |---|---|
 | `START_GAME { names, targetScore, tokensAndBets }` | Every player starts with `START_TOKENS`. `DEAL_CARD` gives no token. |
 | `SKIP_SONG` | Only in `turn`, with the switch on and at least `SKIP_COST` tokens. Takes 3 tokens, marks the song as used, and clears the song and the spot, so `GameProvider` fetches a new one. |
-| `GUESS_JUDGED { guess }` | The current player's check. Only in `turn`, with a song and a spot chosen. Stores the guess, then either reveals at once (`resolveTurn`) or moves to `betting`. In `betting`, `SELECT_SLOT` and `SKIP_SONG` are ignored. |
-| `LOCK_IN` | The same as `GUESS_JUDGED` with no names typed. |
-| `BETTOR_START { playerIndex }` | Only in `betting`, with no active bettor, and if `canTryToBet` is true. Sets `activeBettor`. |
+| `LOCK_IN { guess? }` | Lock in, with the current player's judged names if they typed any. Only in `turn`, with a song and a spot chosen. Stores the guess, then either reveals at once (`settleTurn`) or moves to `betting`. In `betting`, `SELECT_SLOT` and `SKIP_SONG` are ignored. |
+| `BETTOR_START { playerIndex }` | Only in `betting`, with no active bettor, and if `eligibleBettors` includes the player. Sets `activeBettor`. |
 | `BETTOR_JUDGED { artistCorrect, titleCorrect }` | Sets `allowed` to `artistCorrect \|\| titleCorrect` and adds the player to `triedThisTurn`. The typed text is not stored. |
 | `PLACE_BET { slotIndex }` | Only for an allowed active bettor, on a free spot. Adds the bet at the end of `bets` (so the order is the order of play) and clears `activeBettor`. |
 | `BETTOR_DONE` | Clears `activeBettor`: after "Not this time", or on Cancel. The try stays used. |
-| `REVEAL` | From `turn` when nobody can bet (as today), or from `betting` when no bettor is active. Calls `resolveTurn`. |
+| `REVEAL` | From `turn` when nobody can bet (as today), or from `betting` when no bettor is active. Calls `settleTurn`. |
 | `ACCEPT_GUESS` | Only in `result`. Settles the turn again from `playersBefore`, with the bets cancelled. |
 | `SONG_FAILED` | Now also accepted in `betting`. Goes back to `turn` with the guess, bets and tries cleared. No tokens change, because tokens only move when the turn is settled. |
 | `NEXT` | Checks **every** player for the target score (today it checks only the current player, `reducer.ts:133`). Clears the guess, bets and tries. |
-| `END_GAME` | From `betting` it just drops the bets. The winner is chosen with `rankPlayers`. |
+| `END_GAME` | From `betting` it just drops the bets. The winner is chosen with `findWinners`. |
 
-### 5.3 Pure rule functions (`rules.ts`, or a new `tokens.ts`)
+### 5.3 Pure rule functions (`tokens.ts` and `rules.ts`)
 
 ```ts
+// tokens.ts
 awardToken(t: number): number            // Math.min(MAX_TOKENS, t + 1)
-spendToken(t: number, n = 1): number     // Math.max(0, t - n)
+spendTokens(t: number, n = 1): number    // Math.max(0, t - n)
 namesCorrect(g: NameGuess | null): boolean      // both right: no bets
 earnsBet(artistCorrect: boolean, titleCorrect: boolean): boolean   // either right: may bet
 freeBetSlots(timelineLength: number, pickedSlot: number, bets: readonly Bet[]): number[]
-canTryToBet(state: GameState, playerIndex: number): boolean   // switch on, bets open, not the current player, tokens >= 1, not tried yet, a free spot exists
-anyoneCanBet(state: GameState): boolean
+betBlock(state: GameState, playerIndex: number): 'current' | 'noTokens' | 'tried' | 'noFreeSlots' | null
+eligibleBettors(state: GameState): number[]     // switch on, bets open, betBlock is null
+anyoneCouldBet(state: GameState): boolean       // before Lock in: decides Lock in vs Reveal
 canSkip(state: GameState): boolean       // switch on, phase turn, tokens >= SKIP_COST
-resolveTurn(input): { players: Player[]; result: TurnResult }
+settleTurn(input): { players: Player[]; correct: boolean; cardWinnerIndex: number | null; bets: SettledBet[] }
+// rules.ts
 anyReachedTarget(players: readonly Player[], target: number): boolean
-rankPlayers(players: readonly Player[]): Player[][]  // by cards, then tokens; equal players share a rank
+findWinners(players: readonly Player[], target: number): Player[]  // target reached; else most cards, then most tokens; equal players share
+wonOnTokens(players: readonly Player[], target: number): boolean   // ended early and tokens broke a tie
 ```
 
-**How `resolveTurn` settles a turn:**
+**How `settleTurn` settles a turn:**
 1. Every spot is checked against the current player's timeline **before** the new card is added: the current player's spot and each bet.
 2. The card goes to the current player if their spot is right. If not, it goes to the **earliest bet** (by order of play) whose spot is right. If nobody is right, it goes to nobody.
 3. The card winner gets the card inserted in their own timeline with `insertCard`, sorted by year (not at the spot they bet on), and `awardToken`. A winning bettor's bet token is not taken.
-4. A bettor on a wrong spot gets `spendToken`. A bettor on a right spot who did not get the card keeps their token (outcome `right`).
+4. A bettor on a wrong spot gets `spendTokens`. A bettor on a right spot who did not get the card keeps their token (outcome `right`).
 
-**Winner when the game is ended early:** `findWinners` (`rules.ts:71`) uses `rankPlayers`: the most cards, then the most tokens. Players equal on both share the win. The Winner screen ranks the timelines the same way.
+**Winner when the game is ended early:** `findWinners` (`rules.ts`): the most cards, then the most tokens. Players equal on both share the win. `wonOnTokens` tells the Winner screen to show the "Tied on cards; more tokens wins." line.
 
 ### 5.4 Saved games
 
@@ -316,14 +319,15 @@ rankPlayers(players: readonly Player[]): Player[][]  // by cards, then tokens; e
   | Winner screen | a meter beside each score |
 
 ### 6.2 Turn screen: skip
-- **The button.** "Skip song · 3", with the token icon, as a small outline button next to Replay. It shows only when the current player has 3 or more tokens and the switch is on.
+- **The button.** "Skip · 3" (read out as "Skip song for 3 tokens"), with the token icon, as a small gold outline button next to Replay. It shows only when the current player has 3 or more tokens and the switch is on.
 - **The confirmation.** A sheet asks "Skip this song for 3 tokens?", with **Skip** and **Keep listening**.
 
 ### 6.3 Betting screens
 1. **Who's betting?**
    - A gold panel says "Bets are open!" and "Think Ann is wrong? Grab the phone and tap your name."
    - Below it, the current player's timeline with the taken spots marked.
-   - Then a list of player buttons, each with a token meter. Players who cannot try are greyed out, with the reason: "no tokens" or "tried".
+   - Then a list of player buttons, each with a token meter. Players who cannot try are greyed out, with the reason: "no tokens", "tried" or "no free spot"; a player who bet shows "1st bet".
+   - When nobody is left who may try, the box says "All bets are in!".
    - Footer: **Reveal**.
 2. **Name it.**
    - The heading says "Bob, name the artist or the title", with two fields.
@@ -436,7 +440,7 @@ The current line, "Correct!" or "Wrong, it was 2003", stays. Below it, up to 3 s
 
 ---
 
-## 7. Contract changes (`docs/CONTRACTS.md`, needs the lead's approval)
+## 7. Contract changes (`docs/CONTRACTS.md`, done)
 
 - **§4:**
   - Add the `/api/songs/:id/guess` row.
@@ -498,17 +502,17 @@ Other server tests:
 ### Web (Vitest)
 
 **`rules.test.ts`**
-- Token cap and floor; `spendToken` by 3.
+- Token cap and floor; `spendTokens` by 3.
 - `namesCorrect` needs both; `earnsBet` needs one.
-- `freeBetSlots` and `canTryToBet`, one test for each condition.
+- `freeBetSlots` and `betBlock`, one test for each condition.
 - `canSkip`.
-- `resolveTurn`, one test per outcome in §6.4, plus:
+- `settleTurn`, one test per outcome in §6.4, plus:
   - bets checked against the timeline before the card is added;
   - two right bettors, where the earlier bet wins;
   - a winning bettor keeps the bet token and gets +1;
   - tokens never below 0.
 - `anyReachedTarget`.
-- `rankPlayers`: cards first, then tokens, then a shared rank.
+- `findWinners`: cards first, then tokens, then a shared win; `wonOnTokens`.
 
 **`reducer.test.ts`**
 - Start tokens; the switch on and off.
@@ -548,9 +552,10 @@ Other server tests:
 ### End to end (Playwright)
 
 **`helpers.ts`**
-- `placeAndReveal` gets a `bets` option.
-- New helpers: `lockIn`, `startBettor`, `checkBettorName`, `placeBet`, `skipSong`, `readTokens`.
-- The helper mocks `**/api/songs/*/guess`, because the e2e songs are fake.
+- `placeAndReveal` plays both flows. With nobody able to bet it taps Reveal. Otherwise it taps Lock in, with optional `name` and `bets` options, and then Reveal from the betting round.
+- `startGame` takes `{ tokensAndBets }` to set the Setup switch (`setTokensAndBets`).
+- New helpers: `typeNames`, `lockIn`, `startBettor`, `checkBettorName`, `placeBet`, `bet`, `skipSong`, `reveal`, `readTokens`.
+- `mockGuess` mocks `**/api/songs/*/guess`, because the e2e songs are fake. By default a field is right when it equals the song's artist or title, ignoring case and punctuation; a test can pass its own judge. It records every call.
 
 **`api.spec.ts`**
 - An exact guess returns ✓ for both.
@@ -560,7 +565,7 @@ Other server tests:
 
 **New `betting.spec.ts`**
 - Tokens start at 1, go up by 1 per card, and stop at 5.
-- Naming both correctly, with case and punctuation changes, blocks betting.
+- Naming both correctly, with case and punctuation changes, blocks betting. This test uses real catalog songs, so the real server judges the names.
 - A bettor who names only the artist may bet; one who names neither may not and keeps their token.
 - Bettors can go in any order, and the earlier right bet wins the card.
 - A won bet puts the card in the bettor's timeline, and the bettor ends with +1 token.
@@ -571,8 +576,10 @@ Other server tests:
 - A reload in the middle of betting resumes the same round.
 - "We accept it" returns the bet tokens.
 - Hebrew at 360×640 has no sideways scroll.
+- No `/guess` request is sent unless something was typed.
+- Also: the Setup switch is on by default and remembered; with no tokens left to bet, the turn goes straight to Reveal; a bettor can win the game on another player's turn.
 
-**Specs that break:** `gameplay.spec.ts` (full game, and the reveal-disabled test), `responsive.spec.ts`, and the specs that use the helper (cover, resume, no-repeat).
+**Specs that broke, and how they were fixed:** `gameplay.spec.ts` now turns the switch off, so it keeps testing the classic rules (and checks that no token parts show). `cover`, `resume`, `no-repeat` and `responsive` run with the switch on through `placeAndReveal`; `resume` also checks the tokens.
 
 **`responsive.spec.ts`:** add screenshots of naming, "Who's betting?", a bettor's naming, a won bet and the skip confirmation.
 
@@ -586,9 +593,9 @@ Each step is finished with all tests passing before the next one starts.
 |---|---|---|---|
 | 1 ✅ | **Checking names on the server:** shared text cleanup, the matching rules, the `/guess` endpoint, and the empty alias fields | `server/src/text.ts`, `guess.ts`, `app.ts`, `types.ts`, `catalog.ts`, `docs/CONTRACTS.md` §4 and §8 | server tests and `api.spec.ts` pass, including the cases in §8 |
 | 2 ✅ | **Game rules:** tokens, skipping, the bettor flow, settling a turn, the winner check for every player, the token tie-break, saved-game migration, the on/off switch in the state | `web/src/game/*`, `web/src/api/client.ts` (`checkGuess`), `web/src/test/fixtures.ts` | unit tests pass and the type check is clean |
-| 3 | **Screens:** token meter, skip button and confirmation, naming fields, Lock in, the three betting screens, timeline markers, result rows, scoreboard, winner screen, setup switch, Hebrew and English text. The mockup canvas is updated first. | `GameScreen.tsx`, `Timeline.tsx`, `Scoreboard.tsx`, `WinnerScreen.tsx`, `SetupScreen.tsx`, new `TokenMeter`, `NameGuess`, `BetPanel`, `TurnOutcome`, `SkipSong`, `dictionaries.ts`, `I18nProvider.tsx`, `theme.css`, `index.html` | screen tests pass, and it works by hand at 360×640 in Hebrew and English |
-| 4 | **End-to-end tests and docs** | `e2e/tests/*`, `PLAN.md` §1, §6 and §8, `docs/DESIGN.md`, `docs/QA.md`, `docs/CONTRACTS.md` §6 | all Playwright tests pass (phone and desktop) |
-| 5 🟡 | **Fairness:** the "We accept it" button (game logic done, button in step 3), and aliases (✅ done: 209 songs with English spellings of the artist, 42 with alternative titles) for the best-known Hebrew artists (Latin spelling) and for famous alternative titles | `reducer.ts` (`ACCEPT_GUESS`), result screen, `server/data/songs.json` | its tests pass, and a sample of 20 artists typed in English letters is accepted |
+| 3 ✅ | **Screens:** token meter, skip button and confirmation, naming fields, Lock in, the three betting screens, timeline markers, result rows, scoreboard, winner screen, setup switch, Hebrew and English text. The mockup canvas is updated first. | `GameScreen.tsx`, `Timeline.tsx`, `Scoreboard.tsx`, `WinnerScreen.tsx`, `SetupScreen.tsx`, new `TokenMeter`, `NameGuessFields`, `BetPanel`, `TurnOutcome`, `SkipSong`, `dictionaries.ts`, `I18nProvider.tsx`, `theme.css`, `index.html` | screen tests pass, and it works by hand at 360×640 in Hebrew and English |
+| 4 ✅ | **End-to-end tests and docs** | `e2e/tests/*`, `PLAN.md` §1, §6 and §8, `docs/DESIGN.md`, `docs/QA.md`, `docs/CONTRACTS.md` §6 | all Playwright tests pass (phone and desktop) |
+| 5 ✅ | **Fairness:** the "We accept it" button, and aliases (done: 209 songs with English spellings of the artist, 42 with alternative titles) for the best-known Hebrew artists (Latin spelling) and for famous alternative titles | `reducer.ts` (`ACCEPT_GUESS`), result screen, `server/data/songs.json` | its tests pass, and a sample of 20 artists typed in English letters is accepted |
 
 **Risks**
 - **Wrong judgements.** Tolerant matching will sometimes accept or reject the wrong answer.
