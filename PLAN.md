@@ -115,7 +115,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 172 server unit tests, 120 web unit tests, 83 Playwright end-to-end tests (phone and desktop sizes). All pass. Branch `prod-smoke` adds 8 smoke tests (section 9.5).
+**Tests today:** 257 server unit tests, 120 web unit tests, 85 Playwright end-to-end tests (phone and desktop sizes). All pass. Branch `prod-smoke` adds 8 smoke tests (section 9.5).
 
 **Branch waiting to be merged** (pushed, no PR yet, held back by the owner):
 - `prod-smoke`: smoke tests for the live site, section 9.5.

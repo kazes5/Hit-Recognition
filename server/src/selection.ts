@@ -38,6 +38,34 @@ export function songArtistKeys(song: Pick<CatalogSong, 'artist' | 'artistKeys'>)
   return [...new Set(keys)];
 }
 
+interface CatalogIndex {
+  /** Normalized credit -> every contributor key of the catalog songs with that credit. */
+  keysByCredit: Map<string, string[]>;
+  keysBySong: Map<CatalogSong, string[]>;
+}
+
+const catalogIndexes = new WeakMap<readonly CatalogSong[], CatalogIndex>();
+
+/**
+ * Contributor keys of a catalog, computed once per catalog array. Without it
+ * every excludeArtists entry re-scanned the whole catalog, which made a long
+ * game (hundreds of entries) take seconds per request.
+ */
+function catalogIndex(songs: readonly CatalogSong[]): CatalogIndex {
+  let index = catalogIndexes.get(songs);
+  if (!index) {
+    index = { keysByCredit: new Map(), keysBySong: new Map() };
+    for (const s of songs) {
+      const keys = songArtistKeys(s);
+      index.keysBySong.set(s, keys);
+      const credit = normalizeArtistKey(s.artist);
+      index.keysByCredit.set(credit, [...new Set([...(index.keysByCredit.get(credit) ?? []), ...keys])]);
+    }
+    catalogIndexes.set(songs, index);
+  }
+  return index;
+}
+
 function pick<T>(items: readonly T[], rng: Rng): T {
   const index = Math.min(items.length - 1, Math.max(0, Math.floor(rng() * items.length)));
   return items[index] as T;
@@ -68,17 +96,16 @@ export function selectNextSong<S extends CatalogSong>(
   if (candidates.length === 0) return null;
   if (criteria.excludeArtists.length === 0) return pick(candidates, rng);
 
+  const index = catalogIndex(songs);
   const counts = new Map<string, number>();
   for (const name of criteria.excludeArtists) {
-    const entryKey = normalizeArtistKey(name);
     const keys = new Set(splitArtistKeys(name));
-    for (const s of songs) {
-      if (normalizeArtistKey(s.artist) === entryKey) for (const k of songArtistKeys(s)) keys.add(k);
-    }
+    for (const k of index.keysByCredit.get(normalizeArtistKey(name)) ?? []) keys.add(k);
     for (const k of keys) counts.set(k, (counts.get(k) ?? 0) + 1);
   }
 
-  const maxCount = (s: S): number => Math.max(0, ...songArtistKeys(s).map((k) => counts.get(k) ?? 0));
+  const maxCount = (s: S): number =>
+    Math.max(0, ...(index.keysBySong.get(s) ?? songArtistKeys(s)).map((k) => counts.get(k) ?? 0));
   const fresh = candidates.filter((s) => maxCount(s) === 0);
   if (fresh.length > 0) return pick(fresh, rng);
   const underCap = candidates.filter((s) => maxCount(s) < MAX_SONGS_PER_ARTIST_IN_GAME);
