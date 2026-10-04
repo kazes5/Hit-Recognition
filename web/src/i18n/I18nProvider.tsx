@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { translate, type Lang, type MessageKey } from './dictionaries';
+import { dictionaries, translate, type Lang, type MessageKey } from './dictionaries';
+import { formatNode, type NodeParams } from './formatNode';
 
 export const LANG_STORAGE_KEY = 'hitster.lang';
 export const DEFAULT_LANG: Lang = 'en';
@@ -24,12 +25,15 @@ export function applyDocumentLang(lang: Lang, doc: Document = document): void {
 }
 
 export type TFunction = (key: MessageKey, params?: Record<string, string | number>) => string;
+/** Like `t`, but string params (names) are wrapped in `<bdi>` and "+1"/"−1" in `dir="ltr"`. */
+export type TNodeFunction = (key: MessageKey, params?: NodeParams) => ReactNode;
 
 interface I18nValue {
   lang: Lang;
   dir: 'rtl' | 'ltr';
   setLang: (lang: Lang) => void;
   t: TFunction;
+  tNode: TNodeFunction;
 }
 
 const I18nContext = createContext<I18nValue | null>(null);
@@ -57,6 +61,7 @@ export function I18nProvider({ children, initialLang }: { children: ReactNode; i
       dir: directionOf(lang),
       setLang,
       t: (key, params) => translate(lang, key, params),
+      tNode: (key, params) => formatNode(dictionaries[lang][key], params),
     }),
     [lang, setLang],
   );

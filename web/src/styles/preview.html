@@ -117,6 +117,56 @@
       </section>
 
       <section class="pv-section">
+        <span class="pv-label">Tokens &amp; bets</span>
+        <div class="pv-row">
+          <span class="player-badge">Ann <span class="player-badge__score">2</span><span class="token-chip"><span class="token-icon">♪</span>3</span></span>
+        </div>
+        <div class="pv-row">
+          <span class="token-meter" role="img" aria-label="1 of 5 tokens"><span class="token-meter__pip token-meter__pip--on"></span><span class="token-meter__pip"></span><span class="token-meter__pip"></span><span class="token-meter__pip"></span><span class="token-meter__pip"></span><span class="token-meter__count">1</span></span>
+          <span class="token-meter token-meter--full" role="img" aria-label="5 of 5 tokens"><span class="token-meter__pip token-meter__pip--on"></span><span class="token-meter__pip token-meter__pip--on"></span><span class="token-meter__pip token-meter__pip--on"></span><span class="token-meter__pip token-meter__pip--on"></span><span class="token-meter__pip token-meter__pip--on"></span><span class="token-meter__max">Max</span></span>
+        </div>
+        <div class="pv-row">
+          <button class="btn btn--primary">Lock in</button>
+          <button class="btn btn--token"><span class="token-icon">♪</span>Bet 1 token</button>
+          <button class="btn btn--sm btn--token-outline"><span class="token-icon">♪</span>Skip · 3</button>
+          <button class="name-it__toggle">Name artist + title</button>
+        </div>
+        <div class="timeline" style="justify-content:center">
+          <button class="timeline-slot timeline-slot--taken timeline-slot--bet" data-initials="C" aria-disabled="true" aria-label="Before 1965: Carol's bet"></button>
+          <div class="song-card song-card--small song-card--d1960"><div class="song-card__artist">James Brown</div><div class="song-card__year">1965</div><div class="song-card__title">I Got You</div><span class="song-card__deck">IL01</span><span class="song-card__number">9</span></div>
+          <button class="timeline-slot timeline-slot--selected" aria-label="Between 1965 and 2003"></button>
+          <div class="song-card song-card--small song-card--d2000 song-card--stolen"><div class="song-card__artist">Beyoncé</div><div class="song-card__year">2003</div><div class="song-card__title">Crazy in Love</div><span class="song-card__deck">IL01</span><span class="song-card__number">224</span></div>
+          <button class="timeline-slot timeline-slot--taken timeline-slot--pick" data-initials="A" aria-disabled="true" aria-label="After 2003: Ann's pick"></button>
+        </div>
+        <ul class="bet-legend">
+          <li><span class="marker marker--pick">A</span><span><b>Ann</b> · pick</span></li>
+          <li><span class="marker marker--bet">C</span><span><b>Carol</b> · 1st bet</span></li>
+          <li><span class="marker marker--mine">✓</span><span><b>Bob</b> · your bet</span></li>
+          <li><span class="marker marker--free">+</span><span>free spot</span></li>
+        </ul>
+        <ul class="bettor-list">
+          <li><button class="bettor-btn"><span class="avatar">B</span><span class="bettor-btn__name">Bob</span><span class="bettor-btn__go">Bet ›</span></button></li>
+          <li><button class="bettor-btn" aria-disabled="true"><span class="avatar avatar--bet">C</span><span class="bettor-btn__name">Carol</span><span class="bettor-btn__reason bettor-btn__reason--bet">1st bet</span></button></li>
+          <li><button class="bettor-btn" aria-disabled="true"><span class="avatar">D</span><span class="bettor-btn__name">Dana</span><span class="bettor-btn__reason">no tokens</span></button></li>
+        </ul>
+        <div class="turn-outcome">
+          <p class="result-badge result-badge--stolen"><span class="token-icon">♪</span>Bob wins the card!</p>
+          <p class="result-badge result-badge--named">Named it! No bets allowed.</p>
+          <ul class="outcome-list">
+            <li class="outcome-row outcome-row--won"><span class="outcome-row__avatars"><span class="avatar avatar--bet">B</span></span><span class="outcome-row__who">Bob</span><span class="outcome-row__what">+1 card · +1 token</span></li>
+            <li class="outcome-row outcome-row--lost"><span class="outcome-row__avatars"><span class="avatar">C</span><span class="avatar">D</span></span><span class="outcome-row__what">−1 token: Carol, Dana</span></li>
+          </ul>
+        </div>
+        <section class="rule-box">
+          <div class="rule-box__top">
+            <span class="rule-box__title"><span class="token-icon">♪</span>Tokens &amp; bets</span>
+            <button class="switch" role="switch" aria-checked="true" aria-label="Tokens &amp; bets"><span class="switch__knob"></span></button>
+          </div>
+          <p class="rule-box__text">Start with 1 token, +1 for every card (max 5). Skip a song for 3 tokens.</p>
+        </section>
+      </section>
+
+      <section class="pv-section">
         <span class="pv-label">Buttons</span>
         <div class="pv-row">
           <button class="btn btn--primary">Reveal</button>

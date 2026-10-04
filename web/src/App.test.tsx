@@ -47,10 +47,16 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+/** Picks the last spot and reveals; with tokens and bets on and someone able to bet, locks in first (no bets). */
 async function placeLastAndReveal(user: ReturnType<typeof userEvent.setup>) {
   await waitFor(() => expect(screen.getByTestId('btn-play')).toBeEnabled());
   const slots = screen.getAllByTestId('timeline-slot');
   await user.click(slots[slots.length - 1]!);
+  const lockIn = screen.queryByTestId('btn-lock-in');
+  if (lockIn) {
+    await user.click(lockIn);
+    expect(screen.getByTestId('bet-panel')).toBeInTheDocument();
+  }
   await user.click(screen.getByTestId('btn-reveal'));
 }
 
@@ -190,6 +196,79 @@ describe('App flow', () => {
 
     await user.click(screen.getByTestId('btn-scoreboard'));
     await user.click(screen.getByTestId('btn-close-scoreboard'));
+  });
+
+  it('with "Tokens & bets" off, turns use Reveal and show no tokens', async () => {
+    fakeServer();
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByTestId('btn-new-game'));
+    await user.type(screen.getByTestId('input-player-name'), 'Ann{Enter}');
+    await user.type(screen.getByTestId('input-player-name'), 'Ben{Enter}');
+    await user.click(screen.getByTestId('toggle-tokens-bets'));
+    await user.click(screen.getByTestId('btn-start-game'));
+    await screen.findByTestId('screen-turn');
+    await waitFor(() => expect(screen.getByTestId('btn-play')).toBeEnabled());
+    expect(screen.queryByTestId('current-player-tokens')).toBeNull();
+    expect(screen.queryByTestId('btn-lock-in')).toBeNull();
+    expect(screen.queryByTestId('btn-name-it')).toBeNull();
+    await placeLastAndReveal(user);
+    expect(screen.getByTestId('result-correct')).toBeInTheDocument();
+    expect(screen.queryByTestId('outcome-row')).toBeNull();
+  });
+
+  it('a bettor wins the card on someone else\'s turn (switch on by default)', async () => {
+    const { fetchMock } = fakeServer();
+    const route = fetchMock.getMockImplementation()!;
+    fetchMock.mockImplementation((url: string, init?: RequestInit) =>
+      url.endsWith('/guess') ? Promise.resolve(json({ artistCorrect: true, titleCorrect: false })) : route(url, init),
+    );
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByTestId('btn-new-game'));
+    expect(screen.getByTestId('toggle-tokens-bets')).toHaveAttribute('aria-checked', 'true');
+    await user.type(screen.getByTestId('input-player-name'), 'Ann{Enter}');
+    await user.type(screen.getByTestId('input-player-name'), 'Ben{Enter}');
+    await user.click(screen.getByTestId('btn-start-game'));
+    await screen.findByTestId('screen-turn');
+    await waitFor(() => expect(screen.getByTestId('btn-play')).toBeEnabled());
+    expect(screen.getByTestId('current-player-tokens')).toHaveTextContent('1');
+    // Ann: before her only card (wrong: the songs get newer), then Lock in
+    await user.click(screen.getAllByTestId('timeline-slot')[0]!);
+    await user.click(screen.getByTestId('btn-lock-in'));
+    await user.click(screen.getByTestId('btn-bettor'));
+    await user.type(screen.getByTestId('input-guess-artist'), 'Artist 3');
+    await user.click(screen.getByTestId('btn-check-guess'));
+    await screen.findByTestId('bet-allowed');
+    await user.click(screen.getAllByTestId('timeline-slot')[1]!);
+    await user.click(screen.getByTestId('btn-place-bet'));
+    await user.click(screen.getByTestId('btn-reveal'));
+    expect(screen.getByTestId('result-stolen')).toHaveTextContent('Ben wins the card!');
+    expect(screen.getByTestId('timeline')).toHaveAttribute('data-owner', '1');
+    await user.click(screen.getByTestId('btn-scoreboard'));
+    expect(
+      screen.getAllByTestId('score-row').map((r) => [r.getAttribute('data-score'), r.getAttribute('data-tokens')]),
+    ).toEqual([
+      ['1', '1'],
+      ['2', '2'],
+    ]);
+  });
+
+  it('"Play again" keeps the last game\'s Tokens & bets switch', async () => {
+    fakeServer();
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByTestId('btn-new-game'));
+    await user.type(screen.getByTestId('input-player-name'), 'Solo{Enter}');
+    await user.click(screen.getByTestId('btn-start-game'));
+    await screen.findByTestId('screen-turn');
+    // Something else changed the remembered value meanwhile
+    localStorage.setItem('hitster.tokensAndBets', 'off');
+    await user.click(screen.getByTestId('btn-scoreboard'));
+    await user.click(screen.getByTestId('btn-end-game'));
+    expect(screen.getAllByTestId('token-meter')).toHaveLength(1);
+    await user.click(screen.getByTestId('btn-play-again'));
+    expect(screen.getByTestId('toggle-tokens-bets')).toHaveAttribute('aria-checked', 'true');
   });
 
   it('shows the error banner while dealing if the server is down', async () => {
