@@ -338,6 +338,17 @@ describe('static frontend', () => {
     expect(res.body.error).toBe('NOT_FOUND');
   });
 
+  it('falls back to index.html when the static dir sits under a dot folder', async () => {
+    // e.g. a checkout under ~/.cache or .claude/worktrees: only dots inside the URL are refused.
+    const dotDir = path.join(dir, '.hidden', 'dist');
+    mkdirSync(dotDir, { recursive: true });
+    writeFileSync(path.join(dotDir, 'index.html'), '<!doctype html><title>Dot</title>');
+    const dotApp = createApp({ songs, previewProvider: new MockPreviewProvider(), staticDir: dotDir });
+    const res = await request(dotApp).get('/some/deep/link');
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('<title>Dot</title>');
+  });
+
   it('is skipped when the directory does not exist', async () => {
     const missing = createApp({ songs, previewProvider: new MockPreviewProvider(), staticDir: path.join(dir, 'missing') });
     expect((await request(missing).get('/')).status).toBe(404);

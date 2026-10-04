@@ -182,7 +182,8 @@ export function createApp(options: AppOptions): Express {
         return;
       }
       res.setHeader('Cache-Control', 'no-cache');
-      res.sendFile(indexHtml);
+      // With `root`, only the file name is checked for dot segments, not the folder it lives in.
+      res.sendFile('index.html', { root });
     });
   }
 
