@@ -129,9 +129,9 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 ## 8. Out of scope (for now)
 
 - Online multiplayer across several phones.
-- Using tokens to skip a song or to buy a card (from the original game).
+- Using tokens to buy a card (from the original game).
 
-Tokens, naming the artist and title, and betting on another player's card are now planned in step 9.4.
+Tokens, naming the artist and title, betting on another player's card, and skipping a song for 3 tokens are now planned in step 9.4.
 
 ---
 
@@ -165,30 +165,38 @@ Tokens, naming the artist and title, and betting on another player's card are no
 - **Checked:** unit tests (server 13 new, web 4 new) and 7 new Playwright tests for the cover, including "no request before Reveal" and "no scrolling on a small phone". A placeholder record image is used in tests.
 - **Not checked:** real Apple covers. The sandbox cannot reach Apple, so the first real test is on the live site.
 
-### 9.4 Tokens, naming and bets ⬜ Planned
+### 9.4 Tokens, naming and bets ⬜ Planned (rules confirmed)
 
-The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md).
+The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owner answered all 13 rule questions on 2026-10-04.
 
 **Rules**
 - **Tokens:** every player starts with 1 token and gets +1 for every card they win, up to 5.
-- **Naming:** on their turn, a player can also type the artist and the song title. The app checks both without showing the answer.
-- **Bets:** if the current player did not name both correctly, each other player with a token can bet 1 token on a different spot of the current player's timeline.
-  - If the current player is wrong and a bettor is right, the bettor wins the card. It goes into the bettor's own timeline, and the bettor gets +1 token.
-  - A wrong bet loses its token.
-- **Winner:** a bettor can now reach the target on someone else's turn, so the winner check covers every player.
+- **Naming:** on their turn, a player can also type the artist and the song title. The app checks both without showing the answer. Naming never gives a token.
+- **Bets:** allowed only if the current player did not name both correctly.
+  - **First come, first served:** whoever takes the phone first bets first.
+  - **To bet,** a player must name the artist or the title correctly.
+  - A bet costs 1 token and goes on a free spot of the current player's timeline, different from every other spot taken.
+  - **If the current player is wrong and a bettor is right,** the earliest right bettor wins the card. It goes into the bettor's own timeline. The bettor gets their bet token back, plus +1 for the card.
+  - **A wrong bet** loses its token.
+- **Skip:** the current player can skip a song for 3 tokens.
+- **Winner:** the winner check covers every player. When the game is ended early and players are tied on cards, more tokens wins.
 
 **How**
 - **Checking names:** a new server endpoint, `POST /api/songs/:id/guess`, checks the typed names with tolerant Hebrew/English matching. It never returns the answer.
-- **Betting:** the phone goes around the table in seat order. Each player bets or passes.
+- **Betting:** a "Who's betting?" screen lists the players who may bet. Each one taps their name, names the song, then picks a spot.
 - **On/off:** a "Tokens & bets" switch in Setup, on by default.
 - **Saved games:** games saved before this change are migrated, not lost.
+- **Mockups:** the [UI design canvas](https://claude.ai/artifact/4FzDZZfJcLzt3MD3NQ8Ujz). Its betting screens still need updating for the new betting round.
 
-**Steps:** (1) check names on the server, (2) game rules, (3) screens, (4) end-to-end tests and docs, (5) a "We accept it" button and English spellings of Hebrew artist names.
-
-**Open:** 13 rule questions where the request can be read more than one way. The plan picks a default for each; see section 2 of the plan.
+**Steps:**
+1. Check names on the server.
+2. Game rules.
+3. Screens.
+4. End-to-end tests and docs.
+5. A "We accept it" button and English spellings of Hebrew artist names.
 
 ### Suggested order
 
 1. Finish 9.1 (the remaining ~150 songs, mostly Hebrew). 9.2 and 9.3 are done.
-2. 9.4, tokens and bets, after the owner confirms the rule questions.
+2. 9.4, tokens and bets. The rules are confirmed, so it can start.
 3. Then milestone 8, Spotify and Apple Music.
