@@ -149,9 +149,10 @@ describe('turn rotation', () => {
 });
 
 describe('scoring and winners', () => {
-  const p = (name: string, n: number): Player => ({
+  const p = (name: string, n: number, tokens = 1): Player => ({
     name,
     timeline: Array.from({ length: n }, (_, i) => song(1960 + i)),
+    tokens,
   });
 
   it('score is the timeline length', () => {

@@ -24,8 +24,8 @@ function turnState(current: Song | null, overrides: Partial<GameState> = {}): Ga
     ...initialGameState,
     phase: 'turn',
     players: [
-      { name: 'Ann', timeline: [song(1965, { id: 1 }), song(2010, { id: 2 })] },
-      { name: 'Ben', timeline: [song(1990, { id: 3 })] },
+      { name: 'Ann', timeline: [song(1965, { id: 1 }), song(2010, { id: 2 })], tokens: 1 },
+      { name: 'Ben', timeline: [song(1990, { id: 3 })], tokens: 1 },
     ],
     targetScore: 10,
     dealtCount: 2,

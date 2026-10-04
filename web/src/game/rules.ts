@@ -64,13 +64,29 @@ export function leaders(players: readonly Player[]): Player[] {
   return players.filter((p) => score(p) === best);
 }
 
+/** Anyone at the target. A bettor can win a card on someone else's turn, so every player is checked. */
+export function anyReachedTarget(players: readonly Player[], target: number): boolean {
+  return players.some((p) => hasReachedTarget(p, target));
+}
+
 /**
  * Winners of the game: anyone who reached the target; if nobody did
- * (game ended early) the leaders.
+ * (game ended early) the leaders, and among leaders tied on cards the ones
+ * with the most tokens. Players equal on both share the win.
  */
 export function findWinners(players: readonly Player[], target: number): Player[] {
   const reached = players.filter((p) => hasReachedTarget(p, target));
-  return reached.length > 0 ? leaders(reached) : leaders(players);
+  if (reached.length > 0) return leaders(reached);
+  const top = leaders(players);
+  if (top.length < 2) return top;
+  const most = Math.max(...top.map((p) => p.tokens));
+  return top.filter((p) => p.tokens === most);
+}
+
+/** True when the game was ended early and tokens broke a tie on cards. */
+export function wonOnTokens(players: readonly Player[], target: number): boolean {
+  if (anyReachedTarget(players, target)) return false;
+  return findWinners(players, target).length < leaders(players).length;
 }
 
 export function normalizeName(name: string): string {

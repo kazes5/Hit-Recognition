@@ -1,9 +1,10 @@
-import type { GameState, Phase } from './types';
+import { START_TOKENS, type GameState, type Phase } from './types';
 
 export const GAME_STORAGE_KEY = 'hitster.game';
-const VERSION = 1;
+/** 2: tokens, naming and bets. Version 1 saves are migrated and finish with tokens and bets off. */
+const VERSION = 2;
 
-const RESUMABLE: Phase[] = ['dealing', 'turn', 'result'];
+const RESUMABLE: Phase[] = ['dealing', 'turn', 'betting', 'result'];
 
 export function isResumable(state: GameState): boolean {
   return RESUMABLE.includes(state.phase) && state.players.length > 0;
@@ -39,7 +40,8 @@ export function clearSavedGame(): void {
   }
 }
 
-function looksLikeState(value: unknown): value is GameState {
+/** Checks the fields every version has. */
+function looksLikeBaseState(value: unknown): value is Record<string, unknown> & { players: Record<string, unknown>[] } {
   if (!value || typeof value !== 'object') return false;
   const s = value as Record<string, unknown>;
   return (
@@ -59,13 +61,43 @@ function looksLikeState(value: unknown): value is GameState {
   );
 }
 
+function looksLikeState(value: unknown): value is GameState {
+  if (!looksLikeBaseState(value)) return false;
+  return (
+    value.players.every((p) => typeof p.tokens === 'number') &&
+    typeof value.tokensAndBets === 'boolean' &&
+    Array.isArray(value.bets) &&
+    Array.isArray(value.triedThisTurn)
+  );
+}
+
+/** A version 1 game gets 1 token per player and finishes with tokens and bets off. */
+function migrateV1(value: unknown): unknown {
+  if (!looksLikeBaseState(value)) return value;
+  return {
+    ...value,
+    players: value.players.map((p) => ({ ...p, tokens: START_TOKENS })),
+    tokensAndBets: false,
+    guess: null,
+    bets: [],
+    triedThisTurn: [],
+    activeBettor: null,
+  };
+}
+
+/** A bettor whose names were not checked yet goes back to "Who's betting?"; their try is not used. */
+function resumeState(state: GameState): GameState {
+  return state.activeBettor?.allowed === null ? { ...state, activeBettor: null } : state;
+}
+
 export function loadSavedGame(): GameState | null {
   try {
     const raw = safeStorage()?.getItem(GAME_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as { version?: number; state?: unknown };
-    if (parsed.version !== VERSION || !looksLikeState(parsed.state)) return null;
-    return isResumable(parsed.state) ? parsed.state : null;
+    const state = parsed.version === 1 ? migrateV1(parsed.state) : parsed.version === VERSION ? parsed.state : null;
+    if (!looksLikeState(state)) return null;
+    return isResumable(state) ? resumeState(state) : null;
   } catch {
     return null;
   }
