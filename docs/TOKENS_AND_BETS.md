@@ -86,7 +86,7 @@ The game is still played on one shared phone. The steps marked **new** are added
       - The fields are cleared after Check, so the next player cannot read them.
    3. **Bet.** If allowed, the bettor picks a free spot and taps **"Bet 1 token"**.
       - Taken spots show the player's initial: pink for the current player's pick, gold for a bet.
-      - **Cancel** backs out at no cost, but that player's try is used.
+      - **Cancel** backs out at no cost. The try counts as used once the names were checked; Cancel before Check keeps it.
    4. **Next.** The screen goes back to "Who's betting?".
    5. **End of the round.** It ends when someone taps **Reveal**, when nobody is left who may try, or when no free spot is left.
 7. **Reveal.** The results are shown on the result screen. *(see §6)*
