@@ -1,4 +1,4 @@
-import type { Song } from '../game/types';
+import { START_TOKENS, type Player, type Song } from '../game/types';
 
 let nextId = 1000;
 
@@ -13,4 +13,9 @@ export function song(year: number, overrides: Partial<Song> = {}): Song {
     genre: 'pop',
     ...overrides,
   };
+}
+
+/** A player whose timeline holds one card per year (sorted as given). */
+export function player(name: string, years: number[] = [], tokens = START_TOKENS): Player {
+  return { name, timeline: years.map((y) => song(y)), tokens };
 }

@@ -3,6 +3,7 @@ import { song } from '../test/fixtures';
 import {
   addUsedArtist,
   addUsedId,
+  anyReachedTarget,
   canStartGame,
   decadeOf,
   findWinners,
@@ -16,6 +17,7 @@ import {
   score,
   sortTimeline,
   validateNewPlayerName,
+  wonOnTokens,
 } from './rules';
 import type { Player } from './types';
 
@@ -179,6 +181,42 @@ describe('scoring and winners', () => {
   it('leaders of no players is empty', () => {
     expect(leaders([])).toEqual([]);
     expect(findWinners([], 10)).toEqual([]);
+  });
+
+  it('anyReachedTarget checks every player, not only the first', () => {
+    expect(anyReachedTarget([p('A', 3), p('B', 4)], 5)).toBe(false);
+    expect(anyReachedTarget([p('A', 3), p('B', 5)], 5)).toBe(true);
+    expect(anyReachedTarget([p('A', 3), p('B', 2), p('C', 6)], 5)).toBe(true);
+    expect(anyReachedTarget([], 5)).toBe(false);
+  });
+
+  it('findWinners: ended early and tied on cards, more tokens wins', () => {
+    const players = [p('A', 3, 5), p('B', 4, 1), p('C', 4, 3), p('D', 4, 2)];
+    expect(findWinners(players, 10).map((x) => x.name)).toEqual(['C']);
+  });
+
+  it('findWinners: tied on cards and tokens, the win is shared', () => {
+    const players = [p('A', 4, 2), p('B', 4, 3), p('C', 4, 3)];
+    expect(findWinners(players, 10).map((x) => x.name)).toEqual(['B', 'C']);
+  });
+
+  it('findWinners: cards come before tokens', () => {
+    const players = [p('A', 5, 0), p('B', 4, 5)];
+    expect(findWinners(players, 10).map((x) => x.name)).toEqual(['A']);
+  });
+
+  it('findWinners: reaching the target wins, whatever the tokens', () => {
+    const players = [p('A', 5, 0), p('B', 4, 5)];
+    expect(findWinners(players, 5).map((x) => x.name)).toEqual(['A']);
+  });
+
+  it('wonOnTokens is true only when tokens broke a tie on cards in a game ended early', () => {
+    expect(wonOnTokens([p('A', 4, 3), p('B', 4, 1)], 10)).toBe(true);
+    expect(wonOnTokens([p('A', 4, 3), p('B', 4, 3)], 10)).toBe(false); // shared
+    expect(wonOnTokens([p('A', 5, 0), p('B', 4, 5)], 10)).toBe(false); // no tie on cards
+    expect(wonOnTokens([p('A', 4, 3), p('B', 4, 1)], 4)).toBe(false); // the target was reached
+    expect(wonOnTokens([p('A', 4, 3)], 10)).toBe(false);
+    expect(wonOnTokens([], 10)).toBe(false);
   });
 });
 

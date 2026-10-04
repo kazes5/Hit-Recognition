@@ -62,9 +62,15 @@ export function eligibleBettors(state: GameState): number[] {
   return state.players.map((_, i) => i).filter((i) => betBlock(state, i) === null);
 }
 
-/** Before Lock in: could anyone bet if the current player does not name both? */
+/**
+ * Before Lock in: could anyone bet if the current player does not name both?
+ * Also before a spot is picked: with no bets yet, every pick leaves the same number of free slots.
+ */
 export function anyoneCouldBet(state: GameState): boolean {
-  return eligibleBettors({ ...state, guess: null, bets: [], triedThisTurn: [] }).length > 0;
+  return (
+    eligibleBettors({ ...state, guess: null, bets: [], triedThisTurn: [], selectedSlot: state.selectedSlot ?? 0 })
+      .length > 0
+  );
 }
 
 export function canSkip(state: GameState): boolean {

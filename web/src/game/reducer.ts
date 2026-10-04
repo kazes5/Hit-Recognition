@@ -254,7 +254,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'ACCEPT_GUESS': {
       const r = state.lastResult;
       if (state.phase !== 'result' || !r || r.accepted || !r.playersBefore || !r.bets?.length) return state;
-      if (namesCorrect(r.guess ?? null)) return state;
+      // Only typed names that were rejected can be accepted; no names, nothing to accept.
+      if (!r.guess || namesCorrect(r.guess)) return state;
       const settled = settleTurn({
         players: r.playersBefore,
         current: state.currentPlayerIndex,
