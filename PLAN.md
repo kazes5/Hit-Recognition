@@ -147,7 +147,7 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 
 ---
 
-## 9. Next steps (planned, not started)
+## 9. Next steps
 
 ### 9.1 More songs (+300) ✅ Done: 367 → 667 songs
 
@@ -233,7 +233,7 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 ### Suggested order
 
 1. Merge 9.5 when the owner approves.
+2. Allow the production domain and run the smoke tests (9.5).
 3. 9.6, tokens and bets: merged (PR #6), with the rule update (PR #7). Next: a real-phone check.
-3. 9.6, tokens and bets: merged (PR #6). The rule update above is on branch `claude/game-tokens-betting-plan-ddfipg`. Next: a real-phone check.
 4. 9.1, 9.2 and 9.3 are done (667 songs).
 5. Then milestone 8, Spotify and Apple Music.
