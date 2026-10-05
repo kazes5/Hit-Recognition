@@ -13,6 +13,7 @@ npm run lint          # tsc --noEmit
 ```
 
 - `npm run test:mobile` / `npm run test:desktop` — one project only.
+- `npm run smoke` — light, read-only smoke tests (`tests/smoke.spec.ts`): API health/stats, home/settings/setup in both languages, one real turn with preview and cover. Safe against production: `E2E_BASE_URL=https://hit-recognition-production.up.railway.app npm run smoke`. Screenshots are attached to the HTML report.
 - `npm run report` — open the HTML report (`e2e/playwright-report/`, gitignored).
 - Against an already-running server or a deployment: `E2E_BASE_URL=https://… npm test` (the built-in web server is then skipped). The suite assumes `PREVIEW_PROVIDER=mock` for the preview API tests.
 
