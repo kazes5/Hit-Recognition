@@ -1,9 +1,11 @@
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createApp } from '../src/app.js';
+import { loadCatalog } from '../src/catalog.js';
 import { MockPreviewProvider } from '../src/preview/mock.js';
 import type { PreviewProvider } from '../src/preview/types.js';
 import { song } from './helpers.js';
@@ -83,9 +85,21 @@ describe('API', () => {
     it('400 INVALID_REQUEST for oversized body', async () => {
       const res = await request(app)
         .post('/api/songs/next')
-        .send({ excludeArtists: Array.from({ length: 5000 }, (_, i) => `artist ${i}`) });
+        .send({ excludeArtists: Array.from({ length: 10000 }, (_, i) => `artist ${i}`) });
       expect(res.status).toBe(400);
       expect(res.body.error).toBe('INVALID_REQUEST');
+    });
+
+    it('accepts the body of a game that dealt the whole real catalog, with room to grow', async () => {
+      const real = loadCatalog(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../data/songs.json'));
+      const realApp = createApp({ songs: real, previewProvider: new MockPreviewProvider() });
+      // Twice the catalog: the catalog can double before a long game hits the body limit.
+      const twice = [...real, ...real];
+      const res = await request(realApp)
+        .post('/api/songs/next')
+        .send({ excludeIds: twice.map((s) => s.id), excludeArtists: twice.map((s) => s.artist), languages: ['he', 'en'] });
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('NO_SONGS_LEFT');
     });
 
     it('never exposes internal artistKeys and honours them', async () => {
