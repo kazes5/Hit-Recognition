@@ -124,10 +124,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
 | 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
 
-**Tests today:** 320 server unit tests, 286 web unit tests, 117 Playwright end-to-end tests (phone and desktop sizes). All pass. Branch `prod-smoke` adds 8 smoke tests (section 9.5).
-
-**Branch waiting to be merged** (pushed, no PR yet, held back by the owner):
-- `prod-smoke`: smoke tests for the live site, section 9.5.
+**Tests today:** 321 server unit tests, 296 web unit tests, 125 Playwright end-to-end tests (phone and desktop sizes, including the 8 smoke tests from section 9.5). All pass.
 
 **Open checks:**
 - Play a song on the live Railway site on a phone. This confirms the real 30-second previews, and that audio starts on an iPhone.
@@ -189,7 +186,7 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 - **Checked:** 142 server and 120 web unit tests, and all 83 Playwright tests pass.
 - **Known gap:** a game saved before this change lost its repeated entries, so a performer can reach 3 songs once in such a resumed game.
 
-### 9.5 Smoke tests for the live site 🟡 Merged; not yet run on production
+### 9.5 Smoke tests for the live site 🟡 Merged; the production run is skipped for now (owner, 2026-10-05)
 
 - `e2e/tests/smoke.spec.ts`, run with `npm run smoke`. Read-only and light: API health and stats, home, settings and setup in both languages, and one real turn (preview found, audio responds, reveal, cover if shown). Screenshots go to the test report.
 - **Checked:** 8 of 8 pass against a local server (again on 2026-10-05, with the 667-song catalog). They also run in the full suite.
@@ -232,7 +229,6 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 
 ### Suggested order
 
-1. 9.5 is merged. Allow the production domain and run the smoke tests on the live site.
-2. 9.6, tokens and bets: merged (PR #6), with the rule update (PR #7). Next: a real-phone check.
-3. 9.1, 9.2 and 9.3 are done (667 songs).
-4. Then milestone 8, Spotify and Apple Music.
+1. 9.6, tokens and bets: merged (PR #6), with the rule update (PR #7). Next: a real-phone check.
+2. Milestone 8, Spotify and Apple Music.
+3. Later: allow the production domain and run the 9.5 smoke tests on the live site (skipped for now).
