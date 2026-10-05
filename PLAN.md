@@ -78,7 +78,7 @@ The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is
   "spotifyId": "...", "appleId": "..." }
 ```
 
-- **Today:** 576 songs (210 Hebrew, 366 English), from the 1950s to the 2020s. Goal: about 670 (see section 9.1).
+- **Today:** 667 songs (267 Hebrew, 400 English), from the 1950s to the 2020s (see section 9.1).
 - Genres: pop, classic and light rock.
 - Automatic tests check the list: no duplicate ids or songs, at most 10 songs per artist, and enough songs in each decade.
 - Still to do: a script that checks every song has a working preview. It needs internet access to Apple, so it has to run outside this sandbox.
@@ -116,7 +116,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | # | Milestone | Status |
 |---|---|---|
 | 1 | **Setup:** web + server projects, theme (colors and fonts), Hebrew/English text, RTL support | ✅ Done |
-| 2 | **Song list:** 576 songs with years checked, at most 10 songs per artist | ✅ Done. More songs still planned (section 9.1) |
+| 2 | **Song list:** 667 songs with years checked, at most 10 songs per artist | ✅ Done (section 9.1) |
 | 3 | **Game logic:** players, turns, song picking without repeats, placement check, score, winner, with tests | ✅ Done |
 | 4 | **UI:** all screens in section 6, the card, the timeline, the neon look from the box cover | ✅ Done |
 | 5 | **Audio:** 30-second preview, replay, skip to another song if a preview fails | ✅ Done, but real previews are still untested (the build sandbox cannot reach Apple) |
@@ -147,19 +147,24 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 
 ---
 
-## 9. Next steps (planned, not started)
+## 9. Next steps
 
-### 9.1 More songs (+300) 🟡 Partly done: +209 of +300
+### 9.1 More songs (+300) ✅ Done: 367 → 667 songs
 
-- **Goal:** grow the list from 367 to about 670 songs.
-- **Done:** 576 songs now (+209: 100 English, 109 Hebrew). Every year was checked by web search; songs with an unclear year, a doubtful credit, or low fame were left out.
-- **Still short:** about 95 songs. Second research run (focus on 2000–2025): 47 Hebrew songs added, all from 2000–2025 (this follows 13 songs from the 1960s, 1990s and 2010s in the first run). Each year was confirmed from a release date in search results. The method that works is one search per song ("title + artist + released in"). Hebrew Wikipedia, mako and Shironet cannot be opened from the sandbox. Collaboration credits count for every artist in the credit, so they use up the 10-song limit of each singer. There are still no Hebrew songs from the 1950s and only 11 from the 1960s.
-- **To finish:** the search limit is now raised to 1000 per session (`.claude/settings.json`, merged to `main`). Rerun the research for the rest, mainly Hebrew songs from the 1950s–60s and the 2000s (2003–2009 is thinnest).
+- **Goal:** grow the list from 367 to about 670 songs. **Now 667** (267 Hebrew, 400 English).
+- **First rounds:** +209 (100 English, 109 Hebrew).
+- **Last round (+91), done by a team:** four researchers, one per gap, then an independent fact-checker per list who confirmed every year with a separate search. Anything in doubt was dropped (7 songs: 3 with an unclear year or version, 2 not famous enough, 1 instrumental, 1 explicit rap track).
+  - **English 1950s:** +18 (now 33), including the first song from 1950.
+  - **English 2020–2025:** +16 (now 41).
+  - **Hebrew 1950s–60s:** +15 (1950s: 0 → 2, 1960s: 11 → 24). Most famous 1950s Israeli songs were written or sung years before a record came out, so their release year cannot be confirmed; they were left out.
+  - **Hebrew 1990s–2000s:** +27 (1990s: 22 → 35, 2000s: 28 → 42), 12 of them from 2003–2009.
+  - **Hebrew 2010s–2025:** +15.
+- **How years were chosen:** the year of first release (single, radio release or album, whichever came first), not the year the song charted. A few songs came out late in one year and were hits the next (e.g. Shai Gabso's "יום ועוד יומיים", Dec 2003); they use the release year.
 - **Rules stay the same:**
   - Very well-known pop, classic and light-rock songs only.
   - The year is the original release year and is checked against a source before adding.
   - At most 10 songs per artist.
-- **Done when:** about 670 songs, the catalog test passes, and the end-to-end tests still pass.
+- **Checked:** the catalog test (including the alias checks) and the end-to-end tests pass.
 
 ### 9.2 Winner at up to 30 cards ✅ Done
 
@@ -229,6 +234,6 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 
 1. Merge 9.5 when the owner approves.
 2. Allow the production domain and run the smoke tests (9.5).
-3. 9.6, tokens and bets: merged (PR #6). The rule update above is on branch `claude/game-tokens-betting-plan-ddfipg`. Next: a real-phone check.
-4. Finish 9.1 (about 95 songs left, mostly Hebrew). 9.2 and 9.3 are done.
+3. 9.6, tokens and bets: merged (PR #6), with the rule update (PR #7). Next: a real-phone check.
+4. 9.1, 9.2 and 9.3 are done (667 songs).
 5. Then milestone 8, Spotify and Apple Music.

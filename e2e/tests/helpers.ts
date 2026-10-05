@@ -330,6 +330,8 @@ export async function reveal(page: Page): Promise<boolean> {
  * Returns whether the current player's placement was correct.
  */
 export async function placeAndReveal(page: Page, index: number, opts: PlaceOptions = {}): Promise<boolean> {
+  // A spot picked while the song is still loading is cleared when it arrives (e.g. right after a skip).
+  await expect(page.getByText(/Loading a song…|טוענים שיר…/)).toHaveCount(0);
   await slot(page, index).click();
   const lock = tid(page, 'btn-lock-in');
   const revealBtn = tid(page, 'btn-reveal');
