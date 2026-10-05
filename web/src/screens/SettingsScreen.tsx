@@ -73,21 +73,6 @@ export function SettingsScreen({ songLanguages, onSongLanguagesChange, onBack }:
             ))}
           </div>
         </section>
-
-        <section className="field" aria-labelledby="settings-source">
-          <h2 id="settings-source" className="field__label">{t('musicSource')}</h2>
-          <div className="chip-group" role="group" aria-labelledby="settings-source">
-            <button type="button" className={chip(true)} aria-pressed="true">
-              {t('sourcePreviews')}
-            </button>
-            <button type="button" className={chip(false)} disabled aria-pressed="false">
-              {t('sourceSpotify')} · {t('comingSoon')}
-            </button>
-            <button type="button" className={chip(false)} disabled aria-pressed="false">
-              {t('sourceApple')} · {t('comingSoon')}
-            </button>
-          </div>
-        </section>
       </div>
     </main>
   );

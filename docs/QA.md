@@ -6,7 +6,7 @@ Owner: QA engineer. Sources: [PLAN.md](../PLAN.md), [CONTRACTS.md](CONTRACTS.md)
 
 In scope (MVP): pass-and-play web app on one phone (390x844 primary, also 360x740 / 430x932), English + Hebrew UI, `server/` API (`/api/health`, `/api/songs/stats`, `/api/songs/next`, `/api/songs/:id/preview`, `/api/songs/:id/guess`, `/api/mock-audio`), the curated `server/data/songs.json`, game rules in `web/src/game/`, tokens, naming and bets (`docs/TOKENS_AND_BETS.md`), save/resume, error handling.
 
-Out of scope: Spotify / Apple Music login (phase 2), online multiplayer, Railway infra (covered by DevOps), load testing.
+Out of scope: Spotify / Apple Music login (dropped), online multiplayer, Railway infra (covered by DevOps), load testing.
 
 Environments: Chromium (Playwright, mobile viewport, `PREVIEW_PROVIDER=mock`) for automation; real iOS Safari + Android Chrome for audio/autoplay checks before release.
 

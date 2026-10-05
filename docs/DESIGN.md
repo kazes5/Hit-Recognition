@@ -71,7 +71,7 @@ The frontend picks the modifier as `song-card--d${Math.floor(year / 10) * 10}`, 
    - The score column is 3.5em wide at the end side, so "Avi" in Hebrew UI never runs into its score.
    - The leader row gets `.is-leader` (★); the current player's row gets `.is-current` (cyan text). There is a close `.btn--ghost`.
 6. **Winner:** `.neon-title` with the winner's name, a ★ and "wins!", then each player's final `.timeline` (read-only, no slots), and footer `Play again` `.btn--primary`.
-7. **Settings:** sections with a `.field__label` and a `.chip-group`: Language (עברית / English), Song languages (Hebrew / English / Both), Music source (Previews; Spotify and Apple shown as disabled chips "soon"). The active choice uses `.chip--active`, which adds a ✓. Back button in the header.
+7. **Settings:** sections with a `.field__label` and a `.chip-group`: Language (עברית / English) and Song languages (Hebrew / English / Both). The active choice uses `.chip--active`, which adds a ✓. Back button in the header.
 
 Errors: `.error-banner` (⚠ plus red-tinted box) at the top of `.screen__body`.
 
