@@ -189,12 +189,12 @@ Tokens, naming the artist and title, betting on another player's card, and skipp
 - **Checked:** 142 server and 120 web unit tests, and all 83 Playwright tests pass.
 - **Known gap:** a game saved before this change lost its repeated entries, so a performer can reach 3 songs once in such a resumed game.
 
-### 9.5 Smoke tests for the live site 🟡 Done on branch `prod-smoke`, not merged; not yet run on production
+### 9.5 Smoke tests for the live site 🟡 Merged; not yet run on production
 
 - `e2e/tests/smoke.spec.ts`, run with `npm run smoke`. Read-only and light: API health and stats, home, settings and setup in both languages, and one real turn (preview found, audio responds, reveal, cover if shown). Screenshots go to the test report.
-- **Checked:** 8 of 8 pass against a local server.
-- **Blocked:** the sandbox's network policy blocks `hit-recognition-production.up.railway.app`. The owner needs to add that domain under Allowed domains in the cloud environment's network settings. Then run `E2E_BASE_URL=https://hit-recognition-production.up.railway.app npm run smoke`.
-- Running them on production would also close two open checks above: real previews and real covers. iPhone Safari still needs a real phone.
+- **Checked:** 8 of 8 pass against a local server (again on 2026-10-05, with the 667-song catalog). They also run in the full suite.
+- **Blocked (still, on 2026-10-05):** the sandbox's network policy blocks `hit-recognition-production.up.railway.app` (the proxy answers 403). The owner needs to add that domain under Allowed domains in the cloud environment's network settings. Then run `E2E_BASE_URL=https://hit-recognition-production.up.railway.app npm run smoke`.
+- Running them on production would also close two open checks above: real previews and real covers, including the first check of the 91 songs added in 9.1. iPhone Safari still needs a real phone.
 
 ### 9.6 Tokens, naming and bets ✅ Done (all 5 steps)
 
@@ -232,8 +232,7 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 
 ### Suggested order
 
-1. Merge 9.5 when the owner approves.
-2. Allow the production domain and run the smoke tests (9.5).
-3. 9.6, tokens and bets: merged (PR #6), with the rule update (PR #7). Next: a real-phone check.
-4. 9.1, 9.2 and 9.3 are done (667 songs).
-5. Then milestone 8, Spotify and Apple Music.
+1. 9.5 is merged. Allow the production domain and run the smoke tests on the live site.
+2. 9.6, tokens and bets: merged (PR #6), with the rule update (PR #7). Next: a real-phone check.
+3. 9.1, 9.2 and 9.3 are done (667 songs).
+4. Then milestone 8, Spotify and Apple Music.
