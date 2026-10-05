@@ -63,11 +63,6 @@ const en = {
 
   settingsTitle: 'Settings',
   language: 'Language',
-  musicSource: 'Music source',
-  sourcePreviews: '30s previews',
-  sourceSpotify: 'Spotify',
-  sourceApple: 'Apple Music',
-  comingSoon: 'Coming soon',
   songLanguages: 'Song languages',
   songsHe: 'Hebrew',
   songsEn: 'English',
@@ -234,11 +229,6 @@ const he: Dictionary = {
 
   settingsTitle: 'הגדרות',
   language: 'שפה',
-  musicSource: 'מקור המוזיקה',
-  sourcePreviews: 'קטעים של 30 שניות',
-  sourceSpotify: 'Spotify',
-  sourceApple: 'Apple Music',
-  comingSoon: 'בקרוב',
   songLanguages: 'שפת השירים',
   songsHe: 'עברית',
   songsEn: 'אנגלית',

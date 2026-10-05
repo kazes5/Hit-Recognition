@@ -60,7 +60,7 @@ The card copies the physical card, with these elements:
 
 ---
 
-## 4. Music source (Spotify / Apple Music)
+## 4. Music source
 
 | Option | What it needs | Notes |
 |---|---|---|
@@ -68,14 +68,13 @@ The card copies the physical card, with these elements:
 | **Spotify** | User login (OAuth) + **Premium** account | Spotify's SDK plays the full track. The app starts at a random point and stops after 30 seconds. Spotify no longer gives new apps 30-second preview links, so Premium is required. |
 | **Apple Music (full)** | MusicKit + Apple Music subscription | Same approach as Spotify: play the track, stop after 30 seconds. |
 
-The MVP ships with the free Apple previews. Connecting Spotify or Apple Music is added in phase 2, and the user picks one in Settings.
+The app uses the free Apple previews. Connecting Spotify or Apple Music (milestone 8) was **dropped by the owner on 2026-10-05**; the rows above are kept as background.
 
 **Song list:** the app uses its own curated list (`songs.json`) instead of release dates from Spotify or Apple. Their dates often belong to remasters or compilations, which would put songs in the wrong year.
 
 ```json
 { "id": 227, "artist": "James Brown", "title": "I Got You (I Feel Good)",
-  "year": 1965, "language": "en", "genre": "pop",
-  "spotifyId": "...", "appleId": "..." }
+  "year": 1965, "language": "en", "genre": "pop" }
 ```
 
 - **Today:** 667 songs (267 Hebrew, 400 English), from the 1950s to the 2020s (see section 9.1).
@@ -107,7 +106,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 5. **Result:** the revealed card plus ✅ "Correct!" or ❌ "Wrong, it was 2003", then *Next player*. With tokens on: who won the card and what each player won or lost, the current player's names with ✓/✗, and "We accept it".
 6. **Scoreboard:** card counts and tokens for all players (available at any time).
 7. **Winner:** the final timelines (with tokens) and a *Play again* button.
-8. **Settings:** language, music source (Previews / Spotify / Apple Music), song languages (Hebrew / English / both).
+8. **Settings:** language, song languages (Hebrew / English / both).
 
 ---
 
@@ -122,7 +121,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 | 5 | **Audio:** 30-second preview, replay, skip to another song if a preview fails | ✅ Done, but real previews are still untested (the build sandbox cannot reach Apple) |
 | 6 | **Ship:** Docker image, Railway config, Playwright end-to-end tests | ✅ Done. Deployed to Railway and online |
 | 7 | **Polish:** save and resume, fixes from QA, Hebrew logo fix | ✅ Done. Animations and testing on real phones still open |
-| 8 | **Phase 2:** Spotify and Apple Music login and playback | ⬜ Not started |
+| 8 | ~~**Phase 2:** Spotify and Apple Music login and playback~~ | ❌ Dropped by the owner (2026-10-05) |
 
 **Tests today:** 321 server unit tests, 296 web unit tests, 125 Playwright end-to-end tests (phone and desktop sizes, including the 8 smoke tests from section 9.5). All pass.
 
@@ -139,6 +138,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 
 - Online multiplayer across several phones.
 - Using tokens to buy a card (from the original game).
+- Spotify and Apple Music login and full-track playback (milestone 8, dropped). The game uses the free 30-second Apple previews.
 
 Tokens, naming the artist and title, betting on another player's card, and skipping a song for 3 tokens are built (step 9.6).
 
@@ -230,5 +230,6 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 ### Suggested order
 
 1. 9.6, tokens and bets: merged (PR #6), with the rule update (PR #7). Next: a real-phone check.
-2. Milestone 8, Spotify and Apple Music.
-3. Later: allow the production domain and run the 9.5 smoke tests on the live site (skipped for now).
+2. Later: allow the production domain and run the 9.5 smoke tests on the live site (skipped for now).
+
+Milestone 8 (Spotify and Apple Music) is dropped.
