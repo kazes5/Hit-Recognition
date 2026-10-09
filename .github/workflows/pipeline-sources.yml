@@ -5,6 +5,13 @@ name: Pipeline sources check
 # section 2. Read-only; changes nothing. The HTTP cache is kept with actions/cache, so a
 # re-run repeats no request it already made.
 on:
+  # workflow_dispatch only works once this file is on the default branch; until then,
+  # a push that changes the adapters runs the check on the 60-song sample.
+  push:
+    branches: [song-pipeline]
+    paths:
+      - 'pipeline/sources/**'
+      - '.github/workflows/pipeline-sources.yml'
   workflow_dispatch:
     inputs:
       songs:
