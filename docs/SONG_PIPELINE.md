@@ -19,6 +19,7 @@
 | D5 | **No Mizrahi and no Jewish/Hasidic songs are added.** These are not genres, and new batches leave such songs out. Songs of these styles already in the catalog stay, labelled pop. |
 | D6 | **Spotify and Apple Music login are dropped** (milestone 8). Apple's free 30-second previews stay the only audio source. |
 | D7 | **Only the top 20 per year** of each annual hit parade or year-end chart are candidates. |
+| D9 | **Every song gets a difficulty** (1 easy, 2 medium, 3 hard), calculated from how famous the song is and its chart place (task 3.9). |
 | D8 | **Year fixes are automatic when all three trusted sources agree** (Wikipedia, Wikidata, MusicBrainz). Each fix is listed in the PR report. |
 
 ---
@@ -169,7 +170,20 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
     - `flagged.csv`: songs needing a person, with the reason and each source's year;
     - `report.md`: counts, flags and preview misses, also written to the job summary.
   - *Done when* a run for 1990–1999 Hebrew finishes in under 30 minutes, can be restarted without repeating requests (cache), and the report is readable by the owner.
-- **3.8 Re-check the existing catalog (IE + Dev B).**
+- **3.9 Difficulty (Dev B, IE for the fame lookups).** Every song gets `difficulty` (1 easy, 2 medium, 3 hard) in `songs.json`; the inputs are kept in `pipeline/sources.json`.
+  - **Chart place:** the song's best rank in its year's chart (1–20), from the extractors (3.2). For songs already in the catalog, the same charts are searched; a song not found there has no chart input.
+  - **Fame today:** Wikipedia page views of the song's article over the last 12 months (Wikimedia pageviews API, free, no key; he.wikipedia for Hebrew songs, en.wikipedia for English songs), plus Deezer's popularity `rank` as a second signal.
+  - **Formula:**
+    - Each input becomes a percentile **within the same language** (0 = least, 1 = most), so Hebrew songs are not all "hard" next to global English hits.
+    - `fame` = the average of the page-view and Deezer percentiles, using whichever exists.
+    - `chart` = (21 − best rank) / 20.
+    - `score` = 0.6 × fame + 0.4 × chart. Fame weighs more because it shows whether people still know the song.
+    - A song with only one input uses that input alone. A song with neither gets difficulty 2 and is listed in the report.
+    - Difficulty is set by thirds of `score` within each language: top third 1, middle 2, bottom 3.
+  - **Recalculation:** percentiles depend on the whole catalog, so difficulty is recalculated for all songs at the end of each batch. Changes are listed in the report.
+  - **Before building:** add Wikipedia page views and a fixed Deezer search to the source test (`poc/source-test.mjs`), and check the 60 songs give a sensible spread (for example, *ירושלים של זהב* and *Wonderwall* come out easy).
+  - *Done when:* every song has a difficulty, the spread is about a third per level in each language, and the owner agrees with a sample of 30 songs (10 per level).
+- **3.8 Re-check the existing catalog (IE + Dev B).
   - Run the year rule and the preview check on the current 667 songs.
   - **When all three trusted sources agree on a different year, the year is fixed automatically** (D8), and the fix is listed in the PR report (song, old year, new year, sources).
   - Exception: Hebrew songs from before 1970 are not fixed automatically (the first-recording trap of section 2); their disagreements go to a person.
@@ -237,6 +251,7 @@ For each batch:
 ## 8. Done when (whole project)
 
 - About 1,800 songs (about 700 Hebrew, about 1,100 English; final targets set after 3.2), each with a preview and a year that was either accepted by the rule or checked by a person.
+- Every song has a difficulty (1–3) calculated by task 3.9.
 - All 9 genres in use internally; no genre visible in the game or the API.
 - No per-performer limit in the list; still at most 2 per performer per game.
 - The pipeline runs from GitHub with one button, and its report is understandable to the owner.
@@ -250,4 +265,8 @@ For each batch:
 - **Q2 – Fame:** top 20 per year only (D7).
 - **Q3 – Year fixes in the current catalog:** fixed automatically when all three trusted sources agree (D8).
 
-No open questions remain. The next step is Phase 0.
+- **Q4 – Difficulty:** every song gets a difficulty from fame and chart place (D9).
+
+**Open:** Q5 – Should difficulty be used in the game (for example an Easy / Normal / Hard choice in Setup, or a balanced mix in every game), or only stored for now?
+
+The next step is Phase 0.
