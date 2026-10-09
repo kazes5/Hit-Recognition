@@ -241,3 +241,15 @@ Songs whose genre differs from their performer's default (`pipeline/genre-overri
 | 626 | יגאל בשן | עושה שלום | pop | classic-hebrew |
 | 629 | יהודה פוליקר | פחות אבל כואב | rock | light-rock |
 | 650 | מאיר בנאי | לך אלי | light-rock | pop |
+
+## Fixes after the independent review (2026-10-09)
+
+The review (`phase2-review.md`) found 2 clear mistakes and 1 probable one. All three were applied through `genre-overrides.json`:
+
+| Id | Artist | Title | Change |
+|---:|---|---|---|
+| 253 | חוה אלברשטיין | לו יהי (1973) | light-rock → classic-hebrew |
+| 412 | מתי כספי ושוקולד מנטה מסטיק | נח (1974) | light-rock → classic-hebrew |
+| 626 | יגאל בשן | עושה שלום (1969) | classic-hebrew → pop (Hasidic Song Festival winner; D5) |
+
+After these, classic-hebrew has 21 Hebrew songs and light-rock 25 Hebrew songs; the other counts above are unchanged.

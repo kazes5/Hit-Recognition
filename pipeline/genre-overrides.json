@@ -12,11 +12,13 @@
   "181": "disco-dance",
   "191": "disco-dance",
   "225": "pop",
+  "253": "classic-hebrew",
   "268": "disco-dance",
   "348": "light-rock",
   "349": "light-rock",
   "402": "pop",
   "404": "pop",
+  "412": "classic-hebrew",
   "415": "light-rock",
   "420": "disco-dance",
   "460": "rock",
@@ -27,7 +29,6 @@
   "617": "classic-hebrew",
   "619": "classic-hebrew",
   "625": "classic-hebrew",
-  "626": "classic-hebrew",
   "629": "light-rock",
   "650": "pop"
 }
