@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CatalogError, validateCatalog } from '../src/catalog.js';
+import { GENRES } from '../src/types.js';
 import { computeStats } from '../src/stats.js';
 import { createSilentWav } from '../src/wav.js';
 import { song } from './helpers.js';
@@ -8,6 +9,44 @@ describe('validateCatalog', () => {
   it('accepts a valid catalog', () => {
     const songs = validateCatalog([song({ id: 1 }), song({ id: 2, language: 'he', genre: 'classic-rock', year: 1950 })]);
     expect(songs).toHaveLength(2);
+  });
+
+  it('lists all 9 genres in order', () => {
+    expect(GENRES).toEqual([
+      'pop',
+      'rock',
+      'light-rock',
+      'classic-rock',
+      'classic-hebrew',
+      'army-bands',
+      'hiphop',
+      'soul-rnb',
+      'disco-dance',
+    ]);
+  });
+
+  it.each(GENRES.map((g) => [g]))('accepts genre %s', (genre) => {
+    const [s] = validateCatalog([song({ id: 1, genre })]);
+    expect(s?.genre).toBe(genre);
+  });
+
+  it('names every genre in the genre error', () => {
+    expect(() => validateCatalog([{ ...song({ id: 1 }), genre: 'mizrahi' }])).toThrow(
+      'genre must be one of pop, rock, light-rock, classic-rock, classic-hebrew, army-bands, hiphop, soul-rnb, disco-dance',
+    );
+  });
+
+  it.each([[1], [2], [3]])('accepts and keeps difficulty %i', (difficulty) => {
+    const [s] = validateCatalog([song({ id: 1, difficulty: difficulty as 1 | 2 | 3 })]);
+    expect(s?.difficulty).toBe(difficulty);
+  });
+
+  it('accepts 25 songs by one performer (no per-performer limit in the list)', () => {
+    const data = [
+      ...Array.from({ length: 25 }, (_, i) => song({ id: i + 1, artist: 'Prolific', title: `Hit ${i + 1}` })),
+      song({ id: 100 }),
+    ];
+    expect(validateCatalog(data)).toHaveLength(26);
   });
 
   it('keeps optional artistKeys', () => {
@@ -39,6 +78,11 @@ describe('validateCatalog', () => {
     ['year too late', [song({ id: 1, year: 2026 })], /year/],
     ['bad language', [{ ...song({ id: 1 }), language: 'fr' }], /language/],
     ['bad genre', [{ ...song({ id: 1 }), genre: 'jazz' }], /genre/],
+    ['missing difficulty', [{ ...song({ id: 1 }), difficulty: undefined }], /difficulty must be one of 1, 2, 3/],
+    ['difficulty 0', [song({ id: 1, difficulty: 0 as 1 })], /difficulty/],
+    ['difficulty 4', [song({ id: 1, difficulty: 4 as 1 })], /difficulty/],
+    ['fractional difficulty', [song({ id: 1, difficulty: 1.5 as 1 })], /difficulty/],
+    ['string difficulty', [{ ...song({ id: 1 }), difficulty: '1' }], /difficulty/],
     ['bad artistKeys', [{ ...song({ id: 1 }), artistKeys: [] }], /artistKeys/],
     ['non-string artistKeys', [{ ...song({ id: 1 }), artistKeys: ['a', 2] }], /artistKeys/],
     ['empty artistAliases', [{ ...song({ id: 1 }), artistAliases: [] }], /artistAliases/],

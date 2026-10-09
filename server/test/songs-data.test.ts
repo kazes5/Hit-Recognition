@@ -6,11 +6,8 @@ import { buildKnownNames, isArtistCorrect, isTitleCorrect } from '../src/guess.j
 import { songArtistKeys } from '../src/selection.js';
 import { decadeOf } from '../src/stats.js';
 
-/** Catalog cap: songs per performer (counting every contributor of a credit). */
-const MAX_SONGS_PER_ARTIST = 10;
-
 const file = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../data/songs.json');
-const songs = loadCatalog(file); // throws on any schema problem (ids, fields, years, language, genre)
+const songs = loadCatalog(file); // throws on any schema problem (ids, fields, years, language, genre, difficulty)
 
 const count = <K extends string | number>(key: (s: (typeof songs)[number]) => K): Map<K, number> => {
   const m = new Map<K, number>();
@@ -55,10 +52,8 @@ describe('data/songs.json', () => {
     expect(new Set(keys).size).toBe(songs.length);
   });
 
-  it('has at most 10 songs per artist (counting every contributor of a credit)', () => {
-    const perKey = new Map<string, number>();
-    for (const s of songs) for (const k of songArtistKeys(s)) perKey.set(k, (perKey.get(k) ?? 0) + 1);
-    expect([...perKey].filter(([, n]) => n > MAX_SONGS_PER_ARTIST)).toEqual([]);
+  it('gives every song a difficulty of 1, 2 or 3', () => {
+    expect(songs.filter((s) => ![1, 2, 3].includes(s.difficulty)).map((s) => s.id)).toEqual([]);
   });
 
   it('writes Hebrew songs in Hebrew script and English songs in Latin script', () => {
@@ -121,6 +116,8 @@ describe('data/songs.json', () => {
         }
       }
       expect(wrong).toEqual([]);
-    });
+      // Compares every song with every other song's aliases: about 4.5 s at 667 songs, close to
+      // Vitest's 5 s default, and it grows with the square of the catalog size.
+    }, 30_000);
   });
 });

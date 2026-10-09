@@ -39,7 +39,8 @@ describe('API', () => {
       const res = await request(app).post('/api/songs/next');
       expect(res.status).toBe(200);
       expect(songs.map((s) => s.id)).toContain(res.body.song.id);
-      expect(Object.keys(res.body.song).sort()).toEqual(['artist', 'genre', 'id', 'language', 'title', 'year']);
+      // Genre and difficulty are internal (D3, D9): never in the public song.
+      expect(Object.keys(res.body.song).sort()).toEqual(['artist', 'id', 'language', 'title', 'year']);
     });
 
     it('respects excludeIds, excludeArtists and languages', async () => {
@@ -69,6 +70,11 @@ describe('API', () => {
       [{ excludeIds: ['1'] }],
       [{ excludeArtists: [1] }],
       [{ languages: ['fr'] }],
+      [{ maxDifficulty: 0 }],
+      [{ maxDifficulty: 4 }],
+      [{ maxDifficulty: 1.5 }],
+      [{ maxDifficulty: '2' }],
+      [{ maxDifficulty: null }],
       [[1, 2]],
     ])('400 INVALID_REQUEST for %j', async (body) => {
       const res = await request(app).post('/api/songs/next').send(body as object);
@@ -151,6 +157,41 @@ describe('API', () => {
       const fallback = await request(capped).post('/api/songs/next').send({ excludeIds: [63, 60], excludeArtists: ['A', 'A'] });
       expect(fallback.status).toBe(200);
       expect([61, 62]).toContain(fallback.body.song.id);
+    });
+
+    describe('maxDifficulty', () => {
+      const levels = [
+        song({ id: 70, artist: 'Easy', difficulty: 1 }),
+        song({ id: 71, artist: 'Medium', difficulty: 2 }),
+        song({ id: 72, artist: 'Hard', difficulty: 3 }),
+        song({ id: 73, artist: 'Hard He', difficulty: 3, language: 'he' }),
+      ];
+      const rs = [0, 0.3, 0.6, 0.99];
+      const post = (r: number, body: object) =>
+        request(createApp({ songs: levels, previewProvider: new MockPreviewProvider(), rng: () => r }))
+          .post('/api/songs/next')
+          .send(body);
+
+      it('deals only songs up to the requested level', async () => {
+        for (const r of rs) {
+          expect((await post(r, { maxDifficulty: 1 })).body.song.id).toBe(70);
+          expect([70, 71]).toContain((await post(r, { maxDifficulty: 2 })).body.song.id);
+        }
+        const all = new Set<number>();
+        for (const r of rs) all.add((await post(r, {})).body.song.id);
+        expect([...all].sort()).toEqual([70, 71, 72, 73]); // default 3 = every level
+      });
+
+      it('falls back to the next level up, and 404 only when no level has a song', async () => {
+        const res = await post(0, { maxDifficulty: 1, excludeIds: [70] });
+        expect(res.status).toBe(200);
+        expect(res.body.song.id).toBe(71);
+        expect(res.body.song).not.toHaveProperty('difficulty');
+        expect((await post(0, { maxDifficulty: 1, excludeIds: [70, 71], languages: ['en'] })).body.song.id).toBe(72);
+        const none = await post(0, { maxDifficulty: 1, excludeIds: [70, 71, 72], languages: ['en'] });
+        expect(none.status).toBe(404);
+        expect(none.body.error).toBe('NO_SONGS_LEFT');
+      });
     });
 
     it('uses the injected rng', async () => {

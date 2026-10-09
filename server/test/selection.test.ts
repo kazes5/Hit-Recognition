@@ -223,17 +223,105 @@ describe('in-game cap per performer', () => {
   });
 });
 
+describe('difficulty filter', () => {
+  const both = ['he', 'en'] as ('he' | 'en')[];
+  const rs = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99];
+  const pool = [
+    song({ id: 1, artist: 'E1', difficulty: 1 }),
+    song({ id: 2, artist: 'E2', difficulty: 1 }),
+    song({ id: 3, artist: 'M1', difficulty: 2 }),
+    song({ id: 4, artist: 'H1', difficulty: 3 }),
+    song({ id: 5, artist: 'H2', difficulty: 3, language: 'he' }),
+  ];
+  const pick = (maxDifficulty: 1 | 2 | 3 | undefined, excludeIds: number[] = [], r = 0, languages = both, excludeArtists: string[] = []) =>
+    selectNextSong(pool, { excludeIds, excludeArtists, languages, maxDifficulty }, () => r);
+
+  it('respects maxDifficulty (Easy = 1, Medium = 1-2, Hard / default = all)', () => {
+    for (const r of rs) {
+      expect(pick(1, [], r)!.difficulty).toBe(1);
+      expect(pick(2, [], r)!.difficulty).toBeLessThanOrEqual(2);
+    }
+    expect(new Set(rs.map((r) => pick(2, [], r)!.id))).toEqual(new Set([1, 2, 3]));
+    expect(new Set(rs.map((r) => pick(3, [], r)!.id))).toEqual(new Set([1, 2, 3, 4, 5]));
+    expect(new Set(rs.map((r) => pick(undefined, [], r)!.id))).toEqual(new Set([1, 2, 3, 4, 5]));
+  });
+
+  it('falls back one level at a time when the level has no song left', () => {
+    for (const r of rs) {
+      expect(pick(1, [1, 2], r)?.id).toBe(3); // level 2 before level 3
+      expect([4, 5]).toContain(pick(1, [1, 2, 3], r)?.id);
+      expect([4, 5]).toContain(pick(2, [1, 2, 3], r)?.id);
+    }
+  });
+
+  it('never falls back on language', () => {
+    for (const r of rs) expect(pick(1, [], r, ['he'])?.id).toBe(5);
+    expect(pick(1, [5], 0, ['he'])).toBeNull();
+  });
+
+  it('returns null only when no level has a song', () => {
+    expect(pick(1, [1, 2, 3, 4], 0, ['en'])).toBeNull();
+    expect(pick(3, [1, 2, 3, 4, 5])).toBeNull();
+  });
+
+  it('applies the per-performer preference within the chosen level', () => {
+    // E1 already dealt: the other easy song comes first, not a harder one.
+    for (const r of rs) expect(pick(1, [], r, both, ['E1'])?.id).toBe(2);
+    // Both easy performers at the cap: still an easy song (the soft fallback stays inside the level).
+    for (const r of rs) expect([1, 2]).toContain(pick(1, [], r, both, ['E1', 'E1', 'E2', 'E2'])?.id);
+  });
+});
+
+describe('a prolific performer in a simulated game (D2)', () => {
+  const both = ['he', 'en'] as ('he' | 'en')[];
+  const catalog = [
+    ...Array.from({ length: 25 }, (_, i) => song({ id: i + 1, artist: 'Prolific', title: `Hit ${i + 1}` })),
+    ...Array.from({ length: 40 }, (_, i) => song({ id: 100 + i, artist: `Other ${i}` })),
+  ];
+
+  it('deals that performer at most twice while other songs remain', () => {
+    for (let seed = 1; seed <= 20; seed++) {
+      let x = seed;
+      const rng = () => ((x = (x * 16807) % 2147483647) - 1) / 2147483646;
+      const dealt: typeof catalog = [];
+      for (;;) {
+        const othersLeft = catalog.some((s) => s.artist !== 'Prolific' && !dealt.includes(s));
+        const next = selectNextSong(
+          catalog,
+          { excludeIds: dealt.map((s) => s.id), excludeArtists: dealt.map((s) => s.artist), languages: both },
+          rng,
+        );
+        if (!next) break;
+        dealt.push(next);
+        if (othersLeft) expect(dealt.filter((s) => s.artist === 'Prolific').length).toBeLessThanOrEqual(2);
+      }
+      expect(dealt).toHaveLength(catalog.length); // the rest still comes once nothing else is left
+    }
+  });
+});
+
 describe('parseNextSongRequest', () => {
   it('defaults everything', () => {
     for (const body of [undefined, null, {}]) {
       const r = parseNextSongRequest(body);
-      expect(r).toEqual({ ok: true, value: { excludeIds: [], excludeArtists: [], languages: ['he', 'en'] } });
+      expect(r).toEqual({
+        ok: true,
+        value: { excludeIds: [], excludeArtists: [], languages: ['he', 'en'], maxDifficulty: 3 },
+      });
     }
   });
 
   it('accepts a full valid body', () => {
-    const r = parseNextSongRequest({ excludeIds: [1, 2], excludeArtists: ['ABBA'], languages: ['he'] });
-    expect(r).toEqual({ ok: true, value: { excludeIds: [1, 2], excludeArtists: ['ABBA'], languages: ['he'] } });
+    const r = parseNextSongRequest({ excludeIds: [1, 2], excludeArtists: ['ABBA'], languages: ['he'], maxDifficulty: 1 });
+    expect(r).toEqual({
+      ok: true,
+      value: { excludeIds: [1, 2], excludeArtists: ['ABBA'], languages: ['he'], maxDifficulty: 1 },
+    });
+  });
+
+  it.each([1, 2, 3])('accepts maxDifficulty %i', (maxDifficulty) => {
+    const r = parseNextSongRequest({ maxDifficulty });
+    expect(r.ok && r.value.maxDifficulty).toBe(maxDifficulty);
   });
 
   it('treats an empty languages list as both', () => {
@@ -251,6 +339,11 @@ describe('parseNextSongRequest', () => {
     ['excludeArtists with number', { excludeArtists: [1] }],
     ['unknown language', { languages: ['fr'] }],
     ['languages not array', { languages: 'he' }],
+    ['maxDifficulty 0', { maxDifficulty: 0 }],
+    ['maxDifficulty 4', { maxDifficulty: 4 }],
+    ['maxDifficulty fractional', { maxDifficulty: 2.5 }],
+    ['maxDifficulty string', { maxDifficulty: '3' }],
+    ['maxDifficulty null', { maxDifficulty: null }],
   ])('rejects %s', (_name, body) => {
     expect(parseNextSongRequest(body).ok).toBe(false);
   });

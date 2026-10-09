@@ -1,9 +1,19 @@
-import { LANGUAGES, isLanguage, type CatalogSong, type Language } from './types.js';
+import {
+  LANGUAGES,
+  MAX_DIFFICULTY,
+  isDifficulty,
+  isLanguage,
+  type CatalogSong,
+  type Difficulty,
+  type Language,
+} from './types.js';
 
 export interface NextSongCriteria {
   excludeIds: number[];
   excludeArtists: string[];
   languages: Language[];
+  /** Highest difficulty to deal (1 easy, 2 medium, 3 hard). Default 3 (all songs). */
+  maxDifficulty?: Difficulty;
 }
 
 /** Returns a number in [0, 1). */
@@ -75,7 +85,10 @@ function pick<T>(items: readonly T[], rng: Rng): T {
 export const MAX_SONGS_PER_ARTIST_IN_GAME = 2;
 
 /**
- * Picks a random song that is not excluded, in one of the requested languages.
+ * Picks a random song that is not excluded, in one of the requested languages,
+ * with a difficulty of at most `maxDifficulty` (default 3). If no such song is
+ * left, the limit is raised one level at a time (up to 3) before giving up; the
+ * language filter never falls back.
  * `excludeArtists` holds one entry per song already dealt in the game (full artist
  * strings as shown on cards; duplicates are meaningful). Each entry is split into
  * contributors and expanded with the catalog's extra `artistKeys` for that credit,
@@ -92,7 +105,12 @@ export function selectNextSong<S extends CatalogSong>(
   const excludedIds = new Set(criteria.excludeIds);
   const languages = new Set(criteria.languages);
 
-  const candidates = songs.filter((s) => !excludedIds.has(s.id) && languages.has(s.language));
+  const available = songs.filter((s) => !excludedIds.has(s.id) && languages.has(s.language));
+  let candidates: S[] = [];
+  for (let level = criteria.maxDifficulty ?? MAX_DIFFICULTY; level <= MAX_DIFFICULTY; level++) {
+    candidates = available.filter((s) => s.difficulty <= level);
+    if (candidates.length > 0) break;
+  }
   if (candidates.length === 0) return null;
   if (criteria.excludeArtists.length === 0) return pick(candidates, rng);
 
@@ -117,7 +135,10 @@ export type ParseResult<T> = { ok: true; value: T } | { ok: false; message: stri
 /** Validates the body of POST /api/songs/next. All fields optional. */
 export function parseNextSongRequest(body: unknown): ParseResult<NextSongCriteria> {
   if (body === undefined || body === null) {
-    return { ok: true, value: { excludeIds: [], excludeArtists: [], languages: [...LANGUAGES] } };
+    return {
+      ok: true,
+      value: { excludeIds: [], excludeArtists: [], languages: [...LANGUAGES], maxDifficulty: MAX_DIFFICULTY },
+    };
   }
   if (typeof body !== 'object' || Array.isArray(body)) {
     return { ok: false, message: 'Request body must be a JSON object' };
@@ -149,5 +170,13 @@ export function parseNextSongRequest(body: unknown): ParseResult<NextSongCriteri
     if (b.languages.length > 0) languages = [...new Set(b.languages as Language[])];
   }
 
-  return { ok: true, value: { excludeIds, excludeArtists, languages } };
+  let maxDifficulty: Difficulty = MAX_DIFFICULTY;
+  if (b.maxDifficulty !== undefined) {
+    if (!isDifficulty(b.maxDifficulty)) {
+      return { ok: false, message: 'maxDifficulty must be 1, 2 or 3' };
+    }
+    maxDifficulty = b.maxDifficulty;
+  }
+
+  return { ok: true, value: { excludeIds, excludeArtists, languages, maxDifficulty } };
 }
