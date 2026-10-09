@@ -253,3 +253,11 @@ The review (`phase2-review.md`) found 2 clear mistakes and 1 probable one. All t
 | 626 | יגאל בשן | עושה שלום (1969) | classic-hebrew → pop (Hasidic Song Festival winner; D5) |
 
 After these, classic-hebrew has 21 Hebrew songs and light-rock 25 Hebrew songs; the other counts above are unchanged.
+
+## Owner decisions on borderline performers (2026-10-09)
+
+**Kept (not excluded):** עומר אדם, חנן בן ארי, ששון שאולוב, שימי תבורי, עדן חסון, יגל אושרי, אודיה, אודיה ועופר ניסים, נסרין קדרי, שחר טבוך ואגם בוחבוט. Also kept as before: סטטיק ובן אל תבורי, שי גבסו, אגם בוחבוט.
+
+New batches may add songs by these performers. **28 credits stay excluded** (D5).
+
+**Dua Lipa:** her songs stay pop (not disco-dance).

@@ -1077,8 +1077,8 @@
   },
   "עומר אדם": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: Mizrahi-pop star; most of his catalogue is Mizrahi in style, so excluded"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: Mizrahi-pop star; most of his catalogue is Mizrahi in style, so excluded"
   },
   "דויד ברוזה": {
     "genre": "light-rock",
@@ -1151,8 +1151,8 @@
   },
   "ששון שאולוב": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: Mizrahi/Bukharan-style singer (verify)"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: Mizrahi/Bukharan-style singer (verify)"
   },
   "טיפקס": {
     "genre": "rock",
@@ -1189,8 +1189,8 @@
   },
   "חנן בן ארי": {
     "genre": "pop",
-    "exclude": true,
-    "note": "Jewish-pop (D5)"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). Jewish-pop (D5)"
   },
   "Norah Jones": {
     "genre": "light-rock",
@@ -1561,8 +1561,8 @@
   },
   "שימי תבורי": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: classic Mizrahi/Yemenite singer; this song is a pop ballad"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: classic Mizrahi/Yemenite singer; this song is a pop ballad"
   },
   "נתנאלה": {
     "genre": "classic-hebrew",
@@ -1713,8 +1713,8 @@
   },
   "עדן חסון": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: pop with strong Mizrahi style"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: pop with strong Mizrahi style"
   },
   "רביב כנר": {
     "genre": "pop",
@@ -1780,8 +1780,8 @@
   },
   "שחר טבוך ואגם בוחבוט": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: Mizrahi-dance duet"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: Mizrahi-dance duet"
   },
   "אושר כהן": {
     "genre": "pop",
@@ -1790,8 +1790,8 @@
   },
   "אודיה ועופר ניסים": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: Odeya (Mizrahi-pop) with DJ Offer Nissim"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: Odeya (Mizrahi-pop) with DJ Offer Nissim"
   },
   "אגם בוחבוט": {
     "genre": "pop",
@@ -2027,8 +2027,8 @@
   },
   "יגל אושרי": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: Mizrahi-pop"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: Mizrahi-pop"
   },
   "הפרויקט של עידן רייכל ורוני דלומי": {
     "genre": "pop",
@@ -2037,12 +2037,12 @@
   },
   "אודיה": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: Mizrahi-pop ballads"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: Mizrahi-pop ballads"
   },
   "נסרין קדרי": {
     "genre": "pop",
-    "exclude": true,
-    "note": "borderline: Arabic/Mizrahi-style pop"
+    "exclude": false,
+    "note": "owner 2026-10-09: keep (not excluded). borderline: Arabic/Mizrahi-style pop"
   }
 }
