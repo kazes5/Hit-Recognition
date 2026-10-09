@@ -1,0 +1,19 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "he action=parse formatversion=2, page without an infobox",
+  "shape": "No song infobox (the 2-parameter {{מצעד}} chart template has שנה but is not an infobox, so it is not read). The API category \"שירים משנת 1974\" gives the year when nothing else does."
+ },
+ "parse": {
+  "title": "סע לאט",
+  "pageid": 300003,
+  "wikitext": "'''סע לאט''' הוא שיר ש[[אריק איינשטיין]] ביצע ...\n{{מצעד|מקום=1|שנה=1974}}\n[[קטגוריה:שירי אריק איינשטיין]]",
+  "properties": {},
+  "categories": [
+   {
+    "sortkey": "",
+    "category": "שירים_משנת_1974"
+   }
+  ]
+ }
+}

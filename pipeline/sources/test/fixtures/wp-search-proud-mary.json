@@ -1,0 +1,55 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&formatversion=2&srlimit=8&srsearch=Proud%20Mary%20Creedence%20Clearwater%20Revival",
+  "shape": "MediaWiki list=search, formatversion=2: query.search[] = {ns,title,pageid,size,wordcount,snippet,timestamp}"
+ },
+ "batchcomplete": true,
+ "continue": {
+  "sroffset": 8,
+  "continue": "-||"
+ },
+ "query": {
+  "searchinfo": {
+   "totalhits": 412
+  },
+  "search": [
+   {
+    "ns": 0,
+    "title": "Creedence Clearwater Revival",
+    "pageid": 100001,
+    "size": 90000,
+    "wordcount": 9000,
+    "snippet": "American rock band ... <span class=\"searchmatch\">Proud</span> <span class=\"searchmatch\">Mary</span>",
+    "timestamp": "2026-09-01T00:00:00Z"
+   },
+   {
+    "ns": 0,
+    "title": "Proud Mary (album)",
+    "pageid": 100002,
+    "size": 3000,
+    "wordcount": 300,
+    "snippet": "compilation",
+    "timestamp": "2026-01-01T00:00:00Z"
+   },
+   {
+    "ns": 0,
+    "title": "Proud Mary",
+    "pageid": 100003,
+    "size": 30000,
+    "wordcount": 3000,
+    "snippet": "\"<span class=\"searchmatch\">Proud</span> <span class=\"searchmatch\">Mary</span>\" is a song written by John Fogerty and first recorded by <span class=\"searchmatch\">Creedence</span> <span class=\"searchmatch\">Clearwater</span> <span class=\"searchmatch\">Revival</span>",
+    "timestamp": "2026-08-01T00:00:00Z"
+   },
+   {
+    "ns": 0,
+    "title": "Bayou Country",
+    "pageid": 100004,
+    "size": 9000,
+    "wordcount": 900,
+    "snippet": "album",
+    "timestamp": "2026-02-01T00:00:00Z"
+   }
+  ]
+ }
+}

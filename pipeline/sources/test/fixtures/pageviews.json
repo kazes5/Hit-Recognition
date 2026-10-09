@@ -1,0 +1,117 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wonderwall_(song)/monthly/2025100100/2026093000",
+  "shape": "{items:[{project,article,granularity,timestamp:\"YYYYMMDD00\",access,agent,views}]}"
+ },
+ "items": [
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2025100100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 100000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2025110100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 101000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2025120100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 102000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026010100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 103000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026020100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 104000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026030100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 105000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026040100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 106000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026050100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 107000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026060100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 108000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026070100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 109000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026080100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 110000
+  },
+  {
+   "project": "en.wikipedia",
+   "article": "Wonderwall_(song)",
+   "granularity": "monthly",
+   "timestamp": "2026090100",
+   "access": "all-access",
+   "agent": "user",
+   "views": 111000
+  }
+ ]
+}

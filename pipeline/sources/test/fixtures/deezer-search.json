@@ -1,0 +1,67 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://api.deezer.com/search?limit=25&q=Oasis%20Wonderwall",
+  "shape": "{data:[{id,readable,title,title_short,title_version,link,duration,rank,explicit_lyrics,preview,artist:{id,name},album:{id,title},type:\"track\"}],total,next?}"
+ },
+ "data": [
+  {
+   "id": 1,
+   "readable": true,
+   "title": "Wonderwall (Remastered)",
+   "title_short": "Wonderwall",
+   "title_version": "(Remastered)",
+   "duration": 258,
+   "rank": 902345,
+   "preview": "https://cdnt-preview.dzcdn.net/api/1/1/a/b/c/0/wonderwall.mp3",
+   "artist": {
+    "id": 10,
+    "name": "Oasis"
+   },
+   "album": {
+    "id": 100,
+    "title": "(What's the Story) Morning Glory? (Remastered)"
+   },
+   "type": "track"
+  },
+  {
+   "id": 2,
+   "readable": true,
+   "title": "Wonderwall",
+   "title_short": "Wonderwall",
+   "title_version": "",
+   "duration": 200,
+   "rank": 950000,
+   "preview": "https://cdnt-preview.dzcdn.net/api/1/1/x/cover.mp3",
+   "artist": {
+    "id": 20,
+    "name": "Ryan Adams"
+   },
+   "album": {
+    "id": 200,
+    "title": "Love Is Hell"
+   },
+   "type": "track"
+  },
+  {
+   "id": 3,
+   "readable": true,
+   "title": "Wonderwall (Live)",
+   "title_short": "Wonderwall",
+   "title_version": "(Live)",
+   "duration": 270,
+   "rank": 400000,
+   "preview": "",
+   "artist": {
+    "id": 10,
+    "name": "Oasis"
+   },
+   "album": {
+    "id": 300,
+    "title": "Familiar To Millions"
+   },
+   "type": "track"
+  }
+ ],
+ "total": 3
+}
