@@ -230,6 +230,9 @@ test.describe('API', () => {
     ['excludeArtists not an array', { excludeArtists: 42 }],
     ['languages not an array', { languages: 'he' }],
     ['unknown language code', { languages: ['fr'] }],
+    ['maxDifficulty out of range', { maxDifficulty: 4 }],
+    ['maxDifficulty not a whole number', { maxDifficulty: 1.5 }],
+    ['maxDifficulty as text', { maxDifficulty: '2' }],
   ] as const) {
     test(`POST /api/songs/next → 400 INVALID_REQUEST (${label})`, async ({ request }) => {
       const res = await next(request, body);

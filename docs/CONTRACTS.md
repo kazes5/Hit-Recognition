@@ -143,7 +143,7 @@ Tokens, naming and bets (full rules: `docs/TOKENS_AND_BETS.md`). A **"Tokens & b
 | Result (same screen after reveal) | `revealed-card`, `card-artist`, `card-year`, `card-title`, `card-number`, `result-correct` or `result-wrong`, `btn-next` |
 | Scoreboard (overlay) | `scoreboard`, `score-row` (each, with `data-player` and `data-score`), `btn-close-scoreboard` |
 | Winner | `screen-winner`, `winner-name`, `btn-play-again` |
-| Settings | `screen-settings`, `btn-lang-he`, `btn-lang-en`, `btn-songs-he`, `btn-songs-en`, `btn-songs-both`, `btn-back` |
+| Settings | `screen-settings`, `btn-lang-he`, `btn-lang-en`, `btn-songs-he`, `btn-songs-en`, `btn-songs-both`, `btn-difficulty-easy`, `btn-difficulty-medium`, `btn-difficulty-hard`, `btn-back` |
 | Errors | `error-banner` (e.g. server unreachable / no songs left), `btn-retry`, `btn-error-end-game` |
 | Setup: tokens | `toggle-tokens-bets` (`role="switch"`, `aria-checked`) |
 | Turn: tokens | `current-player-tokens` (header chip, with `data-tokens`), `token-meter` (each meter, with `data-tokens`) |
@@ -155,6 +155,7 @@ Tokens, naming and bets (full rules: `docs/TOKENS_AND_BETS.md`). A **"Tokens & b
 | Added during build | `btn-resume` (Home, only with a saved game), `screen-dealing` (while starting cards are dealt), `btn-end-game` (in scoreboard), `btn-home` (Winner), `btn-back` (also on Setup), `final-timeline` / `final-timeline-card` (Winner) |
 
 Song-language setting persisted in `localStorage` key `hitster.songLanguages` (`"he"`, `"en"`, `"both"`; default `both`).
+Difficulty setting persisted in `localStorage` key `hitster.difficulty` (`"easy"`, `"medium"`, `"hard"`; default `easy`), sent as `maxDifficulty` 1 / 2 / 3 with every `POST /api/songs/next`.
 
 ## 7. Cover picture on reveal
 
