@@ -13,7 +13,10 @@ function assertSong(s: Song): void {
   expect(s.year).toBeGreaterThanOrEqual(1900);
   expect(s.year).toBeLessThanOrEqual(new Date().getFullYear());
   expect(['he', 'en']).toContain(s.language);
-  expect(['pop', 'rock', 'light-rock', 'classic-rock']).toContain(s.genre);
+  // The public song has exactly these fields: genre and difficulty are internal (SONG_PIPELINE D3, D9).
+  expect(Object.keys(s).sort()).toEqual(['artist', 'id', 'language', 'title', 'year']);
+  expect(s).not.toHaveProperty('genre');
+  expect(s).not.toHaveProperty('difficulty');
 }
 
 async function next(request: APIRequestContext, data: unknown) {
@@ -195,6 +198,30 @@ test.describe('API', () => {
         expect(song.language).toBe(lang);
       }
     }
+  });
+
+  test('POST /api/songs/next accepts maxDifficulty 1, 2 and 3', async ({ request }) => {
+    for (const maxDifficulty of [1, 2, 3]) {
+      const res = await next(request, { maxDifficulty });
+      expect(res.status()).toBe(200);
+      const { song } = (await res.json()) as { song: Song };
+      assertSong(song);
+    }
+  });
+
+  test('POST /api/songs/next with maxDifficulty 1 falls back to harder songs before NO_SONGS_LEFT', async ({
+    request,
+  }) => {
+    const stats = (await (await request.get('/api/songs/stats')).json()) as { total: number };
+    const ids: number[] = [];
+    for (let i = 0; i < 5000; i++) {
+      const res = await next(request, { excludeIds: ids, maxDifficulty: 1 });
+      if (res.status() === 404) break;
+      expect(res.status()).toBe(200);
+      ids.push(((await res.json()) as { song: Song }).song.id);
+    }
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids.length).toBe(stats.total);
   });
 
   for (const [label, body] of [

@@ -101,6 +101,7 @@ Rules: `docs/TOKENS_AND_BETS.md`. Automated: `e2e/tests/betting.spec.ts`. Use 3 
 | TC-51 | Both | Play the clip, Lock in, play again from the betting screen (Replay in the gold box). | Audio plays from a tap; it stops on Reveal and on Next. |
 | TC-52 | Small phone (360×640), Hebrew | Go through every betting screen with long names. | No sideways page scroll; long names end with "…"; buttons at least 44px. |
 | TC-53 | Screen reader (VoiceOver / TalkBack) | Go through a betting round. | The bettor change and "You can bet!" / "Not this time" are announced; taken spots are read as "Ann's pick" / "Bob's bet". |
+| TC-54 | Difficulty | Fresh phone: open Settings. Pick Hard, reload, open Settings again. Start a game and watch `POST /api/songs/next` in DevTools. | Easy is chosen at first (✓, `aria-pressed`); the hint "Easy plays only the best-known songs." shows under the heading. Hard stays chosen after the reload (`hitster.difficulty` = `hard`). Every request body has `maxDifficulty`: 1 for Easy, 2 for Medium, 3 for Hard. Changing it between turns applies from the next song. Hebrew UI: "רמת קושי" with קל / בינוני / קשה. No screen ever shows a song's genre or difficulty. |
 
 ## 4. Acceptance checklist (mapped to PLAN.md)
 

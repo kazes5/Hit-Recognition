@@ -1,13 +1,21 @@
-import type { SongLanguageSetting } from '../game/types';
+import type { DifficultySetting, SongLanguageSetting } from '../game/types';
 import { useI18n } from '../i18n/I18nProvider';
 
 interface SettingsScreenProps {
   songLanguages: SongLanguageSetting;
   onSongLanguagesChange: (value: SongLanguageSetting) => void;
+  difficulty: DifficultySetting;
+  onDifficultyChange: (value: DifficultySetting) => void;
   onBack: () => void;
 }
 
-export function SettingsScreen({ songLanguages, onSongLanguagesChange, onBack }: SettingsScreenProps) {
+export function SettingsScreen({
+  songLanguages,
+  onSongLanguagesChange,
+  difficulty,
+  onDifficultyChange,
+  onBack,
+}: SettingsScreenProps) {
   const { t, lang, setLang } = useI18n();
 
   const chip = (active: boolean) => `chip${active ? ' chip--active' : ''}`;
@@ -67,6 +75,36 @@ export function SettingsScreen({ songLanguages, onSongLanguagesChange, onBack }:
                 data-testid={testId}
                 aria-pressed={songLanguages === value}
                 onClick={() => onSongLanguagesChange(value)}
+              >
+                {t(key)}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="field" aria-labelledby="settings-difficulty">
+          <h2 id="settings-difficulty" className="field__label">{t('difficulty')}</h2>
+          <p id="settings-difficulty-hint" className="field__hint">{t('difficultyHint')}</p>
+          <div
+            className="chip-group"
+            role="group"
+            aria-labelledby="settings-difficulty"
+            aria-describedby="settings-difficulty-hint"
+          >
+            {(
+              [
+                ['easy', 'btn-difficulty-easy', 'difficultyEasy'],
+                ['medium', 'btn-difficulty-medium', 'difficultyMedium'],
+                ['hard', 'btn-difficulty-hard', 'difficultyHard'],
+              ] as const
+            ).map(([value, testId, key]) => (
+              <button
+                key={value}
+                type="button"
+                className={chip(difficulty === value)}
+                data-testid={testId}
+                aria-pressed={difficulty === value}
+                onClick={() => onDifficultyChange(value)}
               >
                 {t(key)}
               </button>
