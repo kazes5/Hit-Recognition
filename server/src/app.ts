@@ -52,9 +52,9 @@ export function createApp(options: AppOptions): Express {
   app.use(securityHeaders);
 
   const api = express.Router();
-  // A long game sends every used song id and one performer name per dealt song: with the whole
-  // catalog dealt that is about 15 KB today, so the limit leaves room for the catalog to grow.
-  api.use(express.json({ limit: '64kb' }));
+  // A long game sends every used song id and one performer name per dealt song: about 22 bytes
+  // per song, so 256 KB fits about 11,000 dealt songs, far beyond the planned catalog (~1,800).
+  api.use(express.json({ limit: '256kb' }));
   api.use((_req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');
     next();

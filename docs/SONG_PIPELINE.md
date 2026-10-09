@@ -118,14 +118,15 @@ Estimates are in working days for one person. "Done when" is the acceptance test
   - *Done when* the schema and its tests are in place.
 - **1.5 Performance with 2,000+ songs.**
   - Measure song picking and the catalog tests with a synthetic 3,000-song catalog.
-  - The alias test in `songs-data.test.ts` compares every pair of songs. Index it if it takes more than 10 s.
-  - Confirm the 64 KB request limit (enough for about 4,000 dealt songs).
+  - **Measured (Phase 1):** picking a song takes about 1.7 ms with 3,000 songs; the server tests take 6–7 s today.
+  - **To do before the catalog grows (Phase 3):** the alias test in `songs-data.test.ts` compares every pair of songs: about 4.5 s today, about 90 s at 3,000 songs. Index the name matching so it stays under 10 s. Until then it has a 30 s timeout.
+  - **Request size:** about 22 bytes per dealt song, so the old 64 KB limit fit only about 2,900 songs. Raised to 256 KB (about 11,000) in Phase 1.
   - *Done when* picking a song stays under 20 ms and the server tests stay under 30 s.
 
 - **1.6 Difficulty field and the Settings choice (D9, D10).** Dev A (server), Dev C (web and tests).
   - **Catalog:** add `difficulty` (1, 2 or 3) to the song schema and validation, and set all 667 current songs to 1.
   - **Server:** `POST /api/songs/next` takes an optional `maxDifficulty` (1–3, default 3). Easy = level 1 only, Medium = levels 1–2, Hard = all levels. The song's difficulty stays out of the public song, like genre (1.2).
-  - **Too few songs:** if the filter leaves no unused song, the server falls back to the next level up rather than ending the game, the same way the language filter already falls back.
+  - **Too few songs:** if the filter leaves no unused song, the server falls back to the next level up rather than ending the game. (The song-language filter has no fallback: when a language runs out, the game ends with "no songs left", as before.)
   - **Settings screen:** a new "Difficulty" chip group (Easy / Medium / Hard; קל / בינוני / קשה), saved on the phone like the song-language choice. **Default: Easy**, so today's games play exactly as now.
   - **Docs:** CONTRACTS (API and test ids), DESIGN (Settings), QA (new checks).
   - *Done when:* server tests cover the filter and the fallback; a web test covers the setting and that it survives a reload; an end-to-end test shows that an Easy game only gets level-1 songs; the settings screenshots are updated.

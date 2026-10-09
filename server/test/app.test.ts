@@ -91,7 +91,7 @@ describe('API', () => {
     it('400 INVALID_REQUEST for oversized body', async () => {
       const res = await request(app)
         .post('/api/songs/next')
-        .send({ excludeArtists: Array.from({ length: 10000 }, (_, i) => `artist ${i}`) });
+        .send({ excludeArtists: Array.from({ length: 30000 }, (_, i) => `artist ${i}`) });
       expect(res.status).toBe(400);
       expect(res.body.error).toBe('INVALID_REQUEST');
     });
