@@ -1,0 +1,16 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "he action=parse formatversion=2 (template {{שיר}}, field \"תאריך יציאה\")",
+  "shape": "Hebrew song infobox using תאריך יציאה, with a <ref> carrying an earlier year and a re-release segment"
+ },
+ "parse": {
+  "title": "נגמר (שיר)",
+  "pageid": 300002,
+  "wikitext": "{{שיר\n|שם השיר=נגמר\n|בביצוע=[[עידן עמדי]]\n|מתוך האלבום=[[עידן עמדי (אלבום)|עידן עמדי]]\n|הוקלט=2011\n|תאריך יציאה=2014 (גרסה מחודשת)<br />אוקטובר 2012<ref>{{קישור כללי|כתובת=https://example.org|כותרת=ynet|תאריך=2010}}</ref>\n|סוגה=פופ\n}}\n[[קטגוריה:שירי עידן עמדי]]",
+  "properties": {
+   "wikibase_item": "Q99999901"
+  },
+  "categories": []
+ }
+}

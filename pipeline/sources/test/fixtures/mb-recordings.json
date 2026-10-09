@@ -1,0 +1,62 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://musicbrainz.org/ws/2/recording?fmt=json&limit=100&query=arid%3A<mbid>%20AND%20recording%3A%22Proud%20Mary%22",
+  "shape": "{created,count,offset,recordings:[{id,score,title,length,disambiguation?,video,\"first-release-date\",\"artist-credit\",releases}]}"
+ },
+ "created": "2026-10-01T00:00:00.000Z",
+ "count": 6,
+ "offset": 0,
+ "recordings": [
+  {
+   "id": "r1",
+   "score": 100,
+   "title": "Proud Mary",
+   "length": 187000,
+   "video": null,
+   "first-release-date": "1969-01-05"
+  },
+  {
+   "id": "r2",
+   "score": 100,
+   "title": "Proud Mary",
+   "length": 190000,
+   "disambiguation": "live, 1970-01-31: Oakland Coliseum",
+   "video": null,
+   "first-release-date": "1968-01-01"
+  },
+  {
+   "id": "r3",
+   "score": 100,
+   "title": "Proud Mary (demo)",
+   "length": 180000,
+   "video": null,
+   "first-release-date": "1967"
+  },
+  {
+   "id": "r4",
+   "score": 95,
+   "title": "Proud Mary",
+   "length": 187000,
+   "disambiguation": "2008 remix",
+   "video": null,
+   "first-release-date": "1966"
+  },
+  {
+   "id": "r5",
+   "score": 90,
+   "title": "Proud Mary Medley",
+   "length": 400000,
+   "video": null,
+   "first-release-date": "1965"
+  },
+  {
+   "id": "r6",
+   "score": 100,
+   "title": "Proud Mary",
+   "length": 187000,
+   "video": null,
+   "first-release-date": ""
+  }
+ ]
+}

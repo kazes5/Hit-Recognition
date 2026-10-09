@@ -1,0 +1,12 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "Deezer quota error (HTTP 200)",
+  "shape": "{error:{type,message,code}}; code 4 = quota → retry"
+ },
+ "error": {
+  "type": "Exception",
+  "message": "Quota limit exceeded",
+  "code": 4
+ }
+}

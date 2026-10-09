@@ -1,0 +1,12 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "Deezer \"no data\" error (HTTP 200)",
+  "shape": "{error:{type,message,code}}; code 800 = no data → treated as empty"
+ },
+ "error": {
+  "type": "DataException",
+  "message": "no data",
+  "code": 800
+ }
+}

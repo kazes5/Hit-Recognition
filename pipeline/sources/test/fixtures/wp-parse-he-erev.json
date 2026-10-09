@@ -1,0 +1,26 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://he.wikipedia.org/w/api.php?action=parse&format=json&prop=wikitext%7Cproperties&page=ערב_של_שושנים (formatversion=1)",
+  "shape": "action=parse formatversion=1: parse.wikitext = {\"*\": text}, parse.properties = [{name, \"*\"}], categories = [{sortkey, \"*\"}]. Known Hebrew trap: first recorded 1957, famous version 1958."
+ },
+ "parse": {
+  "title": "ערב של שושנים",
+  "pageid": 300001,
+  "wikitext": {
+   "*": "{{פירוש נוסף|נוכחי=השיר|אחר=הסרט|ראו=[[ערב של שושנים (סרט)]]}}\n{{סינגל\n|שם=ערב של שושנים\n|תמונה=\n|אמן=[[הדודאים]]\n|מתוך האלבום=\n|הוקלט=[[1957]]\n|יצא לאור=[[1957]]<ref>{{צ-אתר|כותב=|כתובת=|שם=|תאריך כניסה=12 במאי 2016}}</ref>\n|סוגה=[[זמר עברי]]\n|שפה=עברית\n|כתיבה=[[משה דור]]\n|לחן=[[יוסף הדר]]\n}}\n'''ערב של שושנים''' הוא שיר ...\n[[קטגוריה:שירי הדודאים]]"
+  },
+  "properties": [
+   {
+    "name": "wikibase_item",
+    "*": "Q2914383"
+   }
+  ],
+  "categories": [
+   {
+    "sortkey": "",
+    "*": "שירי_הדודאים"
+   }
+  ]
+ }
+}
