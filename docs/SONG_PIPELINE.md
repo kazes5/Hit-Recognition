@@ -148,7 +148,15 @@ Estimates are in working days for one person. "Done when" is the acceptance test
 ### Phase 3 – The pipeline (6–8 days, IE + Dev B, Dev C for tests)
 All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The code lives in `pipeline/`, a Node package with its own tests, and uses no secrets.
 
-- **3.1 Source adapters (IE).** One module per source, each with retries, `User-Agent`, rate limits and an on-disk cache stored with `actions/cache`, so a restarted run doesn't repeat requests.
+- **3.1 Source adapters (IE).** ✅ Done 2026-10-09 (`pipeline/sources/`, 86 unit tests; live check: workflow `pipeline-sources.yml`, run 37992640957, 60 verified songs).
+  - **Live result:**
+    - Hebrew Wikipedia year found for 26/30 songs (the source test found 19), 96% exact.
+    - Year rule (2 of 3 exactly): Hebrew 23/30 accepted, all 23 correct, 7 flagged (3 before 1970, 4 disagree). English 29/30 accepted, 28 correct.
+    - Deezer found 30/30 English (fixed; the source test found 0).
+    - Wikipedia page views: Hebrew 26/30, English 30/30.
+    - Apple preview: Hebrew 27/30, English 30/30.
+    - 527 requests in 193 s, 0 failures.
+  - **Still to check:** *Proud Mary* is accepted as 1968 (Wikipedia and Wikidata) against our 1969. One module per source, each with retries, `User-Agent`, rate limits and an on-disk cache stored with `actions/cache`, so a restarted run doesn't repeat requests.
   - **Wikipedia (he, en):** MediaWiki API (search, page wikitext, `wikibase_item`). Infobox year parser that knows the Hebrew field names and ignores "recorded" and re-release fields (the source-test bugs).
   - **Wikidata:** earliest P577 of the song item, via `Special:EntityData`.
   - **MusicBrainz:** artist MBID (Hebrew name and English aliases), then the earliest `first-release-date` among that artist's recordings. Skip live, remix, demo and karaoke versions. 1 request per second, retry on 503.
