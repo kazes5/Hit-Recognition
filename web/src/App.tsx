@@ -12,7 +12,7 @@ import { GameProvider, useGame } from './store/GameProvider';
 type View = 'home' | 'setup' | 'settings' | 'game';
 
 function Screens() {
-  const { state, dispatch, songLanguages, setSongLanguages } = useGame();
+  const { state, dispatch, songLanguages, setSongLanguages, difficulty, setDifficulty } = useGame();
   const [view, setView] = useState<View>('home');
   const [saved, setSaved] = useState<GameState | null>(() => loadSavedGame());
   const [setupNames, setSetupNames] = useState<string[]>([]);
@@ -59,7 +59,13 @@ function Screens() {
       );
     case 'settings':
       return (
-        <SettingsScreen songLanguages={songLanguages} onSongLanguagesChange={setSongLanguages} onBack={goHome} />
+        <SettingsScreen
+          songLanguages={songLanguages}
+          onSongLanguagesChange={setSongLanguages}
+          difficulty={difficulty}
+          onDifficultyChange={setDifficulty}
+          onBack={goHome}
+        />
       );
     case 'game':
       if (state.phase === 'winner') {

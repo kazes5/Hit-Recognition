@@ -2,25 +2,27 @@ import { expect, type Locator, type Page, type Route } from '@playwright/test';
 
 export type Language = 'he' | 'en';
 
+/** The public song (CONTRACTS §4): genre and difficulty stay on the server. */
 export interface Song {
   id: number;
   artist: string;
   title: string;
   year: number;
   language: Language;
-  genre: 'pop' | 'rock' | 'light-rock' | 'classic-rock';
 }
 
 export interface NextRequestBody {
   excludeIds?: number[];
   excludeArtists?: string[];
   languages?: Language[];
+  /** Settings → Difficulty: 1 easy, 2 medium, 3 hard. */
+  maxDifficulty?: 1 | 2 | 3;
 }
 
 export const tid = (page: Page | Locator, id: string): Locator => page.getByTestId(id);
 
 export function song(id: number, year: number, artist: string, title: string, language: Language = 'en'): Song {
-  return { id, year, artist, title, language, genre: 'pop' };
+  return { id, year, artist, title, language };
 }
 
 export interface SongQueueMock {

@@ -13,8 +13,15 @@ import {
 import { ApiError, fetchNextSong, fetchPreviewUrl } from '../api/client';
 import { gameReducer, initialGameState, type GameAction } from '../game/reducer';
 import { clearSavedGame, saveGame } from '../game/persistence';
-import type { GameState, SongLanguageSetting } from '../game/types';
-import { loadSongLanguages, saveSongLanguages, toLanguages } from './settings';
+import type { DifficultySetting, GameState, SongLanguageSetting } from '../game/types';
+import {
+  loadDifficulty,
+  loadSongLanguages,
+  saveDifficulty,
+  saveSongLanguages,
+  toLanguages,
+  toMaxDifficulty,
+} from './settings';
 
 export type GameErrorKind = 'network' | 'noSongs' | 'generic';
 
@@ -30,6 +37,8 @@ interface GameContextValue {
   dismissError: () => void;
   songLanguages: SongLanguageSetting;
   setSongLanguages: (value: SongLanguageSetting) => void;
+  difficulty: DifficultySetting;
+  setDifficulty: (value: DifficultySetting) => void;
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -53,12 +62,15 @@ export function GameProvider({
   const [error, setError] = useState<GameErrorKind | null>(null);
   const [retryToken, setRetryToken] = useState(0);
   const [songLanguages, setSongLangState] = useState<SongLanguageSetting>(loadSongLanguages);
+  const [difficulty, setDifficultyState] = useState<DifficultySetting>(loadDifficulty);
   const [loadingSong, setLoadingSong] = useState(false);
 
   const stateRef = useRef(state);
   stateRef.current = state;
   const langsRef = useRef(songLanguages);
   langsRef.current = songLanguages;
+  const difficultyRef = useRef(difficulty);
+  difficultyRef.current = difficulty;
 
   // Persist an in-progress game; forget it once finished.
   useEffect(() => {
@@ -88,6 +100,7 @@ export function GameProvider({
             excludeIds,
             excludeArtists,
             languages: toLanguages(langsRef.current),
+            maxDifficulty: toMaxDifficulty(difficultyRef.current),
           });
           if (cancelled) return;
           excludeIds.push(song.id);
@@ -120,6 +133,7 @@ export function GameProvider({
             excludeIds,
             excludeArtists,
             languages: toLanguages(langsRef.current),
+            maxDifficulty: toMaxDifficulty(difficultyRef.current),
           });
           if (cancelled) return;
           excludeIds.push(song.id);
@@ -157,9 +171,25 @@ export function GameProvider({
     saveSongLanguages(value);
   }, []);
 
+  const setDifficulty = useCallback((value: DifficultySetting) => {
+    setDifficultyState(value);
+    saveDifficulty(value);
+  }, []);
+
   const value = useMemo<GameContextValue>(
-    () => ({ state, dispatch, error, loadingSong, retry, dismissError, songLanguages, setSongLanguages }),
-    [state, error, loadingSong, retry, dismissError, songLanguages, setSongLanguages],
+    () => ({
+      state,
+      dispatch,
+      error,
+      loadingSong,
+      retry,
+      dismissError,
+      songLanguages,
+      setSongLanguages,
+      difficulty,
+      setDifficulty,
+    }),
+    [state, error, loadingSong, retry, dismissError, songLanguages, setSongLanguages, difficulty, setDifficulty],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
