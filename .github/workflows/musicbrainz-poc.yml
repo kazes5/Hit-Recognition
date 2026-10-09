@@ -1,0 +1,28 @@
+name: MusicBrainz POC
+
+# Proof of concept: can GitHub's runners reach MusicBrainz, and do its
+# first-release years match our catalog? Read-only; changes nothing.
+on:
+  push:
+    branches: [musicbrainz-poc]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Look up 12 catalog songs on MusicBrainz
+        run: node poc/musicbrainz-poc.mjs | tee result.txt
+      - name: Job summary
+        run: |
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat result.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
