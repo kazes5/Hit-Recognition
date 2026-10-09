@@ -4,7 +4,7 @@
 
 **Audience:** the development team (3 developers) and the integration engineer who will build and run it.
 
-**Status:** plan. Nothing here is built yet, except the source test on branch `musicbrainz-poc` (section 2).
+**Status:** Phase 0 done (2026-10-09). Work happens on branch `song-pipeline`. Built so far: the source test (`poc/source-test.mjs`, workflow `song-source-test.yml`, run by hand from the Actions tab).
 
 ---
 
@@ -93,11 +93,11 @@ Rounds 9.1 (2026-10-03 to 2026-10-05) added songs by research agents, fact-check
 
 Estimates are in working days for one person. "Done when" is the acceptance test for each task.
 
-### Phase 0 – Preparation (0.5 day, IE + owner)
-- **0.1** Decide on PR #10 (drop milestone 8): merge it, or keep it out of this work.
-- **0.2** Create a working branch for this project from `main`. Move `poc/source-test.mjs` and its workflow there, or recreate them.
-- **0.3** Answer the open questions in section 9.
-- **Done when:** the branch exists and Q1–Q3 are answered.
+### Phase 0 – Preparation (0.5 day, IE + owner) ✅ Done 2026-10-09
+- **0.1** PR #10 (drop milestone 8) stays open and unmerged (owner). This work starts from `main` without it. Both change the Settings screen (PR #10 removes the music-source row, task 1.6 adds Difficulty), so whichever merges second needs a small conflict fix.
+- **0.2** Branch `song-pipeline` created from `main` (1b12abd). The source test and this plan were moved over from `musicbrainz-poc`. The workflow is now `song-source-test.yml` and runs only by hand (`workflow_dispatch`). The first MusicBrainz-only test script was removed (the source test replaces it).
+- **0.3** All questions answered (section 9).
+- **Done when:** the branch exists and the questions are answered. ✅
 
 ### Phase 1 – Catalog and server changes (2 days, Dev A + Dev C)
 - **1.1 Genres.**
@@ -222,7 +222,7 @@ For each batch:
 - A `README` for `pipeline/`: how to run a batch, read the report and resolve flags.
 - Re-run the performance checks (1.5) at the final size.
 - Update `PLAN.md` (new step 9.7), `docs/CONTRACTS.md` and `docs/QA.md`.
-- Delete branch `musicbrainz-poc` once its contents have moved.
+- Delete branch `musicbrainz-poc` (its contents moved to `song-pipeline` in Phase 0).
 
 ---
 

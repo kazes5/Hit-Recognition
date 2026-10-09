@@ -4,8 +4,6 @@ name: Song source test
 # already verified, how often do Wikipedia, Wikidata, MusicBrainz, iTunes and
 # Deezer find the song, and does their year match? Read-only; changes nothing.
 on:
-  push:
-    branches: [musicbrainz-poc]
   workflow_dispatch:
 
 permissions:
