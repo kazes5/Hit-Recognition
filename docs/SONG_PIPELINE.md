@@ -122,7 +122,7 @@ Estimates are in working days for one person. "Done when" is the acceptance test
 - **1.5 Performance with 2,000+ songs.**
   - Measure song picking and the catalog tests with a synthetic 3,000-song catalog.
   - **Measured (Phase 1):** picking a song takes about 1.7 ms with 3,000 songs; the server tests take 6–7 s today.
-  - **To do before the catalog grows (Phase 3):** the alias test in `songs-data.test.ts` compares every pair of songs: about 4.5 s today, about 90 s at 3,000 songs. Index the name matching so it stays under 10 s. Until then it has a 30 s timeout.
+  - **Alias test (done):** the alias test in `songs-data.test.ts` compared every pair of songs (4.5 s at 667 songs, 94 s at 3,000). It now asks a letter-pair index (`server/test/name-index.ts`) for the only songs that could accept each alias: 0.07 s at 667 songs, 0.3 s at 3,000, same results. Two tests check the index against the brute-force check. The whole `songs-data.test.ts` takes about 6 s at 3,000 songs.
   - **Request size:** about 22 bytes per dealt song, so the old 64 KB limit fit only about 2,900 songs. Raised to 256 KB (about 11,000) in Phase 1.
   - *Done when* picking a song stays under 20 ms and the server tests stay under 30 s.
 

@@ -2,9 +2,18 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '../src/catalog.js';
-import { buildKnownNames, isArtistCorrect, isTitleCorrect } from '../src/guess.js';
+import {
+  artistGuessKeys,
+  artistMatchKeys,
+  buildKnownNames,
+  isArtistCorrect,
+  isTitleCorrect,
+  titleGuessKeys,
+  titleMatchKeys,
+} from '../src/guess.js';
 import { songArtistKeys } from '../src/selection.js';
 import { decadeOf } from '../src/stats.js';
+import { aliasMismatches, NameIndex } from './name-index.js';
 
 const file = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../data/songs.json');
 const songs = loadCatalog(file); // throws on any schema problem (ids, fields, years, language, genre, difficulty)
@@ -100,24 +109,96 @@ describe('data/songs.json', () => {
     });
 
     it("never accepts one song's aliases for a different song", () => {
-      const keys = new Map(songs.map((s) => [s, songArtistKeys(s)]));
-      const wrong: string[] = [];
-      for (const s of songs) {
-        const own = keys.get(s)!;
-        for (const other of songs) {
-          if (other === s) continue;
-          const sharesArtist = keys.get(other)!.some((key) => own.includes(key));
-          for (const a of sharesArtist ? [] : (other.artistAliases ?? [])) {
-            if (isArtistCorrect(s, a, known)) wrong.push(`${s.id} artist <- ${other.id} "${a}"`);
-          }
-          for (const t of other.titleAliases ?? []) {
-            if (isTitleCorrect(s, t, known)) wrong.push(`${s.id} title <- ${other.id} "${t}"`);
-          }
+      // Indexed (test/name-index.ts): each alias is checked only against the songs that could accept it.
+      expect(aliasMismatches(songs, known, { indexed: true })).toEqual([]);
+    });
+  });
+
+  describe('name index (used by the alias test)', () => {
+    const artistIndex = new NameIndex(songs, artistMatchKeys);
+    const titleIndex = new NameIndex(songs, titleMatchKeys);
+    // About 16 songs spread over the catalog, compared with every name and alias in it plus typo'd versions.
+    const sample = songs.filter((_, i) => i % Math.ceil(songs.length / 16) === 0);
+    const rng = mulberry32(1);
+    const typos = (text: string): string[] => [1, 2, 3, 4, 5].map((n) => withTypos(text, n, rng));
+    const artistGuesses = new Set<string>();
+    const titleGuesses = new Set<string>();
+    for (const s of songs) {
+      for (const a of [s.artist, ...(s.artistKeys ?? []), ...(s.artistAliases ?? [])]) artistGuesses.add(a);
+      for (const t of [s.title, ...(s.titleAliases ?? [])]) titleGuesses.add(t);
+    }
+    for (const s of sample) {
+      for (const a of [s.artist, ...(s.artistKeys ?? []), ...(s.artistAliases ?? [])]) for (const g of typos(a)) artistGuesses.add(g);
+      for (const t of [s.title, ...(s.titleAliases ?? [])]) for (const g of typos(t)) titleGuesses.add(g);
+    }
+
+    it('returns every song that accepts a guess (no song missed)', () => {
+      const missed: string[] = [];
+      let accepted = 0;
+      for (const g of artistGuesses) {
+        const found = artistIndex.candidates(artistGuessKeys(g));
+        for (const s of sample) {
+          if (!isArtistCorrect(s, g)) continue; // without KnownNames, which accepts the most
+          accepted++;
+          if (!found.has(s)) missed.push(`${s.id} artist "${g}"`);
         }
       }
-      expect(wrong).toEqual([]);
-      // Compares every song with every other song's aliases: about 4.5 s at 667 songs, close to
-      // Vitest's 5 s default, and it grows with the square of the catalog size.
-    }, 30_000);
+      for (const g of titleGuesses) {
+        const found = titleIndex.candidates(titleGuessKeys(g));
+        for (const s of sample) {
+          if (!isTitleCorrect(s, g)) continue;
+          accepted++;
+          if (!found.has(s)) missed.push(`${s.id} title "${g}"`);
+        }
+      }
+      expect(missed).toEqual([]);
+      expect(accepted).toBeGreaterThan(sample.length * 4); // own names, shared performers and typos
+    });
+
+    it('reports exactly the pairs of the brute-force check on a catalog with clashing aliases', () => {
+      // About 100 songs; every third gets another song's artist and title (as typed, and with typos) as aliases.
+      const subset = songs.filter((_, i) => i % Math.ceil(songs.length / 100) === 0);
+      const subsetKnown = buildKnownNames(subset);
+      const clashing = subset.map((s, i) => {
+        if (i % 3 !== 0) return s;
+        const other = subset[(i * 7 + 11) % subset.length]!;
+        return {
+          ...s,
+          artistAliases: [...(s.artistAliases ?? []), other.artist, withTypos(other.artist, 1, rng), withTypos(other.artist, 2, rng)],
+          titleAliases: [...(s.titleAliases ?? []), other.title, withTypos(other.title, 1, rng), withTypos(other.title, 2, rng)],
+        };
+      });
+      const brute = aliasMismatches(clashing, subsetKnown, { indexed: false });
+      expect(brute.length).toBeGreaterThan(subset.length / 3);
+      expect(aliasMismatches(clashing, subsetKnown, { indexed: true })).toEqual(brute);
+    });
   });
 });
+
+/** Seeded random numbers in [0, 1). */
+function mulberry32(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** `text` with `n` random edits: a changed, dropped or added letter, or two neighbours swapped. */
+function withTypos(text: string, n: number, rng: () => number): string {
+  const chars = Array.from(text);
+  const letters = Array.from(new Set(chars.filter((c) => /\p{L}/u.test(c))));
+  const letter = (): string => letters[Math.floor(rng() * letters.length)] ?? 'a';
+  for (let k = 0; k < n && chars.length > 1; k++) {
+    const i = Math.floor(rng() * chars.length);
+    const op = Math.floor(rng() * 4);
+    if (op === 0) chars[i] = letter();
+    else if (op === 1) chars.splice(i, 1);
+    else if (op === 2) chars.splice(i, 0, letter());
+    else if (i + 1 < chars.length) [chars[i], chars[i + 1]] = [chars[i + 1]!, chars[i]!];
+  }
+  return chars.join('');
+}
