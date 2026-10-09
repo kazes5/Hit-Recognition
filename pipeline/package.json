@@ -1,0 +1,11 @@
+{
+  "name": "hit-recognition-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "Song catalog pipeline: genre labels, and later candidate extraction and merging.",
+  "scripts": {
+    "test": "node --test",
+    "apply-genres": "node apply-genres.mjs",
+    "check-genres": "node apply-genres.mjs --check"
+  }
+}

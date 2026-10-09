@@ -1,0 +1,2048 @@
+{
+  "Aqua": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "Eurodance"
+  },
+  "Supertramp": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "The Black Eyed Peas": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "hip-hop group; I Gotta Feeling is a dance-pop club hit"
+  },
+  "דטנר וקושניר": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Magic!": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Beatles": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Robbie Williams": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Alanis Morissette": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "James Brown": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "The Zombies": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Lynyrd Skynyrd": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Ben E. King": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "יזהר כהן": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Jason Mraz": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Coldplay": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Metallica": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Spice Girls": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Bobby McFerrin": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Daniel Powter": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Elton John": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "שולי נתן": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "שוקולד מנטה מסטיק": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Kinks": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "זוהר ארגוב": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "Passenger": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Celine Dion": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "גילי וגלית": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Creedence Clearwater Revival": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Little Richard": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Elvis Presley": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Tom Jones": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Monkees": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Rick Astley": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "ליאורה": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אריק איינשטיין": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "Ayelet HaChen (1965) is classic"
+  },
+  "Katy Perry": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Troggs": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Joan Jett & the Blackhearts": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Justin Timberlake": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Taylor Swift": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Adele": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "O-Zone": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Kim Carnes": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Glass Animals": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Teapacks": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Bruce Springsteen": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "שלום חנוך": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Linkin Park": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "הכל עובר חביבי": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Rolling Stones": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Kenny Loggins": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Buddy Holly": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "כוורת": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Britney Spears": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Toto": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Billie Eilish": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Imagine Dragons": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Evanescence": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Led Zeppelin": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "פאר טסי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "שלמה ארצי": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אילנית": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "solo career mostly pop; the 1968 song is classic"
+  },
+  "The Mamas & the Papas": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Backstreet Boys": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Righteous Brothers": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Jackson 5": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Chuck Berry": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "יזהר כהן והאלפבתא": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Daft Punk": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Miley Cyrus": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Bill Haley & His Comets": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "ליאור נרקיס": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "Ace of Base": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "Europop/Eurodance"
+  },
+  "Kings of Leon": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Paul Anka": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Tears for Fears": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Gloria Gaynor": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Chubby Checker": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Journey": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "The Doors": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Prince": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Survivor": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Kylie Minogue": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "dance-pop club hits"
+  },
+  "Bob Dylan": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Whitney Houston": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop/R&B crossover; kept pop"
+  },
+  "Natalie Imbruglia": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Shakira": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Rod Stewart": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "usual genre rock; Da Ya Think I'm Sexy? is disco"
+  },
+  "Harry Styles": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Eden Golan": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Queen": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Lou Bega": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Eagles": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Lady Gaga": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "dance-pop but a core pop artist; kept pop"
+  },
+  "The Archies": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Duffy": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "retro-soul, same call as Amy Winehouse"
+  },
+  "סטטיק ובן אל תבורי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: pop with Mizrahi/Greek flavour; mainstream pop, not excluded"
+  },
+  "Simple Minds": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Lorde": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Mark Ronson": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Jerry Lee Lewis": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Gnarls Barkley": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Wham!": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Hanson": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Rihanna": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Olivia Rodrigo": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Green Day": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Earth, Wind & Fire": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "funk/soul band; September is disco-funk"
+  },
+  "Frank Sinatra": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "ABBA": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "Dancing Queen is disco"
+  },
+  "The Beach Boys": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Pharrell Williams": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Village People": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Calvin Harris": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "עפרה חזה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: Yemenite roots (Im Nin'alu) but mainstream pop; not excluded"
+  },
+  "חלב ודבש": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Franz Ferdinand": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Carl Perkins": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "USA for Africa": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Killers": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "דפנה דקל": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Carpenters": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Bryan Adams": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "The Weeknd": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Avicii": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "OutKast": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "hip-hop duo; Hey Ya! is funk-pop"
+  },
+  "Netta": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Knack": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "The Police": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Michael Jackson": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Mika": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Roxette": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Bee Gees": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "disco era; How Deep Is Your Love is a soft ballad"
+  },
+  "David Bowie": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Bon Jovi": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Nirvana": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Sinéad O'Connor": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Bangles": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "משינה": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "שירי מימון": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Aretha Franklin": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Oasis": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Twenty One Pilots": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Europe": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Nancy Sinatra": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Leona Lewis": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "להקת הנח\"ל": {
+    "genre": "army-bands",
+    "exclude": false
+  },
+  "Carly Simon": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "R.E.M.": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "מורן מזור": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: pop singer with some Mizrahi repertoire; not excluded"
+  },
+  "ירדנה ארזי": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Supremes": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "OneRepublic": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Sabrina Carpenter": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Nelly Furtado": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "ריטה": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Hot Chocolate": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "הדג נחש": {
+    "genre": "hiphop",
+    "exclude": false
+  },
+  "Maroon 5": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Ritchie Valens": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "תמוז": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Cher": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "Believe is a dance-pop club hit"
+  },
+  "Phil Collins": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Lady Gaga & Bradley Cooper": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "דואו דאץ": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Deep Purple": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Smash Mouth": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Carly Rae Jepsen": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Louis Armstrong": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Billy Joel": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "T. Rex": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "הפרויקט של עידן רייכל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: world music with Ethiopian/Middle-Eastern elements; not excluded"
+  },
+  "Fleetwood Mac": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Stevie Wonder": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Electric Light Orchestra": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Pink Floyd": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "אילן ואילנית": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "early Ilan & Ilanit"
+  },
+  "Bill Withers": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Dua Lipa": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "disco-pop but a core pop artist; kept pop"
+  },
+  "Eddie Cochran": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Spandau Ballet": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Gotye": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Mariah Carey": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop/R&B crossover; kept pop"
+  },
+  "דנה אינטרנשיונל": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "dance-pop artist"
+  },
+  "Savage Garden": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Don McLean": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "בועז מעודה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: mainstream pop with Mizrahi influence; not excluded"
+  },
+  "AC/DC": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Cyndi Lauper": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "מוטי גלעדי ושרי צוריאל": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Benson Boone": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Simon & Garfunkel": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Madonna": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "Vogue is a house/club track"
+  },
+  "שרית חדד": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "Lewis Capaldi": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Beyoncé": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "R&B"
+  },
+  "The Kid LAROI & Justin Bieber": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Red Hot Chili Peppers": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Guns N' Roses": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Donna Summer": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Ed Sheeran": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Roy Orbison": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Procol Harum": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "The Cranberries": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Dusty Springfield": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Tina Turner": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Kiss": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Dire Straits": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Sheryl Crow": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Train": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Goo Goo Dolls": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "The Moody Blues": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "LMFAO": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "אבי טולדנו": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: mainstream pop/Eurovision; not excluded"
+  },
+  "Radiohead": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Belinda Carlisle": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Eiffel 65": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Gorillaz": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "חוה אלברשטיין": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "folk; early Perach HaLilach (1967) is classic"
+  },
+  "Dexys Midnight Runners": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Alicia Keys": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Bruno Mars": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Avril Lavigne": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אייל גולן": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "Noa Kirel": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Eurythmics": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Snow Patrol": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "דוד ד'אור": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "הראל סקעת": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Culture Club": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "John Lennon": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Blondie": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "The Platters": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Scott McKenzie": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Otis Redding": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Shawn Mendes": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Sia": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Yuval Raphael": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Steppenwolf": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Marvin Gaye": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Justin Bieber": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Haddaway": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Bobby Darin": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Amy Winehouse": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Bonnie Tyler": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Boney M.": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "Ricky Martin": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Jimi Hendrix Experience": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Kelly Clarkson": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Everly Brothers": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "P!nk": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Turtles": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Fats Domino": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "The Animals": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "U2": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "George Michael": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אתניקס": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: pop-rock with ethnic/Mizrahi elements (e.g. Jessica); not excluded"
+  },
+  "אביתר בנאי": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "ישי ריבו": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Jewish/religious pop (D5)"
+  },
+  "עידן רפאל חביב": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "עומר אדם": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: Mizrahi-pop star; most of his catalogue is Mizrahi in style, so excluded"
+  },
+  "דויד ברוזה": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "רמי קלינשטיין": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "שלומי שבת ויוסי אזולאי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "אביב גפן": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "החלונות הגבוהים": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "משה פרץ": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "יהודית רביץ": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "חיים משה": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "יהורם גאון": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "נועה קירל": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "מוש בן ארי": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "נס וסטילה": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "rap duo"
+  },
+  "דויד ברוזה ויעל לוי": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "גאולה גיל": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "עדן בן זקן": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "ברי סחרוף": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "ששון שאולוב": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: Mizrahi/Bukharan-style singer (verify)"
+  },
+  "טיפקס": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "גלי עטרי": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "הגשש החיוור": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "פול טראנק וג'ימבו ג'יי": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "comedy rap with rapper Jimbo J"
+  },
+  "רן דנקר": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "שרה'לה שרון ולהקת שירו": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אהוד בנאי": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "תיסלם": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "חנן בן ארי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Jewish-pop (D5)"
+  },
+  "Norah Jones": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "אריאל זילבר": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "קורין אלאל": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Four Seasons": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "דני סנדרסון": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "INXS": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Muse": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Christina Aguilera": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Del Shannon": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Bob Seger & The Silver Bullet Band": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Hootie & the Blowfish": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "בנזין": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Tones and I": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Ronettes": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אדם": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Peter Gabriel": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "בועז שרעבי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: pop ballads, Yemenite roots; not excluded"
+  },
+  "אברהם טל": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "דני רובס": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Take That": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Santana": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Sister Sledge": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "The Verve": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Post Malone": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "usual genre hip-hop; Circles is pop"
+  },
+  "Ray Charles": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "soul/R&B pioneer; both songs are R&B"
+  },
+  "Blur": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "אריק סיני": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Arctic Monkeys": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "עדנה לב": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "1973 zemer ivri"
+  },
+  "P!nk & Nate Ruess": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Vanessa Carlton": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "מתי כספי ושוקולד מנטה מסטיק": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Counting Crows": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Third Eye Blind": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Neil Diamond": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Semisonic": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "No Doubt": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Kool & the Gang": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "funk/soul band; Celebration is disco-funk"
+  },
+  "איתי לוי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "Sam Smith & Kim Petras": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Cars": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Def Leppard": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Boston": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Michael Bublé": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Manfred Mann": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Heart": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Lou Reed": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Noah Kahan": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "Clean Bandit": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "The Human League": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "קובי פרץ": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "Starship": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Genesis": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Hozier": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Chicago": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "שפיות זמנית": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Berlin": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Toni Braxton": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "ליאור נרקיס ושלומי שבת": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "כמו צועני": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Cat Stevens": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "יגאל בשן ולהקת פיקוד צפון": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "soloist with an army band"
+  },
+  "Boyz II Men": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Rick Springfield": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Lionel Richie": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "adult-contemporary solo work; kept pop (Commodores are soul-rnb)"
+  },
+  "Meat Loaf": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Commodores": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Neil Young": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "האחים והאחיות": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "יגאל בשן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "Oseh Shalom (1969 festival) is classic"
+  },
+  "Lukas Graham": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Chappell Roan": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Nickelback": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Huey Lewis and the News": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Gayle": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Paramore": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Joe Cocker": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Pat Benatar": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Percy Sledge": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Sam Smith": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Alex Warren": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Ariana Grande": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "גידי גוב": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Meghan Trainor": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "צביקה פיק": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Foo Fighters": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Panic! at the Disco": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Kansas": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "Aerosmith": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "שימי תבורי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: classic Mizrahi/Yemenite singer; this song is a pop ballad"
+  },
+  "נתנאלה": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "Ellie Goulding": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Chumbawamba": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Cutting Crew": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Teddy Swims": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Dion": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Who": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "NSYNC": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "החברים של נטאשה": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Tom Petty": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "אוהד חיטמן": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Keane": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Foreigner": {
+    "genre": "classic-rock",
+    "exclude": false
+  },
+  "יהודה פוליקר": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "borderline: Greek-influenced rock; not excluded"
+  },
+  "Sam & Dave": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Duran Duran": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Frankie Valli": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Chic": {
+    "genre": "disco-dance",
+    "exclude": false
+  },
+  "The White Stripes": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "להקת פיקוד מרכז": {
+    "genre": "army-bands",
+    "exclude": false
+  },
+  "רן אלירן": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "עדן": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "עברי לידר": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "עידן עמדי": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "שלומי שבן וחוה אלברשטיין": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "זהבה בן": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "אמיר דדון ושולי רנד": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Jewish/religious-themed duet with Shuli Rand (D5)"
+  },
+  "שלומי שבת": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "מירי מסיקה": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "עמיר בניון": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5); later also Jewish/religious songs"
+  },
+  "פינג פונג": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "דודו טסה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: indie/rock artist whose Kuwaitis project plays Iraqi-Arabic music; this song kept pop; not excluded"
+  },
+  "נינט טייב": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "בר צברי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "אנה זק": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "עדן חסון": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: pop with strong Mizrahi style"
+  },
+  "רביב כנר": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "בניה ברבי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: mainstream pop, religious background; not excluded"
+  },
+  "אליעד": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "דודו אהרון ועדן מאירי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "יובל דיין": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: religious singer-songwriter, pop sound; not excluded"
+  },
+  "דודו אהרון": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "הדג נחש ואברהם טל": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "Hadag Nahash collaboration"
+  },
+  "ארקדי דוכין": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "שלמה גרוניך": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "מוקי": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "rapper; Yeled Shel Aba is acoustic pop"
+  },
+  "סאבלימינל ועדן גבאי": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "Subliminal"
+  },
+  "רותם כהן ודסמר בואנו": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "התקווה 6": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "reggae/hip-hop band but this song is pop; kept pop"
+  },
+  "שחר טבוך ואגם בוחבוט": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: Mizrahi-dance duet"
+  },
+  "אושר כהן": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "אודיה ועופר ניסים": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: Odeya (Mizrahi-pop) with DJ Offer Nissim"
+  },
+  "אגם בוחבוט": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: pop with Mizrahi-tinged songs; not excluded"
+  },
+  "Nat King Cole": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Dean Martin": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Eartha Kitt": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Chordettes": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "The Penguins": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Johnny Cash": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "Doris Day": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Harry Belafonte": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Sam Cooke": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Bobby Helms": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Peggy Lee": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Brenda Lee": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "BTS": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "24kGoldn": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "Mood is pop-rap; kept pop"
+  },
+  "Lady Gaga & Ariana Grande": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Lil Nas X": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "Montero is pop; kept pop"
+  },
+  "SZA": {
+    "genre": "soul-rnb",
+    "exclude": false
+  },
+  "Doja Cat": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "Paint the Town Red is a rap song"
+  },
+  "Jung Kook": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Tate McRae": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Lady Gaga & Bruno Mars": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Rosé & Bruno Mars": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "Shaboozey": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "HUNTR/X": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "הדודאים": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "התרנגולים": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "שלישיית גשר הירקון": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "רבקה זהר ולהקת חיל הים": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "soloist with an army band"
+  },
+  "להקת פיקוד צפון": {
+    "genre": "army-bands",
+    "exclude": false
+  },
+  "הפרברים": {
+    "genre": "classic-hebrew",
+    "exclude": false
+  },
+  "אתי אנקרי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: later Jewish-religious songs; this song is pop; not excluded"
+  },
+  "יואב יצחק": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "איפה הילד": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "מאיר בנאי": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "מוניקה סקס": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "שלמה ארצי וריטה": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "נמרוד לב ואורלי פרל": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "כנסיית השכל": {
+    "genre": "rock",
+    "exclude": false
+  },
+  "אביב גפן ואריק איינשטיין": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "סאבלימינל והצל": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "Subliminal & HaTzel"
+  },
+  "שי גבסו": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: pop with Mizrahi influence; not excluded"
+  },
+  "מאיה בוסקילה": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "שולי רנד": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Jewish/religious (D5); existing song relabelled pop per D5"
+  },
+  "עלמה זהר": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "גלעד שגב": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "עילי בוטנר וקובי אפללו": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אמיר דדון": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "borderline: rock with Jewish themes; not excluded"
+  },
+  "נתן גושן": {
+    "genre": "pop",
+    "exclude": false
+  },
+  "אביב גפן ומתי כספי": {
+    "genre": "light-rock",
+    "exclude": false
+  },
+  "טונה": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "rapper"
+  },
+  "נצ'י נצ'": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "rapper"
+  },
+  "דולי ופן, לירן דנינו ונועה קירל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: Liran Danino is Mizrahi, but the song is a dance-pop hit; not excluded"
+  },
+  "יסמין מועלם": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "יגל אושרי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: Mizrahi-pop"
+  },
+  "הפרויקט של עידן רייכל ורוני דלומי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "borderline: same as the Idan Raichel Project; not excluded"
+  },
+  "אודיה": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: Mizrahi-pop ballads"
+  },
+  "נסרין קדרי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "borderline: Arabic/Mizrahi-style pop"
+  }
+}
