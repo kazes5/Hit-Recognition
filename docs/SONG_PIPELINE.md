@@ -1,6 +1,6 @@
 # Song pipeline: execution plan
 
-**Goal:** grow the song list from 667 to about 2,000 songs (Hebrew from 267 to about 900), quickly and with correct years, using a repeatable, mostly automatic process.
+**Goal:** grow the song list from 667 to about 1,800 songs (Hebrew from 267 to about 700, English from 400 to about 1,100), quickly and with correct years, using a repeatable, mostly automatic process. The Hebrew target is an estimate; it is confirmed after the first extractor run (task 3.2).
 
 **Audience:** the development team (3 developers) and the integration engineer who will build and run it.
 
@@ -16,8 +16,10 @@
 | D2 | **No per-performer limit in the song list.** The limit of **2 songs per performer in one game** stays. |
 | D3 | **Genre is never shown to players.** It is internal data, used only to balance and report on the catalog. |
 | D4 | **Genres:** pop, rock, light rock, classic rock (existing), plus **classic Hebrew, army bands, hip-hop & rap, soul & R&B, disco & dance**. |
-| D5 | **No Mizrahi and no Jewish/Hasidic genres.** Songs in those styles are labelled pop. See open question Q1. |
+| D5 | **No Mizrahi and no Jewish/Hasidic songs are added.** These are not genres, and new batches leave such songs out. Songs of these styles already in the catalog stay, labelled pop. |
 | D6 | **Spotify and Apple Music login are dropped** (milestone 8). Apple's free 30-second previews stay the only audio source. |
+| D7 | **Only the top 20 per year** of each annual hit parade or year-end chart are candidates. |
+| D8 | **Year fixes are automatic when all three trusted sources agree** (Wikipedia, Wikidata, MusicBrainz). Each fix is listed in the PR report. |
 
 ---
 
@@ -124,8 +126,9 @@ Estimates are in working days for one person. "Done when" is the acceptance test
 - **2.3** A script applies both files to `songs.json`. A second agent reviews the result, and the owner gets a change list (old → new genre).
 - **Rules:**
   - Army bands outranks classic Hebrew.
-  - Songs in Mizrahi or Jewish styles are pop (D5).
+  - Songs already in the catalog in Mizrahi or Jewish styles are pop (D5).
   - When unsure, the genre is pop.
+- **2.4 Excluded performers.** The same file marks performers whose songs are Mizrahi or Jewish/Hasidic with `"exclude": true`. The pipeline uses this to leave their songs out of new batches (D5). The owner reviews this list once.
 - **Done when** every song has one of the 9 genres, the owner has approved the change list, and the tests pass.
 
 ### Phase 3 – The pipeline (6–8 days, IE + Dev B, Dev C for tests)
@@ -138,10 +141,10 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
   - **iTunes:** preview check and `trackId`; `country=IL` for Hebrew songs, `US` for English. About 20 requests per minute, retry on 429. The store date is used only as an upper bound.
   - *Done when* each adapter has unit tests on recorded responses (fixtures), and the 60-song source test, re-run through the adapters, scores at least as well as in section 2.
 - **3.2 Candidate extractors (Dev B, IE for fetching).**
-  - **Hebrew annual hit parades:** the Reshet Gimel and Galgalatz pages on Hebrew Wikipedia. Output: song, performer, chart year, rank.
+  - **Hebrew annual hit parades:** the Reshet Gimel and Galgalatz pages on Hebrew Wikipedia, **top 20 per year only** (D7). Output: song, performer, chart year, rank.
   - **Israel Song Festival, Eurovision and Kdam Eurovision, army-band lists:** event year and song.
-  - **Billboard Year-End Hot 100 (English Wikipedia),** 1955–2025.
-  - *Done when* each extractor has fixture tests, and one full run lists at least 1,500 Hebrew and 3,000 English candidates with no parsing errors in the report.
+  - **Billboard Year-End Hot 100 (English Wikipedia),** 1955–2025, **top 20 per year only** (D7).
+  - *Done when* each extractor has fixture tests, and one full run lists all its candidates with no parsing errors in the report. That run sets the final targets: the expected maximum is about 1,700 Hebrew chart slots (Reshet Gimel 1969–2025 and Galgalatz 1995–2025, top 20 each, before repeats are removed) and 1,420 English slots (71 years × 20).
 - **3.3 Matching and duplicates (Dev B).**
   - Move the merge logic from round 9.1 into `pipeline/merge.mjs`.
   - It matches spellings (Hebrew niqqud, punctuation, "ו"/"&" in credits, aliases) against the catalog and within the batch, and enforces the 2-per-game data needs (`artistKeys` for collaborations).
@@ -151,11 +154,13 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
   - The year must be no later than the chart year and at most 2 years before it.
   - Always flag: Hebrew songs before 1970, sources that disagree, Apple-only years, and missing years.
   - *Done when* it reproduces the source-test results and has unit tests for each flag reason.
-- **3.5 Genre (Dev B).**
+- **3.5 Genre and exclusion (Dev B).**
   - Use `artist-genres.json` and the overrides; a performer that isn't in the map is flagged for labelling.
+  - Leave out songs by performers marked `exclude` (D5); a new performer whose style may be Mizrahi or Jewish/Hasidic is flagged for a person, not added.
+  - The report counts the songs left out, by reason.
   - Event hints are used: army-band list → `army-bands`; Israel Song Festival before 1980 → `classic-hebrew`, unless the performer's genre says otherwise.
 - **3.6 Fame and selection (Dev B).**
-  - Batch order is by chart rank (top 20 first), so the most famous songs come first.
+  - Only top-20 chart entries are candidates (D7); within a batch, higher-ranked songs go first.
   - Every batch keeps a balance of decades and languages; the report shows the counts.
 - **3.7 Workflow and report (IE).**
   - Workflow `song-batch.yml`, with inputs: language, year range, source list and batch size (default 300).
@@ -166,8 +171,10 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
   - *Done when* a run for 1990–1999 Hebrew finishes in under 30 minutes, can be restarted without repeating requests (cache), and the report is readable by the owner.
 - **3.8 Re-check the existing catalog (IE + Dev B).**
   - Run the year rule and the preview check on the current 667 songs.
-  - Owner-facing list of disagreements (starting with the 3 found in section 2) and of songs without a preview.
-  - *Done when* the list is reviewed and the agreed fixes are merged.
+  - **When all three trusted sources agree on a different year, the year is fixed automatically** (D8), and the fix is listed in the PR report (song, old year, new year, sources).
+  - Exception: Hebrew songs from before 1970 are not fixed automatically (the first-recording trap of section 2); their disagreements go to a person.
+  - Other disagreements (starting with the 3 found in section 2) and songs without a preview go to the research team, like flagged batch songs.
+  - *Done when* the fixes are merged and the remaining list is resolved.
 
 ### Phase 4 – Batches (about 5 batches of 300, 1–2 days each, Dev B + research team + owner)
 For each batch:
@@ -183,8 +190,8 @@ For each batch:
   3. Hebrew festivals and army bands (1960s–70s);
   4. English 1955–1989;
   5. English 1990–2025.
-- **Targets:** about 900 Hebrew and about 1,100 English songs in total.
-- **Done when:** the catalog reaches about 2,000 songs, every song has a preview, every year is accepted or human-checked, and all tests pass.
+- **Targets:** about 700 Hebrew and about 1,100 English songs in total, adjusted after the first extractor run (3.2).
+- **Done when:** the catalog reaches the targets, every song has a preview, every year is accepted or human-checked, and all tests pass.
 
 ### Phase 5 – Hardening and handover (1 day, Dev C + IE)
 - A `README` for `pipeline/`: how to run a batch, read the report and resolve flags.
@@ -205,7 +212,7 @@ For each batch:
 | 4 Batches (×5) | 5–10 days | – |
 | 5 Hardening | 1 day | – |
 
-**Total:** about 3–4 weeks of calendar time with the team working in parallel, most of it in phases 3 and 4.
+**Total:** about 3–4 weeks of calendar time with the team working in parallel, most of it in phases 3 and 4. Top-20-only candidates (D7) make each batch smaller to check, so phase 4 may need 4 batches instead of 5.
 
 ---
 
@@ -221,12 +228,15 @@ For each batch:
 | Wikipedia and Wikidata aren't fully independent (Wikidata is often filled from Wikipedia) | MusicBrainz is the third voice; Hebrew pre-1970 is checked by people; the owner reviews the flag list |
 | Wrong genre labels | Genre is internal only (D3), so a wrong label doesn't affect players; it's fixed through the overrides file |
 | No per-performer limit in the list, so a few big performers dominate the catalog | The 2-per-game rule keeps games varied; the batch report shows the top performers |
+| Excluding Mizrahi and Jewish/Hasidic songs leaves gaps in some Hebrew years (the parades of the 2010s–2020s are full of Mizrahi pop) | The report shows songs per year; the gap is filled from other Hebrew chart entries in the top 20, not by lowering the bar |
+| Style boundaries are fuzzy (pop vs Mizrahi, e.g. Omer Adam, Static & Ben El) | One owner-reviewed performer list (2.4); doubtful new performers are flagged, never added automatically |
+| An automatic year fix is wrong (all three sources repeat the same mistake) | Every fix is listed in the PR report for the owner; old Hebrew songs (before 1970) are never fixed automatically |
 
 ---
 
 ## 8. Done when (whole project)
 
-- About 2,000 songs (about 900 Hebrew), each with a preview and a year that was either accepted by the rule or checked by a person.
+- About 1,800 songs (about 700 Hebrew, about 1,100 English; final targets set after 3.2), each with a preview and a year that was either accepted by the rule or checked by a person.
 - All 9 genres in use internally; no genre visible in the game or the API.
 - No per-performer limit in the list; still at most 2 per performer per game.
 - The pipeline runs from GitHub with one button, and its report is understandable to the owner.
@@ -234,8 +244,10 @@ For each batch:
 
 ---
 
-## 9. Open questions for the owner
+## 9. Questions answered by the owner (2026-10-09)
 
-- **Q1 – Mizrahi and Jewish/Hasidic songs.** Not genres (D5). Should songs in these styles still be **added** (labelled pop), as today, or **left out** of new batches? This changes how many Hebrew songs are available: the research estimates about 300–400 well-known Mizrahi songs.
-- **Q2 – Fame.** Should every song in the annual hit parades be eligible, or only the top N per year (for example the top 20)? A lower N means more famous songs but fewer of them.
-- **Q3 – Current catalog fixes.** Should year corrections found by the re-check (3.8) be applied automatically when all 3 sources agree, or always reviewed?
+- **Q1 – Mizrahi and Jewish/Hasidic songs:** not added (D5).
+- **Q2 – Fame:** top 20 per year only (D7).
+- **Q3 – Year fixes in the current catalog:** fixed automatically when all three trusted sources agree (D8).
+
+No open questions remain. The next step is Phase 0.
