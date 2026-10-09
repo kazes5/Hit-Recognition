@@ -70,3 +70,11 @@ describe('validateSong', () => {
     assert.throws(() => addSongs(catalog, [song({ genre: 'x' })]), (e) => e.problems.length === 1);
   });
 });
+
+test('validateSong uses the server catalog year limits (1950–2025)', async () => {
+  const { validateSong } = await import('../merge.mjs');
+  const base = { artist: 'Queen', title: 'Bohemian Rhapsody', language: 'en', genre: 'rock', difficulty: 2 };
+  assert.deepEqual(validateSong({ ...base, year: 1975 }), []);
+  assert.ok(validateSong({ ...base, year: 1949 }).length > 0);
+  assert.ok(validateSong({ ...base, year: 2026 }).length > 0);
+});

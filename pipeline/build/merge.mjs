@@ -18,7 +18,11 @@ const HEBREW_LETTER = /[א-ת]/;
 const LATIN_LETTER = /[A-Za-z]/;
 
 /** Problems of one song (without its id). [] when valid. */
-export function validateSong(song, { maxYear = new Date().getUTCFullYear() + 1 } = {}) {
+// Same limits as server/src/catalog.ts (MIN_YEAR / MAX_YEAR): a song outside them would stop the server loading the catalog.
+export const MIN_YEAR = 1950;
+export const MAX_YEAR = 2025;
+
+export function validateSong(song, { minYear = MIN_YEAR, maxYear = MAX_YEAR } = {}) {
   const errors = [];
   const label = `"${song?.artist} - ${song?.title}"`;
   if (!song || typeof song !== 'object') return ['not an object'];
@@ -26,7 +30,7 @@ export function validateSong(song, { maxYear = new Date().getUTCFullYear() + 1 }
   for (const key of ['artist', 'title']) {
     if (typeof song[key] !== 'string' || song[key].trim() === '' || song[key] !== song[key].trim()) errors.push(`${label}: ${key} must be a non-empty trimmed string`);
   }
-  if (!Number.isInteger(song.year) || song.year < 1900 || song.year > maxYear) errors.push(`${label}: invalid year ${song.year}`);
+  if (!Number.isInteger(song.year) || song.year < minYear || song.year > maxYear) errors.push(`${label}: invalid year ${song.year}`);
   if (!LANGUAGES.includes(song.language)) errors.push(`${label}: invalid language ${song.language}`);
   if (!GENRES.includes(song.genre)) errors.push(`${label}: invalid genre ${song.genre}`);
   if (![1, 2, 3].includes(song.difficulty)) errors.push(`${label}: invalid difficulty ${song.difficulty}`);
