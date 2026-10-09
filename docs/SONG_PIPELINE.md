@@ -4,7 +4,7 @@
 
 **Audience:** the development team (3 developers) and the integration engineer who will build and run it.
 
-**Status:** Phase 0 done (2026-10-09). Work happens on branch `song-pipeline`. Built so far: the source test (`poc/source-test.mjs`, workflow `song-source-test.yml`, run by hand from the Actions tab).
+**Status:** Phases 0 and 1 done (2026-10-09). Work happens on branch `song-pipeline`. Built so far: the source test (`poc/source-test.mjs`, workflow `song-source-test.yml`, run by hand from the Actions tab).
 
 ---
 
@@ -99,7 +99,10 @@ Estimates are in working days for one person. "Done when" is the acceptance test
 - **0.3** All questions answered (section 9).
 - **Done when:** the branch exists and the questions are answered. ✅
 
-### Phase 1 – Catalog and server changes (2 days, Dev A + Dev C)
+### Phase 1 – Catalog and server changes (2 days, Dev A + Dev C) ✅ Done 2026-10-09
+**Result:** 9 genres (internal); genre and difficulty removed from the public song; no per-performer limit in the list (2 per game kept, tested with 25 songs by one performer); `difficulty` on every song (all 667 = 1); `maxDifficulty` filter with step-up fallback; Difficulty chips in Settings (default Easy, saved as `hitster.difficulty`); request limit raised to 256 KB. Tests: server 362, web 304, end-to-end 138, all passing.
+
+**Left for later:** task 1.4 (`pipeline/sources.json`) moves to Phase 3, where the pipeline first writes it. The slow alias test is noted under 1.5.
 - **1.1 Genres.**
   - Add `classic-hebrew`, `army-bands`, `hiphop`, `soul-rnb`, `disco-dance` to `GENRES` in `server/src/types.ts`, and update the error text in `server/src/catalog.ts`.
   - Update the genre lists in `web/src/game/types.ts`, `e2e/tests/helpers.ts`, `e2e/tests/api.spec.ts` and `docs/CONTRACTS.md`.
