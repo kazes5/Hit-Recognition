@@ -1,10 +1,8 @@
 {
-  "name": "batch-04-en-1990-2025",
-  "sources": [
-    "billboard"
-  ],
+  "name": "batch-05-en-1955-1989",
+  "sources": ["billboard"],
   "language": "en",
-  "fromYear": 1990,
-  "toYear": 2025,
+  "fromYear": 1955,
+  "toYear": 1989,
   "size": 300
 }
