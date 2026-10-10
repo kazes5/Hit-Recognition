@@ -318,3 +318,15 @@ test('toCsv escapes commas, quotes and newlines; lists join with ;', () => {
   assert.equal(csv, '﻿a,b\n"x, ""y""",p;q\n,"l1\nl2"\n');
 });
 
+
+test('the real selector (build/select.mjs) is wired in and returns songs', async () => {
+  const { loadBatchDeps } = await import('../deps.mjs');
+  const deps = await loadBatchDeps();
+  const pool = [
+    { artist: 'א', title: 'שיר 1', language: 'he', firstChartYear: 1975, bestRank: 1 },
+    { artist: 'ב', title: 'שיר 2', language: 'he', firstChartYear: 1985, bestRank: 3 },
+    { artist: 'ג', title: 'song 3', language: 'en', firstChartYear: 1985, bestRank: 2 },
+  ];
+  const chosen = await deps.select(pool, { size: 10, language: 'he', fromYear: 1969, toYear: 1999 });
+  assert.deepEqual(chosen.map((c) => c.title).sort(), ['שיר 1', 'שיר 2']);
+});

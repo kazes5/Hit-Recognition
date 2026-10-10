@@ -27,8 +27,9 @@ async function selectFn() {
     const fn = m.selectBatch ?? m.selectCandidates ?? m.select ?? m.default;
     if (typeof fn === 'function') {
       return async (cands, opts) => {
-        const r = await fn(cands, opts);
-        return Array.isArray(r) ? r : r?.selected ?? [];
+        // build/select.mjs takes `languages` (a list) and returns { chosen, leftOut, counts }.
+        const r = await fn(cands, { ...opts, languages: opts.languages ?? (opts.language ? [opts.language] : undefined) });
+        return Array.isArray(r) ? r : r?.chosen ?? r?.selected ?? [];
       };
     }
   } catch (e) {
