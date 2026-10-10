@@ -140,7 +140,7 @@ The interfaces between the parts are defined in [docs/CONTRACTS.md](docs/CONTRAC
 
 ## 8. Out of scope (for now)
 
-- Online multiplayer across several phones.
+- Online multiplayer across several phones. Researched in [docs/MULTIPLAYER_RESEARCH.md](docs/MULTIPLAYER_RESEARCH.md) (not built).
 - Using tokens to buy a card (from the original game).
 
 Tokens, naming the artist and title, betting on another player's card, and skipping a song for 3 tokens are built (step 9.6).
