@@ -243,6 +243,7 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
 - **Spelling:** רמי קליינשטיין and אליעד נחום use the catalog spellings.
 - **Rule:** a credit with its own artist-genres entry is decided by it, so the kept duet עילי בוטנר וקובי אפללו stays in when קובי אפללו is excluded.
 - **Result:** 174 added, **catalog 921 → 1,095** (Hebrew 521 → 688).
+- **Owner decision on the 19 borderline performers:** add מרגי, סטפן לגר and לירן דנינו (8 songs, **catalog → 1,103**); leave the other 16 out (D5).
 
 For each batch:
 1. Run `song-batch.yml` for the next slice of years and languages.

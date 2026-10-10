@@ -1093,5 +1093,13 @@
   {"id":1094,"artist":"Eden Alene","title":"Set Me Free","year":2021,"language":"en","genre":"pop","difficulty":2,"itunesTrackId":1559069053},
   {"id":1095,"artist":"נועם בתן","title":"בובה","year":2022,"language":"he","genre":"pop","difficulty":2,"itunesTrackId":1676247339},
   {"id":1096,"artist":"אלה לי להב","title":"מה אתה רוצה?","year":2020,"language":"he","genre":"pop","difficulty":3,"itunesTrackId":1539016710},
-  {"id":1097,"artist":"נונו","title":"ליבינג דה דרים","year":2021,"language":"he","genre":"pop","difficulty":3,"titleAliases":["Living The Dream"],"itunesTrackId":1629690759}
+  {"id":1097,"artist":"נונו","title":"ליבינג דה דרים","year":2021,"language":"he","genre":"pop","difficulty":3,"titleAliases":["Living The Dream"],"itunesTrackId":1629690759},
+  {"id":1098,"artist":"לירן דנינו","title":"ללכת","year":2011,"language":"he","genre":"pop","difficulty":1,"itunesTrackId":1433904608},
+  {"id":1099,"artist":"לירן דנינו","title":"עדיין ריק","year":2010,"language":"he","genre":"pop","difficulty":2,"itunesTrackId":1433904852},
+  {"id":1100,"artist":"מרגי","title":"הזוג הזה","year":2019,"language":"he","genre":"pop","difficulty":2,"artistAliases":["Mergui"],"itunesTrackId":1448266624},
+  {"id":1101,"artist":"לירן דנינו","title":"יש ימים","year":2018,"language":"he","genre":"pop","difficulty":3,"itunesTrackId":1433887883},
+  {"id":1102,"artist":"לירן דנינו","title":"הרבה ממך נשאר","year":2014,"language":"he","genre":"pop","difficulty":2,"itunesTrackId":1433908852},
+  {"id":1103,"artist":"מרגי","title":"לא יוצא למסיבות","year":2020,"language":"he","genre":"pop","difficulty":3,"artistAliases":["Mergui"],"itunesTrackId":1634404237},
+  {"id":1104,"artist":"מרגי","title":"אנג'ל","year":2021,"language":"he","genre":"pop","difficulty":3,"artistAliases":["Mergui"],"itunesTrackId":1589079980},
+  {"id":1105,"artist":"סטפן לגר","title":"רק אני יודע","year":2023,"language":"he","genre":"pop","difficulty":3,"artistAliases":["Stéphane Legar"],"itunesTrackId":1692163942}
 ]
