@@ -164,7 +164,13 @@ test.describe('API', () => {
 
   test('POST /api/songs/next caps a performer at 2 per game (one excludeArtists entry per dealt song)', async ({ request }) => {
     const all = await drainCatalog(request);
-    const A = all[0]!.artist;
+    // The server counts each performer of a joint credit ("אמיר דדון ושולי רנד"), so A must share no
+    // performer with any other credit, or "everyone else dealt twice" would put A over the cap too.
+    const credits = [...new Set(all.map((s) => s.artist.toLowerCase()))];
+    const A = all.find((s) => {
+      const a = s.artist.toLowerCase();
+      return credits.every((c) => c === a || (!c.includes(a) && !a.includes(c)));
+    })!.artist;
     const others = [...new Set(all.map((s) => s.artist))].filter((a) => a.toLowerCase() !== A.toLowerCase());
     const aIds = all.filter((s) => s.artist.toLowerCase() === A.toLowerCase()).map((s) => s.id);
 
