@@ -180,5 +180,7 @@ test('recheck --apply writes the catalog through catalog-io only when a fix appl
 });
 
 test('the recheck request file exists (it triggers the workflow)', () => {
-  assert.deepEqual(JSON.parse(readFileSync(new URL('../../recheck-request.json', import.meta.url), 'utf8')), { reason: 'first run' });
+  const req = JSON.parse(readFileSync(new URL('../../recheck-request.json', import.meta.url), 'utf8'));
+  assert.equal(typeof req.reason, 'string'); // edit "reason" to start a new run
+  assert.ok(req.reason.length > 0);
 });

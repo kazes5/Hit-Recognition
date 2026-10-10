@@ -27,6 +27,12 @@ describe('annual pages: helpers', () => {
     assert.equal(labelSource('המצעד השנתי של מדיה פורסט:'), 'airplay');
     assert.equal(labelSource('נתוני השמעות של אקו"ם:'), 'airplay');
     assert.equal(labelSource('משהו אחר:'), null);
+    // No station named: the page's main ranking (Reshet Gimel), 1974–1998.
+    for (const l of ['דירוג השירים:', 'דירוג הרשת לשנה זו:', 'הדירוג לשנה זו:', 'דירוג המצעד:', 'מצעד עמוס להיטים, והדירוג הוא:']) assert.equal(labelSource(l), 'reshet-gimel', l);
+    assert.equal(labelSource('המצעד השנתי של רשת ג:'), 'reshet-gimel');
+    assert.equal(labelSource('רשת גלים:'), null);
+    assert.equal(labelSource('המצעד השנתי של מדיה פורט:'), 'airplay');
+    for (const l of ['המצעד השנתי של מאקו ורדיו תל אביב:', 'כאן מורשת – המצעד היהודי', 'דירוג מאזיני התחנה לשנה זו:', 'דירוג גולשי האתר לשנה זו:', 'מצעד הקריוקי השנתי של "שרים קריוקי"', 'המצעד השנתי של וואלה:']) assert.equal(labelSource(l), 'other', l);
   });
   test('section years: the number after the dash', () => {
     assert.equal(headingYear('ה\'תש"ל-1970'), 1970);
@@ -68,8 +74,12 @@ describe('annual pages: items', () => {
     assert.equal(parseItem('"[[אם זה זה – זה זה]]" – [[אגם בוחבוט]]').title, 'אם זה זה – זה זה');
     assert.equal(parseItem('"[[למה לא]]" – [[שרי (זמרת)|שרי]] ([[אליעוז רבין]]/[[רוני וייס]])').artist, 'שרי');
   });
-  test('broken quoting is an error, not a crash', () => {
-    assert.match(parseItem('"התקווה- [[סאבלימינל]] ו[[הצל (ראפר)|הצל]] (סאבלימינל והצל)').error, /closing quote/);
+  test('a missing or misplaced closing quote falls back to the first dash', () => {
+    assert.deepEqual(parseItem('"התקווה- [[סאבלימינל]] ו[[הצל (ראפר)|הצל]] (סאבלימינל והצל)'), { title: 'התקווה', artist: 'סאבלימינל והצל', creditRaw: 'סאבלימינל והצל' });
+    assert.deepEqual(parseItem('"אמא יקרה – [[דודו אהרון]] (דודו אהרון)'), { title: 'אמא יקרה', artist: 'דודו אהרון', creditRaw: 'דודו אהרון' });
+    assert.equal(parseItem('"[[סהרה]]" Live – [[טונה]] בהשתתפות [[יסמין מועלם]]').title, 'סהרה');
+    assert.equal(parseItem('"[[עיר נמל (שיר)|עיר נמל]] – [[איל גולן]]').artist, 'איל גולן');
+    assert.match(parseItem('"רק כותרת בלי מקף').error, /closing quote/);
     assert.match(parseItem('רק שם בלי מבצע').error, /no " – "/);
   });
 });
@@ -112,7 +122,7 @@ describe('annual pages: real fixtures', () => {
   test('2001: {{טורים}} lists with bold and plain labels; 2003: two tables, one broken item', () => {
     const r = parse('annual-5760-5769');
     const g = groups(r.entries);
-    assert.deepEqual(counts(g), { '2001 galgalatz': 40, '2001 reshet-gimel': 32, '2003 reshet-gimel': 40, '2003 galgalatz': 20 });
+    assert.deepEqual(counts(g), { '2001 galgalatz': 40, '2001 reshet-gimel': 32, '2003 reshet-gimel': 40, '2003 galgalatz': 21 });
     assert.deepEqual(pair(g, '2001 galgalatz', 1), ['יושבים בבית קפה | טיפקס']);
     assert.deepEqual(pair(g, '2001 galgalatz', 14), ['אצלי הכל בסדר | מיקה קרני']);
     assert.deepEqual(pair(g, '2001 reshet-gimel', 1), ['יאללה לך הביתה מוטי | שרית חדד']);
@@ -120,10 +130,8 @@ describe('annual pages: real fixtures', () => {
     assert.deepEqual(pair(g, '2003 reshet-gimel', 1), ['אם תלך | הפרויקט של עידן רייכל']);
     assert.deepEqual(pair(g, '2003 reshet-gimel', 2), ['בואי | הפרויקט של עידן רייכל']); // unlinked performer
     assert.deepEqual(pair(g, '2003 galgalatz', 14), ['היה לי חבר היה לי אח | דודו טסה']);
-    assert.deepEqual(g['2003 galgalatz'].map((e) => e.rank).filter((n) => n <= 20), [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
-    assert.equal(r.problems.length, 1);
-    assert.equal(r.problems[0].source, 'galgalatz');
-    assert.match(r.problems[0].reason, /year 2003, rank 5: cannot find the closing quote.*התקווה/);
+    assert.deepEqual(pair(g, '2003 galgalatz', 5), ['התקווה | סאבלימינל והצל']); // no closing quote
+    assert.deepEqual(r.problems, []);
   });
   test('2018: label on the same line as {{טורים, and right after the previous "}}"', () => {
     const r = parse('annual-5770-5779');

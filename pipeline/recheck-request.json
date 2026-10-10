@@ -1,1 +1,1 @@
-{ "reason": "second run: print the flagged songs and their source years to the log" }
+{ "reason": "second run: print the flagged songs to the log (retry with the request test fixed)" }

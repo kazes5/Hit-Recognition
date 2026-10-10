@@ -18,16 +18,24 @@ import { stripNoise } from '../sources/wikipedia.mjs';
 import { hebrewYearsIn } from './hebrew-year.mjs';
 import { cleanText } from './wikitext.mjs';
 
-export const AIRPLAY = /מדיה פורסט|אקו"ם|אקו״ם|השמעות|מושמע/;
+export const AIRPLAY = /מדיה פורסט|מדיה פורט|אקו"ם|אקו״ם|השמעות|מושמע/;
 const GALGALATZ = /גלגלצ|גלי צה"ל|גלי צה״ל|גל"צ|גל״צ/;
-const RESHET_GIMEL = /קול ישראל|רשת ג['׳]|רשת גימל|כאן גימל|כאן ג['׳]|הגל הקל/;
+// "רשת ג" is also written without the geresh ("המצעד השנתי של רשת ג:", 2016).
+const RESHET_GIMEL = /קול ישראל|רשת ג(?![א-ת])|רשת גימל|כאן גימל|כאן ג(?![א-ת])|הגל הקל/;
+// A label that names no station is the page's main (Reshet Gimel) ranking: "דירוג הרשת לשנה זו:",
+// "הדירוג לשנה זו:", "דירוג המצעד:", "דירוג השירים:", "מצעד עמוס להיטים, והדירוג הוא:" (1974–1998).
+const GENERIC = /^(?:ה?דירוג(?: הרשת| המצעד| השירים)?(?: לשנה זו)?|.*והדירוג הוא)\s*:?\s*$/;
+// Rankings that are neither station: websites, regional radio, Jewish/Hasidic, karaoke (decision D: skipped).
+const OTHER = /מאקו|כאן מורשת|וואלה|ynet ורדיו|רדיו תל אביב|רדיו דרום|רדיו קול|ישראל היום|היטליסט|אייס|סרוגים|קריוקי|אקו 99|מאזיני התחנה|גולשי האתר|ערוץ 24|האזוריות/;
 
-/** Station label → 'reshet-gimel' | 'galgalatz' | 'airplay' | null (unknown). */
+/** Station label → 'reshet-gimel' | 'galgalatz' | 'airplay' | 'other' | null (unknown). */
 export function labelSource(label) {
-  const t = String(label ?? '');
+  const t = String(label ?? '').trim();
   if (AIRPLAY.test(t)) return 'airplay';
   if (GALGALATZ.test(t)) return 'galgalatz';
   if (RESHET_GIMEL.test(t)) return 'reshet-gimel';
+  if (OTHER.test(t)) return 'other';
+  if (GENERIC.test(t)) return 'reshet-gimel';
   return null;
 }
 
@@ -127,7 +135,20 @@ export function parseItem(raw) {
       rest = s.slice(i + 1 + m[0].length);
       return false;
     });
-    if (titleRaw === undefined) return { error: 'cannot find the closing quote of the title' };
+    if (titleRaw === undefined) {
+      // Missing or misplaced closing quote ('"אמא יקרה – דודו אהרון', '"התקווה- [[סאבלימינל]]',
+      // '"סהרה" Live – טונה'): split at the first top-level dash followed by a space.
+      let at = -1;
+      scan(s, (i) => {
+        if (i > 1 && /[–—-]/.test(s[i]) && /\s/.test(s[i + 1] ?? '')) { at = i; return false; }
+        return true;
+      });
+      if (at < 0) return { error: 'cannot find the closing quote of the title' };
+      titleRaw = s.slice(1, at).trim();
+      const q = [...titleRaw].findIndex((c) => QUOTES.has(c));
+      if (q > 0) titleRaw = titleRaw.slice(0, q);
+      rest = s.slice(at).replace(/^\s*[–—-]+\s*/, '');
+    }
   } else {
     const at = dashIndex(s);
     if (at < 0) return { error: 'no " – " between title and performer' };
@@ -302,6 +323,10 @@ export function parseAnnualPage({ wikitext, page }) {
     const source = list.label == null ? 'reshet-gimel' : labelSource(list.label);
     if (source === 'airplay') {
       problems.push({ page, reason: 'airplay-ranking-skipped', detail: `${list.year ?? '?'}: "${list.label}" (${list.items.length} items) at ${where}` });
+      continue;
+    }
+    if (source === 'other') {
+      problems.push({ page, reason: 'other-ranking-skipped', detail: `${list.year ?? '?'}: "${list.label}" (${list.items.length} items) at ${where}` });
       continue;
     }
     if (!source) {

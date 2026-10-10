@@ -69,9 +69,9 @@ describe('extract: Hebrew annual parades (real page layout)', () => {
     const { candidates, problems } = await extract({ sources: ['reshet-gimel', 'galgalatz'], fromYear: 1969, toYear: 2025, getJson });
     assert.deepEqual(perYear(candidates), {
       '1969 reshet-gimel': 18, '1970 reshet-gimel': 20, '1978 reshet-gimel': 20, '2001 reshet-gimel': 20, '2003 reshet-gimel': 20, '2018 reshet-gimel': 20, '2025 reshet-gimel': 20,
-      '1970 galgalatz': 10, '1978 galgalatz': 7, '2001 galgalatz': 20, '2003 galgalatz': 19, '2018 galgalatz': 20,
+      '1970 galgalatz': 10, '1978 galgalatz': 7, '2001 galgalatz': 20, '2003 galgalatz': 20, '2018 galgalatz': 20,
     });
-    assert.equal(candidates.length, 214);
+    assert.equal(candidates.length, 215);
     assert.ok(candidates.every((c) => c.rank >= 1 && c.rank <= 20 && c.language === 'he'));
     assert.deepEqual(Object.keys(candidates[0]).slice(0, 8), CONTRACT_KEYS);
     const solo = candidates.find((c) => c.chartYear === 1970 && c.source === 'reshet-gimel' && c.rank === 5);
@@ -82,7 +82,7 @@ describe('extract: Hebrew annual parades (real page layout)', () => {
     assert.ok(!fetch.calls.some((u) => /page=מצעד הפזמונים העברי השנתי$/.test(u)), 'the main article is not read');
     const reasons = problems.map((p) => `${p.source}: ${p.reason}`);
     assert.equal(reasons.filter((r) => r === 'hebrew-annual: airplay-ranking-skipped').length, 2, 'reported once, not per source');
-    assert.ok(reasons.some((r) => /^galgalatz: year 2003, rank 5: cannot find the closing quote/.test(r)));
+    assert.ok(!reasons.some((r) => /closing quote/.test(r)), 'a missing closing quote falls back to the dash');
     assert.ok(reasons.some((r) => /^reshet-gimel: year 1969: 2 of the top 20 ranks missing \(19, 20\)/.test(r)));
     assert.ok(reasons.some((r) => /^galgalatz: year 1970: 11 of the top 20 ranks missing \(10, 11/.test(r)));
     assert.ok(!reasons.some((r) => /appears more than once/.test(r)), '7א/7ב ties are not duplicates');
