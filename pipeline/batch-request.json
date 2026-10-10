@@ -1,6 +1,6 @@
 {
   "name": "batch-01-he-1969-1999",
-  "sources": ["reshet-gimel"],
+  "sources": ["reshet-gimel", "galgalatz"],
   "language": "he",
   "fromYear": 1969,
   "toYear": 1999,
