@@ -261,6 +261,12 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
   - `lookup.mjs` now drops lower-case concept labels, "(… song)" suffixes and trailing dashes (`cleanTitleLabel`).
 - **Result:** 261 added, **catalog 1,384 → 1,645** (English 688 → 949).
 
+**Batch 5 (English 1955–1989, Billboard Year-End top 20), 2026-10-10:**
+- **Run:** 300 of 607 new songs looked up: 73 accepted, 192 year settled with an unknown performer (173 performers labelled by the lead), 35 flagged.
+- **Spelling:** "Little Stevie Wonder" and "Bob Seger" use the catalog names Stevie Wonder and Bob Seger & The Silver Bullet Band.
+- **Duplicates:** Pink Floyd's "Another Brick in the Wall, Part II" was left out as a possible duplicate of song 201 ("Part 2"). The other title matches are different songs (Jump, Maneater, Without You, I'll Be There).
+- **Result:** 265 added, **catalog 1,645 → 1,910** (English 949 → 1,214).
+
 For each batch:
 1. Run `song-batch.yml` for the next slice of years and languages.
 2. The research team resolves `flagged.csv`. One agent checks each flagged song with web searches, a second confirms. Decisions are written to `pipeline/sources.json`.

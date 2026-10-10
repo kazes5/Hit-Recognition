@@ -4472,5 +4472,885 @@
     "genre": "soul-rnb",
     "exclude": false,
     "note": "from Khalid"
+  },
+  "Perry Como": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Andy Gibb": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Daryl Hall & John Oates": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Les Baxter": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Pat Boone": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Fleetwoods": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Four Tops": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Temptations": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Bobby Vinton": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Association": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Sly and the Family Stone": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Barbra Streisand": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Captain & Tennille": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Olivia Newton-John": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Mr. Mister": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "John Cougar": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Johnny Horton": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Mitch Miller": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Diamonds": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Lloyd Price": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Roger Williams": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Tab Hunter": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Ross Bagdasarian": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Frankie Avalon": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Gogi Grant": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Jimmy Dorsey": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Perez Prado": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Bill Hayes": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Four Aces": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Guy Mitchell": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Browns": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The McGuire Sisters": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Sonny James": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Champs": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Kay Starr": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Johnny Maddox": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Morris Stoloff": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Conway Twitty": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Santo & Johnny": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Billy Vaughn": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Debbie Reynolds": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Sheb Wooley": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Tennessee Ernie Ford": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Buddy Knox": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Silhouettes": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Fontane Sisters": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Elegants": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Dodie Stevens": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Georgia Gibbs": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Four Lads": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Eddie Heywood & Hugo Winterhalter": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Marty Robbins": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Ricky Nelson": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Bobby Lewis": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Acker Bilk": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Sam the Sham and the Pharaohs": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Lulu": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Jim Reeves": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Patsy Cline": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Skeeter Davis": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "? and the Mysterians": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Box Tops": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Paul Mauriat": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The 5th Dimension": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Highwaymen": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Dee Dee Sharp": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Cascades": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Jimmy Ruffin": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Bobbie Gentry": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Bobby Goldsboro": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Johnny Preston": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Chiffons": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "We Five": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Mark Dinning": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "David Rose": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Rascals": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Jive Five": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Shelley Fabares": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Paul & Paula": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Petula Clark": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Cream": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Tommy Roe": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Little Eva": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Mary Wells": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Herb Alpert": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Jimmy Jones": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The String-A-Longs": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Sensations": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Andy Williams": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Gale Garnett": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Herman's Hermits": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Hugo Montenegro": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Dee Clark": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Angels": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Paul Revere & the Raiders": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Young Rascals": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Foundations": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Joe Dowell": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Three Dog Night": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Tony Orlando and Dawn": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Wings": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Gilbert O'Sullivan": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Jim Croce": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Terry Jacks": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Glen Campbell": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Guess Who": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Roberta Flack": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Love Unlimited Orchestra": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Johnnie Taylor": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Emotions": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Debby Boone": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "B.J. Thomas": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Osmonds": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Harry Nilsson": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Redbone": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Freddy Fender": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Edwin Starr": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Sammy Davis Jr.": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Paul McCartney & Wings": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Wild Cherry": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Hot": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Exile": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Peaches & Herb": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Kris Kristofferson": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Grand Funk Railroad": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Manhattans": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Kenny Nolan": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "MFSB & The Three Degrees": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The Miracles": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Thelma Houston": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Player": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "John Denver": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Mac Davis": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Billy Preston": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Ray Stevens": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Paul Simon": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Melanie": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Neil Sedaka": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Bobby Brown": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Kenny Rogers": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Irene Cara": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Klymaxx": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Gregory Abbott": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "George Harrison": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Poison": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Men at Work": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Patti LaBelle and Michael McDonald": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "The J. Geils Band": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Van Halen": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Robbie Nevil": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Paul McCartney": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Eddie Murphy": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Lipps Inc.": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Eddie Rabbitt": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Patti Austin and James Ingram": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Yes": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Bruce Hornsby and the Range": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Tiffany": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Milli Vanilli": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Dolly Parton": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Steve Miller Band": {
+    "genre": "classic-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Michael Sembello": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Ray Parker Jr.": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Breathe": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Will to Power": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "REO Speedwagon": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "a-ha": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Robert Palmer": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Steve Winwood": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Anita Baker": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Rupert Holmes": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 5 (labelled by the lead)"
+  },
+  "Frank & Nancy Sinatra": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Nancy Sinatra"
+  },
+  "Elton John & Kiki Dee": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "from Elton John"
+  },
+  "Diana Ross & Lionel Richie": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Lionel Richie"
+  },
+  "Paul McCartney and Michael Jackson": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Paul McCartney + Michael Jackson"
+  },
+  "Paul McCartney and Stevie Wonder": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "from Paul McCartney + Stevie Wonder"
   }
 }
