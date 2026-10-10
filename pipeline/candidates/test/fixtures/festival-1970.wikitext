@@ -1,0 +1,14 @@
+<!-- Hand-made fixture (not a copy; illustrative). Mirrors a per-year he.wikipedia page such as "פסטיבל הזמר והפזמון 1970":
+     the year is in the page title, a table of the competing songs with placing (מקום), one song without a placing. -->
+'''פסטיבל הזמר והפזמון 1970''' נערך ב[[בנייני האומה]].
+
+== השירים ==
+{| class="wikitable"
+! מקום !! שיר !! מבצע !! מילים !! לחן
+|-
+| 1 || [[בלדה לחובש]] || [[שמוליק קראוס]] || [[יורם טהרלב]] || [[יאיר רוזנבלום]]
+|-
+| 2 || [[שיר שני בפסטיבל]] || [[ג'וזי כץ]] || ||
+|-
+| – || [[שיר מחוץ לתחרות]] || [[מבצע אורח]] || ||
+|}

@@ -1,0 +1,19 @@
+<!-- Hand-made fixture (not a copy). Mirrors en.wikipedia "Billboard year-end top 50 singles of 1956":
+     a pre-Hot 100 year-end list (top 50 by retail sales), header row "Rank !! Title !! Artist(s)" on one line,
+     a double A-side written as two quoted titles. Only the first rows are included. -->
+This is a list of ''[[Billboard (magazine)|Billboard]]'' magazine's top 50 singles of 1956.
+
+{| class="wikitable sortable"
+|-
+! Rank !! Title !! Artist(s)
+|-
+| 1 || "[[Heartbreak Hotel]]" || [[Elvis Presley]]
+|-
+| 2 || "[[Don't Be Cruel]]" / "[[Hound Dog (song)|Hound Dog]]" || [[Elvis Presley]]
+|-
+| 3 || "[[Lisbon Antigua]]" || [[Nelson Riddle]]
+|-
+| 4 || "[[My Prayer]]" || [[The Platters]]
+|-
+| 5 || "[[The Wayward Wind]]" || [[Gogi Grant]]
+|}

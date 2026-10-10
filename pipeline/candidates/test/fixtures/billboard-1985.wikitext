@@ -1,0 +1,65 @@
+<!-- Hand-made fixture (not a copy). Mirrors the layout of en.wikipedia "Billboard Year-End Hot 100 singles of 1985":
+     lead text, a sortable wikitable with header "No. | Title | Artist(s)", one row per line with "||" separators,
+     linked titles in quotes, linked artists, "featuring" credits, footnote refs. Rows 21-22 test the top-20 cut. -->
+{{Short description|none}}
+This is a list of '''[[Billboard (magazine)|Billboard]] magazine's Top Hot 100 songs of 1985'''.<ref>{{cite magazine|title=Top Pop Singles|magazine=Billboard|date=December 28, 1985|access-date=2019-02-02}}</ref>
+
+{| class="wikitable sortable" style="text-align: center"
+|-
+! {{abbr|No.|Number}}
+! style="width:300px;"|Title
+! style="width:500px;"|Artist(s)
+|-
+| 1 || "[[Careless Whisper]]" || [[Wham!]] featuring [[George Michael]]
+|-
+| 2 || "[[Like a Virgin (song)|Like a Virgin]]" || [[Madonna]]
+|-
+| 3 || "[[Wake Me Up Before You Go-Go]]" || [[Wham!]]
+|-
+| 4 || "[[I Want to Know What Love Is]]" || [[Foreigner (band)|Foreigner]]
+|-
+| 5 || "[[I Feel for You (Prince song)|I Feel for You]]" || [[Chaka Khan]]
+|-
+| 6 || "[[Out of Touch]]" || [[Hall & Oates|Daryl Hall & John Oates]]
+|-
+| 7 || "[[Everybody Wants to Rule the World]]" || [[Tears for Fears]]
+|-
+| 8 || "[[Money for Nothing (song)|Money for Nothing]]" || [[Dire Straits]]
+|-
+| 9 || "[[Crazy for You (Madonna song)|Crazy for You]]" || [[Madonna]]
+|-
+| 10 || "[[Take On Me]]" || [[a-ha]]
+|-
+| 11 || "[[Every Time You Go Away|Everytime You Go Away]]" || [[Paul Young]]
+|-
+| 12 || "[[Easy Lover]]" || [[Philip Bailey]] and [[Phil Collins]]
+|-
+| 13 || "[[Can't Fight This Feeling]]" || [[REO Speedwagon]]
+|-
+| 14 || "[[We Built This City]]" || [[Starship (band)|Starship]]
+|-
+| 15 || "[[The Power of Love (Huey Lewis and the News song)|The Power of Love]]" || [[Huey Lewis and the News]]
+|-
+| 16 || "[[Don't You (Forget About Me)]]" || [[Simple Minds]]
+|-
+| 17 || "[[Cherish (Kool & the Gang song)|Cherish]]" || [[Kool & the Gang]]
+|-
+| 18 || "[[St. Elmo's Fire (Man in Motion)]]" || [[John Parr]]
+|-
+| 19 || "[[Heaven (Bryan Adams song)|Heaven]]" || [[Bryan Adams]]
+|-
+| 20 || "[[Shout (Tears for Fears song)|Shout]]"<ref name="n1"/> || [[Tears for Fears]]
+|-
+| 21 || "[[Saving All My Love for You]]" || [[Whitney Houston]]
+|-
+| 22 || "[[Loverboy (Billy Ocean song)|Loverboy]]" || [[Billy Ocean]]
+|}
+
+==See also==
+* [[1985 in music]]
+* [[List of Billboard Hot 100 number-one singles of 1985]]
+
+==References==
+{{Reflist}}
+
+[[Category:1985 record charts]]
