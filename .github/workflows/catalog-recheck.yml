@@ -73,6 +73,12 @@ jobs:
       - name: Job summary
         if: always()
         run: cat .pipeline-out/recheck-report.md >> "$GITHUB_STEP_SUMMARY" || echo "No report (the recheck did not finish; re-run it to continue)." >> "$GITHUB_STEP_SUMMARY"
+      - name: Print results to the log
+        if: always()
+        run: |
+          for f in recheck-fixes.json recheck-flagged.csv recheck-report.md; do
+            echo "===== $f ====="; cat ".pipeline-out/$f" || true
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
