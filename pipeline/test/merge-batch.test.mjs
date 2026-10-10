@@ -23,4 +23,10 @@ test('accepted and newly labelled pending songs are added; excluded, unlabelled 
     ['שיר ד', 'performer still has no genre label'],
   ]);
   assert.equal(r.catalog.length, catalog.length + 2);
+  assert.deepEqual(Object.keys(r.newCredits), ['זמר']); // 'זמר תווית' already has an entry
+});
+
+test('a credit decided by its members or the army-band prefix gets its own entry', () => {
+  const r = mergeBatch(catalog, { batch: [song({ artist: 'להקת פיקוד בדיוני', title: 'שיר צבאי', genre: 'army-bands' })] }, { artistGenres: genres });
+  assert.deepEqual(r.newCredits, { 'להקת פיקוד בדיוני': { genre: 'army-bands', exclude: false, note: 'army band (name)' } });
 });

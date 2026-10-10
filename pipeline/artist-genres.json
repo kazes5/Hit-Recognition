@@ -2432,5 +2432,70 @@
     "genre": "rock",
     "exclude": false,
     "note": "1990s rock band"
+  },
+  "חדוה עמרני": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "אל תקרא לי שחור": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "מתי כספי": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "אלון אולארצ'יק": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "שולה חן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "שרון ליפשיץ": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "סי היימן": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "יוסי בנאי": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "דורי בן זאב": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "שב\"ק ס ופישי הגדול": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "סטלה מאריס": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "ריקי גל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 1 (labelled by the lead)"
+  },
+  "להקת פיקוד דרום": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "army band (name)"
   }
 }

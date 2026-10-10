@@ -228,6 +228,12 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
   3. **Off-song years ignored:** Wikipedia/Wikidata when the page is another performer's song ("… (שיר של X)"), and any trusted year after the chart year + 1.
   - **Also:** a near-identical title by the same performer is left out as a possible duplicate (listed in `excluded.csv`), and Hebrew performer spelling variants (בעז / בועז) match.
   - **Checked offline** on the 208 flagged rows: rule 1 settles 133 years, 132 the same as the review, and about 105 songs become fully automatic. The 60-song source test has no chart years, so it cannot test these rules.
+- **Second run with the new rules:** 300 songs looked up (the top 300 of the 485 still eligible).
+  - 150 accepted and 12 waiting only for a performer label (labelled by the lead), plus מה נשתנה (owner: add; store year = chart year 1972). **163 added: catalog 758 → 921** (Hebrew 358 → 521).
+  - 138 flagged (`pipeline/reports/batch-01b-flagged.csv`): 77 year questions, 31 only missing a preview, 30 both.
+  - Left out: 21 performers excluded (D5), 2 owner exclusions, 3 known duplicates, 1 possible duplicate.
+  - "ג'ינג'יות – L.A" is stored as "אל איי" (Hebrew titles are required) with "L.A" as a title alias.
+  - New songs by בעז שרעבי and להקת פיקוד המרכז use the catalog spellings בועז שרעבי and להקת פיקוד מרכז.
 
 For each batch:
 1. Run `song-batch.yml` for the next slice of years and languages.
