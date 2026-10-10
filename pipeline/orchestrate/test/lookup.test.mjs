@@ -56,3 +56,15 @@ test('isLatin', () => {
   assert.ok(!isLatin(''));
   assert.ok(!isLatin(null));
 });
+
+test('cleanTitleLabel: keeps real titles, drops concept items and junk', async () => {
+  const { cleanTitleLabel } = await import('../lookup.mjs');
+  assert.equal(cleanTitleLabel('The Boots of Baruch'), 'The Boots of Baruch');
+  assert.equal(cleanTitleLabel('Tfila (Ofra Haza song)'), 'Tfila');
+  assert.equal(cleanTitleLabel('If—'), 'If');
+  assert.equal(cleanTitleLabel('natural satellite'), null);
+  assert.equal(cleanTitleLabel('belief'), null);
+  assert.equal(cleanTitleLabel('song'), null);
+  assert.equal(cleanTitleLabel('שיר'), null);
+  assert.equal(cleanTitleLabel(undefined), null);
+});

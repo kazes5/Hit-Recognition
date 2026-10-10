@@ -26,6 +26,18 @@ export function compact(row) {
 }
 
 /**
+ * A Wikidata English label usable as a title alias, or null. Batches 1-4 showed bad ones: a
+ * concept item instead of the song ("natural satellite", "belief", "song": all lower case), a
+ * disambiguation suffix ("Tfila (Ofra Haza song)"), and stray punctuation ("If—").
+ */
+export function cleanTitleLabel(label) {
+  if (!isLatin(label)) return null;
+  const t = label.replace(/\s*\([^)]*\bsong\)\s*$/i, '').replace(/[—–-]+$/, '').trim();
+  if (!t || !/^[\p{Lu}\p{N}"'‘’“]/u.test(t)) return null; // concept items have lower-case labels
+  return t;
+}
+
+/**
  * English transliterations for a Hebrew song, when a source gives one:
  *   titleAliases  ← the English label of the song's Wikidata item (cached request: the year lookup fetched it)
  *   artistAliases ← the MusicBrainz artist name, when it is in Latin script
@@ -38,8 +50,8 @@ export async function transliterations(song, res, opts = {}) {
   const qid = res.wikipedia?.qid;
   if (qid) {
     try {
-      const label = (await fetchEntity(qid, opts))?.labels?.en?.value;
-      if (isLatin(label) && norm(label) !== norm(song.title)) out.titleAliases = [label];
+      const label = cleanTitleLabel((await fetchEntity(qid, opts))?.labels?.en?.value);
+      if (label && norm(label) !== norm(song.title)) out.titleAliases = [label];
     } catch {
       // aliases are optional
     }

@@ -252,6 +252,15 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
 - **Fix:** song 1048 (איה כורם – שיר אהבה פשוט) had the loose alias "love song", which clashed with Sara Bareilles' "Love Song"; replaced with "Shir Ahava Pashut".
 - **Result:** 281 added, **catalog 1,103 → 1,384** (English 407 → 688). Difficulty 94 / 94 / 93.
 
+**Batch 4 (English 1990–2025, second slice), 2026-10-10:**
+- **Run:** the remaining 298 new songs: 143 accepted, 120 year settled with an unknown performer (105 performers labelled by the lead), 35 flagged.
+- **Spelling and duplicates:** "Pink" is stored as P!nk. Billboard credits Janet Jackson as "Janet", so Together Again and All for You were duplicates; they are now in `song-decisions.json`.
+- **English title aliases:**
+  - Song 963 had the alias "If—", which clashed with Janet Jackson's "If".
+  - A review of all English aliases on new Hebrew songs replaced 12 wrong or generic ones, such as "natural satellite", "belief", "song", "Allenby 58" and "Closed Kindergarten", with transliterations.
+  - `lookup.mjs` now drops lower-case concept labels, "(… song)" suffixes and trailing dashes (`cleanTitleLabel`).
+- **Result:** 261 added, **catalog 1,384 → 1,645** (English 688 → 949).
+
 For each batch:
 1. Run `song-batch.yml` for the next slice of years and languages.
 2. The research team resolves `flagged.csv`. One agent checks each flagged song with web searches, a second confirms. Decisions are written to `pipeline/sources.json`.

@@ -1,4 +1,14 @@
 {
+  "112": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "702": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
   "Aqua": {
     "genre": "disco-dance",
     "exclude": false,
@@ -3887,5 +3897,580 @@
     "genre": "pop",
     "exclude": false,
     "note": "from The Weeknd"
+  },
+  "T.I.": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Keith Sweat": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Brandy": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Sarah McLachlan": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Creed": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Mary J. Blige": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Shaggy": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "The Fray": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Ne-Yo": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Uncle Kracker": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Soulja Boy Tell 'Em": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Enrique Iglesias": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "DJ Khaled": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Mike Posner": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Amy Grant": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jon Secada": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Snow": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Montell Jordan": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Paula Cole": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Shanice": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Dr. Dre": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Dionne Farris": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Quad City DJ's": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Mr. Big": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Everything but the Girl": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Technotronic": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Right Said Fred": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jade": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Adina Howard": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Damn Yankees": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "H-Town": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Salt-n-Pepa": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Blues Traveler": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Will Smith": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Bette Midler": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Billy Ray Cyrus": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jodeci": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Gin Blossoms": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Meredith Brooks": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Duice": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Maxi Priest": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jesus Jones": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "2Pac": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Alannah Myles": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Tom Cochrane": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Peabo Bryson and Regina Belle": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Duncan Sheik": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Linda Ronstadt": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Marky Mark and the Funky Bunch": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "CeCe Peniston": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Des'ree": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "LL Cool J": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "The Notorious B.I.G.": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "The All-American Rejects": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Blu Cantrell": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Lil Jon & The East Side Boyz": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "J-Kwon": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Ray J": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Ja Rule": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Joe": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Juvenile": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Sisqó": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Staind": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jimmy Eat World": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Petey Pablo": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Missy Elliott": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Cassie": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Shop Boyz": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "P. Diddy": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Keri Hilson": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Twista": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Mims": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jamie Foxx": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Daughtry": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Yung Joc": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Timbaland": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "The Game": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Brian McKnight": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Lil' Kim": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Lil' Flip": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Weezer": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jay Sean": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "James Arthur": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "The Lumineers": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Bastille": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Juice Wrld": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Young Money": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Foster the People": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Lil Uzi Vert": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Nico & Vinz": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "DJ Snake and Lil Jon": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "French Montana": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Ella Mai": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Major Lazer and DJ Snake": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Fifth Harmony": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Pink": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Zedd and Alessia Cara": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "XXXTentacion": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "DNCE": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Meek Mill": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Jack Ü": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Rae Sremmurd": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "Rachel Platten": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 4 (labelled by the lead)"
+  },
+  "R. Kelly and Celine Dion": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "from R. Kelly + Celine Dion"
+  },
+  "Nelly, P. Diddy and Murphy Lee": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "from Nelly + P. Diddy"
+  },
+  "Pussycat Dolls": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from The Pussycat Dolls"
+  },
+  "Jagged Edge with Nelly": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "from Nelly"
+  },
+  "Busta Rhymes and Mariah Carey": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Mariah Carey"
+  },
+  "Sam Smith and Normani": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Sam Smith"
+  },
+  "Shawn Mendes and Camila Cabello": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Shawn Mendes + Camila Cabello"
+  },
+  "Ed Sheeran and Justin Bieber": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Ed Sheeran + Justin Bieber"
+  },
+  "A Great Big World and Christina Aguilera": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Christina Aguilera"
+  },
+  "Benny Blanco, Halsey and Khalid": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Halsey + Khalid"
+  },
+  "G-Eazy and Bebe Rexha": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Bebe Rexha"
+  },
+  "Khalid and Normani": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "from Khalid"
   }
 }
