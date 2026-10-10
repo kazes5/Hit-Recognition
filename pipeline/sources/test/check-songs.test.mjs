@@ -7,7 +7,7 @@ import { fixture, mockClient } from './helpers.mjs';
 describe('check-songs', () => {
   test('default sample: 30 Hebrew + 30 English spread over the years, like the source test', () => {
     const songs = JSON.parse(readFileSync(new URL('../../../server/data/songs.json', import.meta.url), 'utf8'));
-    const s = spreadSample(songs);
+    const s = spreadSample(songs.filter((x) => x.id <= 669)); // the original catalog, as the CLI default
     assert.equal(s.length, 60);
     assert.equal(s.filter((x) => x.language === 'he').length, 30);
     assert.equal(s[0].title, 'ערב של שושנים');

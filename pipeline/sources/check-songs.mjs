@@ -24,6 +24,9 @@ import { applyYearRule } from './year-rule.mjs';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(here, '../..');
 
+// The source test sampled the original catalog (ids up to 669); keep that sample as the catalog grows.
+const ORIGINAL_MAX_ID = 669;
+
 /** The source test's sample: n songs per language spread evenly over the years. */
 export function spreadSample(songs, n = 30) {
   const spread = (list) => {
@@ -190,7 +193,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   let songs = args.songs
     ? JSON.parse(readFileSync(args.songs, 'utf8'))
-    : spreadSample(JSON.parse(readFileSync(path.join(REPO, 'server/data/songs.json'), 'utf8')));
+    : spreadSample(JSON.parse(readFileSync(path.join(REPO, 'server/data/songs.json'), 'utf8')).filter((s) => s.id <= ORIGINAL_MAX_ID));
   if (args.lang) songs = songs.filter((s) => s.language === args.lang);
   if (args.limit) songs = songs.slice(0, args.limit);
   console.log(`Checking ${songs.length} songs…`);

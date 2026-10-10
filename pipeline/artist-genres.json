@@ -2497,5 +2497,500 @@
     "genre": "army-bands",
     "exclude": false,
     "note": "army band (name)"
+  },
+  "דנה ברגר": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "קרן פלס": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "עידן רייכל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "עילי בוטנר וילדי החוץ": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "רוני דלומי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "סטטיק": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "סינרגיה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "חמי רודנר": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "ג'ירפות": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "היהודים": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נדב גדג'": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נטע ברזילי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "שיר לוי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אלה לי להב": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "עדן אלנה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אריק ברמן": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "חמי רודנר ושליחי הבלוז": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "שלומי שבן": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "דור דניאל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אורי בנאי": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "הפיל הכחול": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "איה כורם": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אריאל הורוביץ": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "שלישיית מה קשור": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אינפקטד משרום": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "טל שגב": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "שרונה ודניאלה פיק": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "פורטיסחרוף": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "לולה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נימרוד לב": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "שוטי הנבואה": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אפרת גוש": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "קרולינה": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אדם גורליצקי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "גיא ויהל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "עילי בוטנר ואביב אלוש": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "ג'יין בורדו": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "יובל רפאל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נדב חנציס": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "סטטיק ובן-אל תבורי עם נטע ברזילי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "קרן פלס ורוני אלטר": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "תמר ריילי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נגה ארז": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "שירה מרגלית": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "מארינה מקסימיליאן וגיא מנטש": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "דניס לויד": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נועם בתן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נונו": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "חני פירסטנברג ושרית וינו אלעד": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "דוד ד'אור בליווי מקהלת מורן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "דניאל סלומון ודנה עדיני": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "שרון רוטר": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "דניאל סלומון": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "הבנות נחמה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "רגב הוד": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "בית הבובות": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "סאבלימינל מארח את עדן גבאי": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אמנים שונים": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אמנים שונים מישראל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "הפרויקט של עידן רייכל מארח את עידן חביב": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "קרולינה ואורי כנרות": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אביאור מלסה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "גיל ויין ורון בוחניק": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אסף אבידן והמוג'וס (רמיקס Wankelmut": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "בני בשן ולהקת בום פם": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "אביהו שבת ומיכל אמדורסקי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "בועז בנאי": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "עדן גולן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נועה קירל בהשתתפות שחר סאול": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "נונו, שגיא קריב ופוראבר תל אביב": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "רביד פלוטניק": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "פלד ונסטיה רוד": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "סטטיק ובן-אל תבורי בהשתתפות נסרין קדרי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "ענר שפירא ושאנן סטריט": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 2 (labelled by the lead)"
+  },
+  "איל גולן": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "ששון איפרם שאולוב": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "ישי לוי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "קובי אפללו": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "שמעון בוסקילה": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "שם טוב האבי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "דדי דדון": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "עובדיה חממה": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "עקיבא תורג'מן": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "רואי אדם וציון ברוך": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "אבי אבורומי": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "אבי אבורומי ומור": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "עדן בן זקן בהשתתפות איתי גלו": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "batch 2: Mizrahi or Jewish/religious style (D5)"
+  },
+  "Infected Mushroom": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 2: Israeli act, English-language song"
+  },
+  "Nadav Guedj": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2: Israeli act, English-language song"
+  },
+  "Noga Erez": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2: Israeli act, English-language song"
+  },
+  "Eden Alene": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2: Israeli act, English-language song"
+  },
+  "Dennis Lloyd": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 2: Israeli act, English-language song"
+  },
+  "רן דנקר ועילי בוטנר": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from רן דנקר"
+  },
+  "שלמה ארצי ואברהם טל": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from שלמה ארצי + אברהם טל"
+  },
+  "שחר סאול, אגם בוחבוט ונורוז": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from אגם בוחבוט"
+  },
+  "נועה קירל עם אילן פלד": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from נועה קירל"
+  },
+  "נס וסטילה ואודיה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from אודיה"
+  },
+  "עומר אדם, אודיה ושרק": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from עומר אדם + אודיה"
+  },
+  "אגם בוחבוט ושחר סאול": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from אגם בוחבוט"
   }
 }

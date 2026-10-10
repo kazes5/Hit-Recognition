@@ -69,7 +69,9 @@ export function assignGenre(candidate, artistGenres) {
   const memberHits = members.length > 1 ? members.map((m) => lookupPerformer(m, artistGenres)).filter(Boolean) : [];
 
   const hits = whole ? [whole, ...memberHits] : memberHits;
-  const excluded = hits.some((h) => h.entry?.exclude === true);
+  // A credit with its own entry is decided by that entry (an owner-kept duet stays in even when a
+  // member is excluded later); otherwise any excluded member excludes the whole credit (D5).
+  const excluded = whole ? whole.entry?.exclude === true : hits.some((h) => h.entry?.exclude === true);
   const army = isArmyBandCredit(credit);
 
   if (hits.length === 0) {

@@ -235,6 +235,15 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
   - "ג'ינג'יות – L.A" is stored as "אל איי" (Hebrew titles are required) with "L.A" as a title alias.
   - New songs by בעז שרעבי and להקת פיקוד המרכז use the catalog spellings בועז שרעבי and להקת פיקוד מרכז.
 
+**Batch 2 (Hebrew 2000–2025), 2026-10-10:**
+- **Run:** 300 of 497 eligible songs looked up; 114 left out before lookup (Mizrahi or Jewish/Hasidic performers, D5). 116 accepted, 91 year settled with an unknown performer, 93 flagged.
+- **Labels:** 108 new performers. The lead labelled 80 as fine, 13 as excluded (D5), and listed 19 borderline ones for the owner. Songs by those 19 stay in `pending-genre.json` and are not added yet.
+- **Duplicates:** 3 skipped (נטע ברזילי – Toy, יובל רפאל – New Day Will Rise, אליעד – מסע).
+- **English songs:** 7 English-language songs by Israeli acts (Golden Boy, Bassa Sababa, End of the Road, Alien, Set Me Free, Feker Libi, Becoming Insane) are stored as English songs under the English name, like Netta's "Toy".
+- **Spelling:** רמי קליינשטיין and אליעד נחום use the catalog spellings.
+- **Rule:** a credit with its own artist-genres entry is decided by it, so the kept duet עילי בוטנר וקובי אפללו stays in when קובי אפללו is excluded.
+- **Result:** 174 added, **catalog 921 → 1,095** (Hebrew 521 → 688).
+
 For each batch:
 1. Run `song-batch.yml` for the next slice of years and languages.
 2. The research team resolves `flagged.csv`. One agent checks each flagged song with web searches, a second confirms. Decisions are written to `pipeline/sources.json`.

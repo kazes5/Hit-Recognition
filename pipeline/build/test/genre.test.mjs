@@ -74,3 +74,9 @@ test('every catalog credit is found in the real artist-genres.json', () => {
     assert.equal(r.excluded, realGenres[s.artist].exclude, s.artist);
   }
 });
+
+test('a credit with its own entry is decided by it; without one, an excluded member excludes it', () => {
+  const g = { 'זמר א': { genre: 'pop', exclude: false }, 'זמר ב': { genre: 'pop', exclude: true }, 'זמר א וזמר ב': { genre: 'pop', exclude: false } };
+  assert.equal(assignGenre({ artist: 'זמר א וזמר ב' }, g).excluded, false);
+  assert.equal(assignGenre({ artist: 'זמר ב וזמר א' }, g).excluded, true);
+});
