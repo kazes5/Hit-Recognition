@@ -1,7 +1,7 @@
 // The real modules behind the batch and the recheck, loaded on demand so the
 // orchestration (and its tests, which inject stubs) loads without them.
 // Paths and signatures: pipeline/INTERFACES.md.
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defaultHttp } from '../sources/http.mjs';
@@ -38,6 +38,11 @@ async function selectFn() {
   return defaultSelect;
 }
 
+export function readSongDecisions() {
+  const file = path.join(PIPELINE, 'song-decisions.json');
+  return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
+}
+
 export function readArtistGenres() {
   return JSON.parse(readFileSync(path.join(PIPELINE, 'artist-genres.json'), 'utf8'));
 }
@@ -67,6 +72,7 @@ export async function loadBatchDeps() {
     computeDifficulty,
     readCatalog,
     artistGenres: readArtistGenres(),
+    songDecisions: readSongDecisions(),
     select: await selectFn(),
     lookup: (song) => lookupSong(song, { aliases: true }),
     httpStats: () => defaultHttp().stats,

@@ -2057,5 +2057,380 @@
     "genre": "pop",
     "exclude": false,
     "note": "collaboration: ריטה (pop) and אתניקס (pop)"
+  },
+  "אבטיפוס": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1990s pop band; genre unsure (pop or light-rock)"
+  },
+  "אורי פיינמן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "actor-singer; 1990 pop songs and a cover of an old song"
+  },
+  "אורנה ומשה דץ": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "same act as דואו דאץ (already labelled pop); add as an alias of דואו דאץ"
+  },
+  "אושיק לוי": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "1970s Israeli singer and actor (classic Israeli song)"
+  },
+  "אחרית הימים": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "unsure: early-1970s Israeli band; genre could be pop or rock"
+  },
+  "איגי וקסמן": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1990s singer-songwriter, rock"
+  },
+  "איזולירבנד": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1980s new-wave/rock band"
+  },
+  "אילנה אביטל": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "classic Israeli singer"
+  },
+  "אילנה רובינא": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "early-1970s singer of classic Israeli songs"
+  },
+  "אלי לוזון": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "Mizrahi-style performer (D5)"
+  },
+  "אלי מגן": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "early-1970s singer/actor, classic Israeli song"
+  },
+  "אפרים שמיר": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "Kaveret member; solo pop/light rock"
+  },
+  "בן ארצי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop singer (son of Shlomo Artzi)"
+  },
+  "בעז שרעבי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "spelling variant of בועז שרעבי (pop, not excluded, owner-reviewed borderline); add as alias"
+  },
+  "ג'וזי כץ": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "folk/light rock singer (Lool, Arik Einstein circle)"
+  },
+  "ג'ינג'יות": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1990s girl pop group"
+  },
+  "גבי שושן": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "1970s singer/actor, classic Israeli song"
+  },
+  "גזוז": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "late-1970s pop group"
+  },
+  "גן חיות": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1990s rock band"
+  },
+  "גרי אקשטיין": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop singer/entertainer"
+  },
+  "דדי בן עמי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "unsure: little-known 1970 performer; genre guessed"
+  },
+  "דודה": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "unsure: early-1980s band; rock guessed"
+  },
+  "דודו זכאי": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "1970s singer of Israeli songs"
+  },
+  "דורית ראובני, דודו זכאי והגבעטרון": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "collaboration with the Gevatron choir"
+  },
+  "דני גרנות": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "late-1960s singer; genre guessed from era"
+  },
+  "דפנה ארמוני": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1980s pop singer"
+  },
+  "היי פייב": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1990s boy band, dance-pop"
+  },
+  "הכבש השישה עשר": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "the 1978 children's album (Yoni Rechter and others)"
+  },
+  "הנשמות הטהורות": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1970s pop group"
+  },
+  "הקליק": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1980s new-wave/rock band"
+  },
+  "זקני צפת": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "owner: not religious, add"
+  },
+  "חבורת הזמר של פיקוד צפון": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "army ensemble"
+  },
+  "חדוה ודוד": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop duo (1970 Tokyo festival winners)"
+  },
+  "חנה לסלאו וג'קי מקייטן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "owner: comedy song, add"
+  },
+  "יאיר ניצני": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "satirical pop/rock (HaAshem Tamid)"
+  },
+  "יהודית תמיר": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1990s pop singer"
+  },
+  "יוני נמרי": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "unsure: little-known early-1970s performer; genre guessed from era"
+  },
+  "יורם ארבל": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "1969 festival-era song; genre from era"
+  },
+  "יזהר אשדות": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "ex-Tislam; pop-rock solo"
+  },
+  "יעל לוי": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "singer; existing duet with David Broza is light-rock"
+  },
+  "יצחק קלפטר": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "Kaveret guitarist; solo light rock"
+  },
+  "ירון חדד": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "owner: pop singer"
+  },
+  "ירמי קפלן": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1990s rock singer"
+  },
+  "ליליה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "unsure: could not identify this act; genre guessed"
+  },
+  "ללדין": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1990s rock band"
+  },
+  "מוטי פליישר": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "around-1970 singer of classic Israeli songs"
+  },
+  "מיסטר הרי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "unsure: could not identify this act"
+  },
+  "מיקה קרני": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1990s pop/rock singer"
+  },
+  "מנגו": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "late-1980s rock band"
+  },
+  "מני בגר": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop singer (1970s-80s)"
+  },
+  "נוער שוליים": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1990s rock band"
+  },
+  "נורית גלרון": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "singer, light rock/ballads"
+  },
+  "סיון שביט": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1990s pop singer"
+  },
+  "סקסטה": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "late-1970s vocal group"
+  },
+  "עוזי חיטמן": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop songwriter/singer; his \"אדון עולם\" (Hasidic Song Festival) is excluded per song"
+  },
+  "עוזי חיטמן ועודד בן חור": {
+    "genre": "pop",
+    "exclude": true,
+    "note": "only credit is \"אדון עולם\", a Hasidic Song Festival song (D5)"
+  },
+  "עוזי פוקס": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1970s pop singer"
+  },
+  "עירית בולקא": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "unsure: could not identify this performer"
+  },
+  "עמי שביט": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "unsure: could not identify this performer; genre from era"
+  },
+  "ענת עצמון": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "actress and pop singer"
+  },
+  "פבלו רוזנברג": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "pop ballad singer"
+  },
+  "צוות הווי חטיבת הצנחנים": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "army entertainment troupe"
+  },
+  "צוות הווי חטיבת הצנחנים ושלישיית פיקוד מרכז": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "two army ensembles"
+  },
+  "צוות הווי פיקוד מרכז": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "army entertainment troupe"
+  },
+  "צליל מכוון": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "late-1970s pop group"
+  },
+  "רבקה זהר": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "classic Israeli singer (רבקה זהר ולהקת חיל הים is army-bands)"
+  },
+  "רוחמה רז": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "classic Israeli singer"
+  },
+  "רונית שחר": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "owner: pop/rock singer"
+  },
+  "רותי נבון": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1970s pop singer"
+  },
+  "שוקי ודורית": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "unsure: duo not identified with certainty"
+  },
+  "שלישיית פיקוד מרכז": {
+    "genre": "army-bands",
+    "exclude": false,
+    "note": "army trio"
+  },
+  "שרון חזיז": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "1990s pop singer"
+  },
+  "שרי": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "unsure: 1970s singer known by first name only; not identified with certainty"
+  },
+  "ששי קשת": {
+    "genre": "classic-hebrew",
+    "exclude": false,
+    "note": "actor-singer, classic Israeli song"
+  },
+  "תופעת דופלר": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "1990s rock band"
   }
 }

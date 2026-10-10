@@ -1,0 +1,41 @@
+{
+  "_comment": "Owner decisions on single songs, applied by the batch (left out at selection) and by merge-batch.mjs. exclude: never add. duplicate: the same song as a catalog song under another credit or spelling.",
+  "exclude": [
+    {
+      "artist": "שוקי ודורית",
+      "title": "גן נעול",
+      "reason": "owner: not religious, but leave out"
+    },
+    {
+      "artist": "חוה אלברשטיין",
+      "title": "משירי ארץ אהבתי",
+      "reason": "owner: medley of older songs, leave out"
+    }
+  ],
+  "duplicate": [
+    {
+      "artist": "אורנה ומשה דץ",
+      "title": "כאן",
+      "songId": 185,
+      "reason": "דואו דאץ - כאן"
+    },
+    {
+      "artist": "הגשש החיוור ונעמי שמר",
+      "title": "לו יהי",
+      "songId": 253,
+      "reason": "same song as חוה אלברשטיין - לו יהי"
+    },
+    {
+      "artist": "עפרה חזה",
+      "title": "שיר הפריחה",
+      "songId": 318,
+      "reason": "spelling of שיר הפרחה"
+    },
+    {
+      "artist": "בעז שרעבי",
+      "title": "אצלי הכל בסדר",
+      "songId": 393,
+      "reason": "spelling of בועז שרעבי"
+    }
+  ]
+}

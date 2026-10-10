@@ -28,6 +28,20 @@ export function fold(text) {
 
 const compact = (s) => s.replace(/ /g, '');
 
+/**
+ * Hebrew spelling-variant key for performer names (batch 1: "בעז שרעבי" / "בועז שרעבי"): per
+ * word, no leading article ה and no ו / י after the first letter. Added next to the exact key;
+ * a match still needs the title to agree. (Title variants are reported as possible duplicates.)
+ */
+export function looseHebrew(folded) {
+  if (!HEBREW.test(folded)) return null;
+  return folded
+    .split(' ')
+    .map((w) => (w.length > 2 && w.startsWith('ה') ? w.slice(1) : w))
+    .map((w) => w[0] + w.slice(1).replace(/[וי]/g, ''))
+    .join('');
+}
+
 /** Title match keys (spaces removed): the full title and the title without a " - …" tail. */
 export function titleKeys(title) {
   const raw = String(title ?? '');
@@ -54,7 +68,12 @@ export function splitCredit(credit) {
 
 /** Performer keys of a credit: the whole credit and each contributor. */
 export function creditKeys(credit) {
-  const keys = new Set([artistKey(credit), ...splitCredit(credit).map(artistKey)]);
+  const names = [credit, ...splitCredit(credit)];
+  const keys = new Set(names.map(artistKey));
+  for (const n of names) {
+    const l = looseHebrew(fold(n).replace(/^להקת /, ''));
+    if (l) keys.add(`~${l}`);
+  }
   keys.delete('');
   return [...keys];
 }

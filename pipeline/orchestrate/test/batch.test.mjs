@@ -151,7 +151,7 @@ test('full batch: accepted, every flag reason, excluded, existing', async () => 
   // Difficulty inputs: temporary ids above the catalog's, best rank, fame signals.
   assert.deepEqual(
     calls.difficulty.map((d) => d.id),
-    [670, 671],
+    [670, 671, 672],
   );
   const dIn = calls.difficulty.find((d) => d.bestRank === 1);
   assert.deepEqual(dIn, { id: dIn.id, language: 'he', bestRank: 1, pageViews: 5000, deezerRank: 300000 });
@@ -167,8 +167,11 @@ test('full batch: accepted, every flag reason, excluded, existing', async () => 
     'מחוץ לטווח': ['chart-range'],
     'בלי תצוגה': ['no-preview'],
     'רשת נפלה': ['no-preview', 'lookup-error'],
-    'זמר חדש': ['unknown-performer'],
   });
+  // Unknown performer, otherwise fine: year kept, waits for a genre label (rule 2, batch 1 review).
+  const pending = JSON.parse(readFileSync(path.join(out, 'pending-genre.json'), 'utf8'));
+  assert.deepEqual(pending.map((s) => [s.title, s.genre]), [['זמר חדש', null]]);
+  assert.ok(Number.isInteger(pending[0].year) && pending[0].itunesTrackId);
   const csv = readFileSync(path.join(out, 'flagged.csv'), 'utf8');
   assert.ok(csv.startsWith('﻿artist,title,language,firstChartYear,bestRank,charts,genre,wikipedia,wikidata,musicbrainz,store,proposedYear,reasons'));
   assert.match(csv, /זמר ידוע,מחלוקת,he,1985,2,reshet-gimel 1985 #2,pop,1984,1986,,,1984,disagree/);
@@ -193,7 +196,8 @@ test('full batch: accepted, every flag reason, excluded, existing', async () => 
   assert.match(report, /Left out: excluded performers \(D5\) \| 1/);
   assert.match(report, /Selected for this batch \| 10/);
   assert.match(report, /\*\*Accepted\*\* \(batch.json\) \| \*\*2\*\*/);
-  assert.match(report, /\*\*Flagged\*\* \(flagged.csv\) \| \*\*8\*\*/);
+  assert.match(report, /performer needs a genre label\*\* \(pending-genre.json\) \| \*\*1\*\*/);
+  assert.match(report, /\*\*Flagged\*\* \(flagged.csv\) \| \*\*7\*\*/);
   assert.match(report, /No iTunes preview \| 2/);
   assert.match(report, /\| no-preview \| 2 \|/);
   assert.match(report, /\| 1980s \| 6 \| 1 \| 5 \|/);
@@ -259,7 +263,7 @@ test('resume: an interrupted run continues with the songs not yet done', async (
   const res = await runBatch(REQ, { out, deps: again.deps, concurrency: 1 });
   assert.equal(again.calls.extract, 0);
   assert.equal(again.calls.lookup.length, 10 - 3);
-  assert.equal(res.songs.length + res.flagged.length, 10);
+  assert.equal(res.songs.length + res.pending.length + res.flagged.length, 10);
 });
 
 test('a changed request starts a new selection', async () => {
@@ -329,4 +333,34 @@ test('the real selector (build/select.mjs) is wired in and returns songs', async
   ];
   const chosen = await deps.select(pool, { size: 10, language: 'he', fromYear: 1969, toYear: 1999 });
   assert.deepEqual(chosen.map((c) => c.title).sort(), ['שיר 1', 'שיר 2']);
+});
+
+test('owner song decisions: excluded and duplicate songs are left out before lookup', async () => {
+  const out = tmp();
+  const { deps, calls } = stubs();
+  deps.songDecisions = {
+    exclude: [{ artist: 'זמר ידוע', title: 'מחלוקת', reason: 'owner' }],
+    duplicate: [{ artist: 'זמר ידוע', title: 'ישן', songId: 7 }],
+  };
+  const res = await runBatch(REQ, { out, deps });
+  const looked = calls.lookup.map((s) => s.title);
+  assert.ok(!looked.includes('מחלוקת') && !looked.includes('ישן'));
+  const reasons = Object.fromEntries(res.excluded.map((e) => [e.title, e.reason]));
+  assert.equal(reasons['מחלוקת'], 'owner-excluded');
+  assert.equal(reasons['ישן'], 'duplicate-of-song-7');
+});
+
+test('a near-identical title by the same performer is left out as a possible duplicate', async () => {
+  const out = tmp();
+  const { deps, calls } = stubs();
+  const real = deps.matchCatalog;
+  deps.matchCatalog = async (cands, cat) => {
+    const r = await real(cands, cat);
+    const c = r.fresh.find((x) => x.title === 'מחלוקת');
+    return { ...r, possibleDuplicates: [{ candidate: c, songId: 318, reason: 'similar-title-same-performer' }, { candidate: r.fresh.find((x) => x.title === 'ישן'), songId: 5, reason: 'same-title-other-performer' }] };
+  };
+  const res = await runBatch(REQ, { out, deps });
+  assert.ok(!calls.lookup.some((s) => s.title === 'מחלוקת'));
+  assert.ok(calls.lookup.some((s) => s.title === 'ישן'), 'another performer: still looked up');
+  assert.equal(res.excluded.find((e) => e.title === 'מחלוקת').reason, 'possible-duplicate-of-song-318');
 });

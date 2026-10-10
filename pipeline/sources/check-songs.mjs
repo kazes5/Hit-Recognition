@@ -48,7 +48,7 @@ export async function checkSong(song, opts = {}) {
   ]);
   const rule = applyYearRule(
     { wikipedia: wp.year ?? null, wikidata: wd.year ?? null, musicbrainz: mb.year ?? null, store: it.year ?? null },
-    { language: lang, chartYear: song.chartYear ?? null },
+    { language: lang, chartYear: song.chartYear ?? null, wikipediaPage: wp.found ? wp.page : null, artist: song.artist },
   );
   return { id: song.id, lang, year: song.year, artist: song.artist, title: song.title, wp, wd, mb, it, dz, pv, rule };
 }

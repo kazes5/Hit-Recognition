@@ -8,5 +8,5 @@
   "fromYear": 1969,
   "toYear": 1999,
   "size": 300,
-  "note": "second run: the selector result is now read (it selected 0 before)"
+  "note": "third run: chart-year rules, owner decisions, possible duplicates left out"
 }

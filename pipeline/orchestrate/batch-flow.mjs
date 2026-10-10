@@ -14,6 +14,7 @@
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { countBy, createProgress, decadeOf, mapLimit, mdTable, readJsonIf, sha, songKey, toCsv, writeJson } from './util.mjs';
+import { norm, normArtist } from '../sources/normalize.mjs';
 
 export const FLAG_REASONS = {
   'unknown-performer': 'performer not in artist-genres.json (label the genre; check it is not Mizrahi or Jewish/Hasidic, D5)',
@@ -53,18 +54,39 @@ export function candidateInfo(c) {
   };
 }
 
+/** Owner decisions on single songs (pipeline/song-decisions.json) → Map key → reason. */
+export function decisionIndex(decisions = {}) {
+  const m = new Map();
+  for (const d of decisions.exclude ?? []) m.set(`${normArtist(d.artist)}|${norm(d.title)}`, 'owner-excluded');
+  for (const d of decisions.duplicate ?? []) m.set(`${normArtist(d.artist)}|${norm(d.title)}`, `duplicate-of-song-${d.songId}`);
+  return m;
+}
+
 /** Stage 1: candidates → selection (saved to selection.json). */
 export async function prepareSelection(request, deps) {
   const catalog = await deps.readCatalog();
   const top = request.top ?? 20;
   const { candidates = [], problems = [] } = await deps.extract({ sources: request.sources, fromYear: request.fromYear, toYear: request.toYear, top });
   const inScope = candidates.filter((c) => (!request.language || c.language === request.language) && (!c.rank || c.rank <= top));
-  const { fresh = [], existing = [], merged = [] } = await deps.matchCatalog(inScope, catalog);
+  const { fresh = [], existing = [], merged = [], possibleDuplicates = [] } = await deps.matchCatalog(inScope, catalog);
+  // A near-identical title by the same performer ("שיר הפריחה" / catalog "שיר הפרחה") is not looked
+  // up: it is listed in excluded.csv for a person to confirm (batch 1 review).
+  const likelyDuplicate = new Map(possibleDuplicates.filter((p) => p.reason === 'similar-title-same-performer').map((p) => [p.candidate, p.songId]));
 
   const excluded = [];
   const pool = [];
   const genreOf = new Map();
+  const decided = decisionIndex(deps.songDecisions);
   for (const c of fresh) {
+    const d = decided.get(`${normArtist(c.artist)}|${norm(c.title)}`);
+    if (d) {
+      excluded.push({ ...candidateInfo(c), genre: '', reason: d });
+      continue;
+    }
+    if (likelyDuplicate.has(c)) {
+      excluded.push({ ...candidateInfo(c), genre: '', reason: `possible-duplicate-of-song-${likelyDuplicate.get(c)}` });
+      continue;
+    }
     const g = deps.assignGenre(c, deps.artistGenres) ?? {};
     if (g.excluded) excluded.push({ ...candidateInfo(c), genre: g.genre ?? '', reason: 'excluded-performer' });
     else {
@@ -169,8 +191,11 @@ export async function runBatch(request, { out, deps, concurrency = 3, log = () =
     return { item, res, reasons };
   });
 
-  const acceptedRows = results.filter((r) => !r.reasons.length);
-  const flaggedRows = results.filter((r) => r.reasons.length);
+  // A song held back only because its performer has no genre label yet keeps its settled year:
+  // it goes to pending-genre.json, and merge-batch.mjs adds it once the performer is labelled.
+  const onlyGenre = (r) => r.reasons.length === 1 && r.reasons[0] === 'unknown-performer';
+  const acceptedRows = results.filter((r) => !r.reasons.length || onlyGenre(r));
+  const flaggedRows = results.filter((r) => r.reasons.length && !onlyGenre(r));
 
   // Difficulty over the accepted new songs. Temporary ids above the catalog's, in batch order
   // (the ids merge.mjs will give them), so computeDifficulty treats them as new songs.
@@ -181,8 +206,10 @@ export async function runBatch(request, { out, deps, concurrency = 3, log = () =
     return { song: catalogSong(r.item, r.res, d?.difficulty ?? 2), row: r, diff: d ?? null, input: inputs[i] };
   });
 
-  const songs = accepted.map((a) => a.song);
+  const songs = accepted.filter((a) => a.song.genre).map((a) => a.song);
+  const pending = accepted.filter((a) => !a.song.genre).map((a) => ({ ...a.song, genre: null }));
   writeJson(path.join(out, 'batch.json'), songs);
+  writeJson(path.join(out, 'pending-genre.json'), pending);
   writeJson(
     path.join(out, 'provenance.json'),
     accepted.map((a) => ({
@@ -223,12 +250,12 @@ export async function runBatch(request, { out, deps, concurrency = 3, log = () =
   writeFileSync(path.join(out, 'flagged.csv'), toCsv(FLAGGED_COLUMNS, flagged));
   writeFileSync(path.join(out, 'excluded.csv'), toCsv(['artist', 'title', 'language', 'firstChartYear', 'bestRank', 'genre', 'reason'], sel.excluded));
 
-  const report = batchReport({ request, sel, accepted, flagged, results, resumed, fromLog, seconds: Math.round((now() - t0) / 1000), http: deps.httpStats?.() });
+  const report = batchReport({ request, sel, accepted: accepted.filter((a) => a.song.genre), pending, flagged, results, resumed, fromLog, seconds: Math.round((now() - t0) / 1000), http: deps.httpStats?.() });
   writeFileSync(path.join(out, 'report.md'), report);
-  return { songs, flagged, excluded: sel.excluded, counts: sel.counts, report, results };
+  return { songs, pending, flagged, excluded: sel.excluded, counts: sel.counts, report, results };
 }
 
-export function batchReport({ request, sel, accepted, flagged, results, resumed, fromLog, seconds, http }) {
+export function batchReport({ request, sel, accepted, pending = [], flagged, results, resumed, fromLog, seconds, http }) {
   const c = sel.counts;
   const L = [];
   L.push(`# Song batch: ${request.name ?? 'unnamed'}`, '');
@@ -248,6 +275,7 @@ export function batchReport({ request, sel, accepted, flagged, results, resumed,
       ['Eligible', c.eligible],
       ['Selected for this batch', c.selected],
       ['**Accepted** (batch.json)', `**${accepted.length}**`],
+      ['**Year settled, performer needs a genre label** (pending-genre.json)', `**${pending.length}**`],
       ['**Flagged** (flagged.csv)', `**${flagged.length}**`],
       ['No iTunes preview', noPreview],
     ]),

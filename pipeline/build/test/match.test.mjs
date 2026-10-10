@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import { readCatalog } from '../catalog-io.mjs';
-import { creditKeys, findInCatalog, indexCatalog, matchCatalog, mergeCandidates, sameSong, splitCredit, titleKeys } from '../match.mjs';
+import { creditKeys, findInCatalog, indexCatalog, looseHebrew, matchCatalog, mergeCandidates, sameSong, splitCredit, titleKeys } from '../match.mjs';
 
 const cand = (o) => ({ source: 'reshet-gimel', chartYear: 1990, rank: 5, language: 'he', page: 'p', ...o });
 const catalog = readCatalog();
@@ -152,5 +152,20 @@ describe('merging within the batch', () => {
     assert.equal(r.existing.length + r.fresh.length, 2);
     assert.equal(r.existing[0].candidate.charts.length, 2);
     assert.equal(r.fresh[0].title, 'Brand New');
+  });
+});
+
+describe('Hebrew performer spelling variants (batch 1)', () => {
+  test('"בעז שרעבי" is the catalog\'s "בועז שרעבי": the same title is an existing song', () => {
+    const r = matchCatalog([cand({ artist: 'בעז שרעבי', title: 'אצלי הכל בסדר' })], catalog);
+    assert.deepEqual(r.existing.map((e) => e.songId), [393]);
+  });
+  test('a different title by the variant spelling stays fresh', () => {
+    const r = matchCatalog([cand({ artist: 'בעז שרעבי', title: 'שיר שלא קיים בקטלוג' })], catalog);
+    assert.equal(r.fresh.length, 1);
+  });
+  test('looseHebrew drops a leading ה and inner ו / י', () => {
+    assert.equal(looseHebrew('בועז שרעבי'), looseHebrew('בעז שרעבי'));
+    assert.equal(looseHebrew('Rita'), null);
   });
 });

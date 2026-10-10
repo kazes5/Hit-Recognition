@@ -214,10 +214,25 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
   - *Done when* the fixes are merged and the remaining list is resolved.
 
 ### Phase 4 – Batches (about 5 batches of 300, 1–2 days each, Dev B + research team + owner)
+
+**Batch 1 (Hebrew 1969–1999), 2026-10-10:**
+- **First run:** 300 songs looked up; 91 added automatically (catalog 667 → 758); 208 flagged, 13 left out (Mizrahi, D5). The flagged songs were reviewed (`pipeline/reports/batch-01-review.md`).
+- **Owner decisions:**
+  - 7 older Hebrew catalog years changed to the sources' year: ערב של שושנים 1957, פרח הלילך 1965, אילו כל האוהבים 1964, גבעת התחמושת 1967, מה אברך 1967, בלדה לחובש 1968, רדיו חזק 1980.
+  - Songs: מה נשתנה, מריומה יומה, שישי שבת added; גן נעול and משירי ארץ אהבתי left out.
+  - Performers: רונית שחר is pop/rock and ירון חדד is pop (neither Mizrahi); זקני צפת is not religious.
+  - Single-song decisions live in `pipeline/song-decisions.json`; performer labels in `artist-genres.json`.
+- **Rule changes (owner-approved), only when a chart year is known:**
+  1. **Chart window:** with no two trusted sources agreeing, a year that is the chart year or the year before is accepted when one trusted source gives it and the store year is not earlier. A Hebrew song before 1970 needs two sources agreeing on the chart year.
+  2. **Unknown performer:** the year is still settled; the song waits in `pending-genre.json` and is added by `merge-batch.mjs` once the performer has a genre label.
+  3. **Off-song years ignored:** Wikipedia/Wikidata when the page is another performer's song ("… (שיר של X)"), and any trusted year after the chart year + 1.
+  - **Also:** a near-identical title by the same performer is left out as a possible duplicate (listed in `excluded.csv`), and Hebrew performer spelling variants (בעז / בועז) match.
+  - **Checked offline** on the 208 flagged rows: rule 1 settles 133 years, 132 the same as the review, and about 105 songs become fully automatic. The 60-song source test has no chart years, so it cannot test these rules.
+
 For each batch:
 1. Run `song-batch.yml` for the next slice of years and languages.
 2. The research team resolves `flagged.csv`. One agent checks each flagged song with web searches, a second confirms. Decisions are written to `pipeline/sources.json`.
-3. Merge with `pipeline/merge.mjs`, then run all server, web and end-to-end tests.
+3. Merge with `node pipeline/merge-batch.mjs <batch dir>` (batch.json + pending-genre.json, song decisions applied), then run all server, web and end-to-end tests.
 4. Open one PR per batch, with `report.md` in the description and the full song list in a collapsed section.
 5. The owner reviews and merges.
 

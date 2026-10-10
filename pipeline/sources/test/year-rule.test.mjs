@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { applyYearRule } from '../year-rule.mjs';
+import { applyYearRule, otherPerformersPage } from '../year-rule.mjs';
 
 const he = { language: 'he' };
 const en = { language: 'en' };
@@ -105,5 +105,65 @@ describe('year rule: source-test cases', () => {
     assert.equal(applyYearRule({ wikipedia: 1988, wikidata: 1988, musicbrainz: 1988 }, en).year, 1988);
     assert.equal(applyYearRule({ wikipedia: 2002, wikidata: 2002, musicbrainz: 2004 }, en).year, 2002);
     assert.equal(applyYearRule({ wikipedia: 2012, wikidata: 2012 }, he).year, 2012);
+  });
+});
+
+describe('chart-year rules (batch 1 review)', () => {
+  const he = (chartYear, extra = {}) => ({ language: 'he', chartYear, ...extra });
+
+  test('chart window: one trusted source on the chart year (or the year before) is enough', () => {
+    // אבי טולדנו – בדרך חזרה shape: only MusicBrainz, on the chart year
+    const r = applyYearRule({ wikipedia: null, wikidata: null, musicbrainz: 1978, store: 1998 }, he(1978));
+    assert.equal(r.accepted, true);
+    assert.equal(r.year, 1978);
+    assert.ok(r.notes.includes('chart-window'));
+    assert.equal(applyYearRule({ wikipedia: 1977, wikidata: null, musicbrainz: 1990, store: null }, he(1978)).year, 1977);
+  });
+
+  test('chart window: refused when the store year is earlier, or the two window years tie', () => {
+    assert.deepEqual(applyYearRule({ wikipedia: null, wikidata: null, musicbrainz: 1985, store: 1980 }, he(1985)).flags, ['disagree']);
+    assert.ok(applyYearRule({ wikipedia: 1984, wikidata: null, musicbrainz: 1985, store: null }, he(1985)).flags.includes('disagree'));
+  });
+
+  test('a window year given by two sources wins over one given by one', () => {
+    const r = applyYearRule({ wikipedia: 1984, wikidata: null, musicbrainz: 1985, store: 2000 }, he(1985));
+    assert.ok(r.flags.includes('disagree'), 'tie 1-1');
+    const r2 = applyYearRule({ wikipedia: 1984, wikidata: 1984, musicbrainz: 1985 }, he(1985));
+    assert.equal(r2.year, 1984); // ordinary 2-of-3 agreement
+  });
+
+  test("another performer's song page: Wikipedia and Wikidata are ignored", () => {
+    // פינג פונג – שמח: the page is "שמח (שיר של עברי לידר)" (2021); MusicBrainz 2000, chart 2000
+    const r = applyYearRule({ wikipedia: 2021, wikidata: 2021, musicbrainz: 2000, store: 2005 }, he(2000, { wikipediaPage: 'שמח (שיר של עברי לידר)', artist: 'פינג פונג' }));
+    assert.equal(r.year, 2000);
+    assert.equal(r.accepted, true);
+    assert.ok(r.notes.includes('other-song-page'));
+    // The same page title for its own performer is used as usual.
+    const own = applyYearRule({ wikipedia: 2021, wikidata: 2021, musicbrainz: 2000 }, he(2021, { wikipediaPage: 'שמח (שיר של עברי לידר)', artist: 'עברי לידר' }));
+    assert.equal(own.year, 2021);
+    assert.ok(!own.notes.includes('other-song-page'));
+    assert.equal(otherPerformersPage('Alone (i-Ten song)', 'Heart'), true);
+    assert.equal(otherPerformersPage('Hello (Lionel Richie song)', 'Lionel Richie'), false);
+    assert.equal(otherPerformersPage('כאן (שיר)', 'דואו דאץ'), false);
+  });
+
+  test('years after the chart year + 1 are ignored', () => {
+    const r = applyYearRule({ wikipedia: 1983, wikidata: 2015, musicbrainz: 2015, store: 2015 }, he(1983));
+    assert.equal(r.year, 1983);
+    assert.equal(r.accepted, true);
+    assert.ok(r.notes.includes('after-chart'));
+  });
+
+  test('Hebrew before 1970: accepted only when two sources agree on the chart year', () => {
+    assert.equal(applyYearRule({ wikipedia: 1969, wikidata: 1969, musicbrainz: 1995, store: 1969 }, he(1969)).accepted, true);
+    assert.ok(applyYearRule({ wikipedia: 1968, wikidata: 1968, musicbrainz: null }, he(1969)).flags.includes('pre-1970-hebrew'));
+    assert.ok(applyYearRule({ wikipedia: null, wikidata: null, musicbrainz: 1969 }, he(1969)).flags.includes('pre-1970-hebrew'));
+    // Without a chart year (the catalog recheck) nothing changes.
+    assert.ok(applyYearRule({ wikipedia: 1969, wikidata: 1969, musicbrainz: 1969 }, { language: 'he' }).flags.includes('pre-1970-hebrew'));
+  });
+
+  test('without a chart year the rule is unchanged', () => {
+    const r = applyYearRule({ wikipedia: 2021, wikidata: 2021, musicbrainz: 2000 }, { language: 'he', wikipediaPage: 'שמח (שיר של עברי לידר)', artist: 'פינג פונג' });
+    assert.equal(r.year, 2021);
   });
 });
