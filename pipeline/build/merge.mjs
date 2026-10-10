@@ -82,6 +82,11 @@ export function addSongs(catalog, accepted, options = {}) {
       errors.push(`"${song.artist} - ${song.title}": repeated in the batch ("${twin.artist} - ${twin.title}")`);
       continue;
     }
+    // A performer already in the catalog keeps the same guessable names (e.g. "Shlomo Artzi").
+    if (!song.artistAliases && options.inheritAliases !== false) {
+      const known = [...new Set(catalog.filter((s) => s.artist === song.artist).flatMap((s) => s.artistAliases ?? []))];
+      if (known.length) song.artistAliases = known;
+    }
     added.push(orderKeys({ ...song, id: nextId++ }));
   }
   if (errors.length) {

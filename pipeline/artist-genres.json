@@ -2044,5 +2044,18 @@
     "genre": "pop",
     "exclude": false,
     "note": "owner 2026-10-09: keep (not excluded). borderline: Arabic/Mizrahi-style pop"
+  },
+  "להקת חיל האוויר": {
+    "genre": "army-bands",
+    "exclude": false
+  },
+  "להקת חיל הים": {
+    "genre": "army-bands",
+    "exclude": false
+  },
+  "ריטה ואתניקס": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "collaboration: ריטה (pop) and אתניקס (pop)"
   }
 }

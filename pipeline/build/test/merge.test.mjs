@@ -15,11 +15,12 @@ describe('addSongs', () => {
     ]);
     assert.equal(out.length, catalog.length + 3);
     const added = out.slice(catalog.length);
-    assert.deepEqual(added.map((s) => s.id), [670, 671, 672]);
+    const next = Math.max(...catalog.map((s) => s.id)) + 1;
+    assert.deepEqual(added.map((s) => s.id), [next, next + 1, next + 2]);
     assert.deepEqual(Object.keys(added[0]), ['id', 'artist', 'title', 'year', 'language', 'genre', 'difficulty', 'artistKeys', 'titleAliases', 'itunesTrackId']);
     assert.equal(
       formatSongs(added.slice(2)),
-      '[\n  {"id":672,"artist":"זמר חדש","title":"שיר חדש","year":1999,"language":"he","genre":"pop","difficulty":2}\n]\n',
+      `[\n  {"id":${next + 2},"artist":"זמר חדש","title":"שיר חדש","year":1999,"language":"he","genre":"pop","difficulty":2}\n]\n`,
     );
     assert.equal(catalog.length, readCatalog().length, 'input not changed');
   });
@@ -27,6 +28,12 @@ describe('addSongs', () => {
   test('refuses a song already in the catalog, also under another spelling', () => {
     assert.throws(() => addSongs(catalog, [song({ artist: 'Elvis Presley', title: 'Hound dog', year: 1956, genre: 'rock' })]), /already in the catalog as song 239/);
     assert.throws(() => addSongs(catalog, [song({ artist: 'ירדנה ארזי', title: 'בֶּן אָדָם', language: 'he' })]), /song 169/);
+  });
+
+  test('a known performer keeps its English names; given aliases win', () => {
+    const [a, b] = addSongs(catalog, [song({ artist: 'שלמה ארצי', title: 'שיר חדש לגמרי', language: 'he' }), song({ artist: 'שלמה ארצי', title: 'עוד שיר חדש', language: 'he', artistAliases: ['S. Artzi'] })]).slice(catalog.length);
+    assert.ok(a.artistAliases.includes('Shlomo Artzi'));
+    assert.deepEqual(b.artistAliases, ['S. Artzi']);
   });
 
   test('accepts the same title by another performer', () => {
