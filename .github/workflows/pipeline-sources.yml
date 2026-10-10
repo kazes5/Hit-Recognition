@@ -1,0 +1,79 @@
+name: Pipeline sources check
+
+# Task 3.1: runs the source adapters (pipeline/sources/) live on songs whose years are
+# known (default: the source test's 60-song sample) and compares with SONG_PIPELINE.md
+# section 2. Read-only; changes nothing. The HTTP cache is kept with actions/cache, so a
+# re-run repeats no request it already made.
+on:
+  # workflow_dispatch only works once this file is on the default branch; until then,
+  # a push that changes the adapters runs the check on the 60-song sample.
+  push:
+    branches: [song-pipeline]
+    paths:
+      - 'pipeline/sources/**'
+      - '.github/workflows/pipeline-sources.yml'
+  workflow_dispatch:
+    inputs:
+      songs:
+        description: 'JSON list of songs to check (path in the repo); empty = 60-song sample'
+        required: false
+        default: ''
+      lang:
+        description: 'Only this language (he or en); empty = both'
+        required: false
+        default: ''
+      limit:
+        description: 'Check at most this many songs; empty = all'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PIPELINE_CACHE_DIR: ${{ github.workspace }}/.pipeline-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Restore HTTP cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-sources-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: pipeline-sources-
+      - name: Unit tests
+        run: node --test pipeline/sources/test/
+      - name: Check songs in all sources
+        env:
+          IN_SONGS: ${{ inputs.songs }}
+          IN_LANG: ${{ inputs.lang }}
+          IN_LIMIT: ${{ inputs.limit }}
+        run: |
+          args=(--out .pipeline-out)
+          [ -n "$IN_SONGS" ] && args+=(--songs "$IN_SONGS")
+          [ -n "$IN_LANG" ] && args+=(--lang "$IN_LANG")
+          [ -n "$IN_LIMIT" ] && args+=(--limit "$IN_LIMIT")
+          node pipeline/sources/check-songs.mjs "${args[@]}"
+      - name: Job summary
+        if: always()
+        run: cat .pipeline-out/sources-summary.md >> "$GITHUB_STEP_SUMMARY" || echo "No summary (the check did not finish)." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pipeline-sources-results
+          path: |
+            .pipeline-out/sources-results.json
+            .pipeline-out/sources-summary.md
+          if-no-files-found: warn
+      - name: Save HTTP cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-sources-${{ github.run_id }}-${{ github.run_attempt }}

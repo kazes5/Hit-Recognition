@@ -1,0 +1,56 @@
+<!-- Hand-made fixture (not a copy). Mirrors the layout of the newer en.wikipedia year-end pages such as
+     "Billboard Year-End Hot 100 singles of 2015": "plainrowheaders" table with a caption, rank as a row header
+     (! scope="row" | n), one cell per line, an artist cell with rowspan="2" shared by two rows,
+     "featuring" credits and footnote templates. Only the first rows are included. -->
+{{Use mdy dates|date=January 2016}}
+The '''''Billboard'' Hot 100''' is a chart that ranks the best-performing singles of the United States.
+
+{| class="wikitable sortable plainrowheaders" style="text-align: center"
+|+ List of songs on Billboard 2015 Year-End Hot 100 chart
+|-
+! scope="col" | {{Abbr|No.|Number}}
+! scope="col" | Title
+! scope="col" | Artist(s)
+|-
+! scope="row" | 1
+| "[[Uptown Funk]]"
+| [[Mark Ronson]] featuring [[Bruno Mars]]
+|-
+! scope="row" | 2
+| "[[Thinking Out Loud]]"
+| [[Ed Sheeran]]
+|-
+! scope="row" | 3
+| "[[See You Again]]"
+| [[Wiz Khalifa]] featuring [[Charlie Puth]]
+|-
+! scope="row" | 4
+| "[[Trap Queen]]"
+| [[Fetty Wap]]
+|-
+! scope="row" | 5
+| "[[Sugar (Maroon 5 song)|Sugar]]"
+| [[Maroon 5]]
+|-
+! scope="row" | 6
+| "[[Shut Up and Dance (Walk the Moon song)|Shut Up and Dance]]"
+| [[Walk the Moon]]
+|-
+! scope="row" | 7
+| "[[Blank Space]]"
+| rowspan="2" | [[Taylor Swift]]
+|-
+! scope="row" | 8
+| "[[Bad Blood (Taylor Swift song)|Bad Blood]]"{{efn|Remix featuring [[Kendrick Lamar]].}}
+|-
+! scope="row" | 9
+| "[[Lean On]]"
+| [[Major Lazer]] and [[DJ Snake]] featuring [[MØ]]
+|-
+! scope="row" | 10
+| "[[Want to Want Me]]"
+| [[Jason Derulo]]
+|}
+
+== Notes ==
+{{notelist}}

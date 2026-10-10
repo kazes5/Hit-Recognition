@@ -1,0 +1,30 @@
+name: Song source test
+
+# Proof of concept: for 30 Hebrew + 30 English catalog songs whose years are
+# already verified, how often do Wikipedia, Wikidata, MusicBrainz, iTunes and
+# Deezer find the song, and does their year match? Read-only; changes nothing.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Look up 60 catalog songs in five sources
+        run: node poc/source-test.mjs
+      - name: Job summary
+        if: always()
+        run: cat summary.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-test-rows
+          path: rows.json

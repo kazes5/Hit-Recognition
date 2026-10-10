@@ -10,7 +10,6 @@ export function song(year: number, overrides: Partial<Song> = {}): Song {
     title: `Title ${id}`,
     year,
     language: 'en',
-    genre: 'pop',
     ...overrides,
   };
 }

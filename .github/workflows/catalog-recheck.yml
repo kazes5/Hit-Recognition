@@ -1,0 +1,103 @@
+name: Catalog recheck
+
+# Task 3.8: the year rule and the preview check on every song in server/data/songs.json
+# (pipeline/recheck.mjs). Writes recheck-fixes.json (automatic fixes, D8), recheck-flagged.csv,
+# recheck-trackids.json and recheck-report.md as an artifact, and the report to the job
+# summary. Read-only: it never commits; the lead reviews the fixes and applies them locally
+# with `node pipeline/recheck.mjs --apply --out <artifact dir>`.
+#
+# workflow_dispatch only works once this file is on the default branch, so until then a push
+# to song-pipeline that changes pipeline/recheck-request.json starts a run (edit its "reason").
+# The HTTP cache and the per-song progress are kept with actions/cache: a re-run continues.
+on:
+  push:
+    branches: [song-pipeline]
+    paths:
+      - 'pipeline/recheck-request.json'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Check at most this many songs; empty = all'
+        required: false
+        default: ''
+      ids:
+        description: 'Only these song ids (comma-separated); empty = all'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalog-recheck-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  recheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PIPELINE_CACHE_DIR: ${{ github.workspace }}/.pipeline-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Unit tests
+        run: cd pipeline && node --test
+      - name: Catalog key
+        id: cat
+        run: echo "hash=$(cat server/data/songs.json pipeline/recheck-request.json | sha256sum | cut -c1-12)" >> "$GITHUB_OUTPUT"
+      - name: Restore HTTP cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-sources-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: pipeline-sources-
+      - name: Restore recheck progress
+        uses: actions/cache/restore@v4
+        with:
+          path: .pipeline-out
+          key: catalog-recheck-${{ steps.cat.outputs.hash }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: catalog-recheck-${{ steps.cat.outputs.hash }}-
+      - name: Recheck the catalog
+        env:
+          IN_LIMIT: ${{ inputs.limit }}
+          IN_IDS: ${{ inputs.ids }}
+        run: |
+          rm -f .pipeline-out/recheck-fixes.json .pipeline-out/recheck-flagged.csv .pipeline-out/recheck-trackids.json .pipeline-out/recheck-report.md
+          args=(--out .pipeline-out)
+          [ -n "$IN_LIMIT" ] && args+=(--limit "$IN_LIMIT")
+          [ -n "$IN_IDS" ] && args+=(--ids "$IN_IDS")
+          node pipeline/recheck.mjs "${args[@]}"
+      - name: Job summary
+        if: always()
+        run: cat .pipeline-out/recheck-report.md >> "$GITHUB_STEP_SUMMARY" || echo "No report (the recheck did not finish; re-run it to continue)." >> "$GITHUB_STEP_SUMMARY"
+      - name: Print results to the log
+        if: always()
+        run: |
+          for f in recheck-fixes.json recheck-flagged.csv recheck-report.md; do
+            echo "===== $f ====="; cat ".pipeline-out/$f" || true
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: catalog-recheck
+          path: |
+            .pipeline-out/recheck-fixes.json
+            .pipeline-out/recheck-flagged.csv
+            .pipeline-out/recheck-trackids.json
+            .pipeline-out/recheck-report.md
+          if-no-files-found: warn
+      - name: Save recheck progress
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .pipeline-out
+          key: catalog-recheck-${{ steps.cat.outputs.hash }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Save HTTP cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-sources-${{ github.run_id }}-${{ github.run_attempt }}

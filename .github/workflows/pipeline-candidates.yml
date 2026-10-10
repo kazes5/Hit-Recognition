@@ -1,0 +1,83 @@
+name: Pipeline candidates
+
+# Task 3.2: lists the chart candidates (top 20 per year) of the annual hit lists on
+# Wikipedia (pipeline/candidates/): Reshet Gimel and Galgalatz annual Hebrew parades,
+# Billboard Year-End, and Israel's Eurovision entries and the Israel Song Festival.
+# Read-only; changes nothing. The HTTP cache is kept with actions/cache, so a re-run
+# repeats no request it already made.
+on:
+  # workflow_dispatch only works once this file is on the default branch; until then,
+  # a push that changes the extractors runs them for all sources and years.
+  push:
+    branches: [song-pipeline]
+    paths:
+      - 'pipeline/candidates/**'
+      - '.github/workflows/pipeline-candidates.yml'
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: 'Comma-separated sources (reshet-gimel,galgalatz,billboard,eurovision,israel-song-festival); empty = all'
+        required: false
+        default: ''
+      from:
+        description: 'First chart year; empty = each source from its start'
+        required: false
+        default: ''
+      to:
+        description: 'Last chart year; empty = up to the latest chart'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  candidates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PIPELINE_CACHE_DIR: ${{ github.workspace }}/.pipeline-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Restore HTTP cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-candidates-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            pipeline-candidates-
+            pipeline-sources-
+      - name: Unit tests
+        run: node --test pipeline/candidates/test/*.test.mjs
+      - name: List candidates
+        env:
+          IN_SOURCES: ${{ inputs.sources }}
+          IN_FROM: ${{ inputs.from }}
+          IN_TO: ${{ inputs.to }}
+        run: |
+          args=(--out .pipeline-out --sources "${IN_SOURCES:-all}")
+          [ -n "$IN_FROM" ] && args+=(--from "$IN_FROM")
+          [ -n "$IN_TO" ] && args+=(--to "$IN_TO")
+          node pipeline/candidates/list.mjs "${args[@]}"
+      - name: Job summary
+        if: always()
+        run: cat .pipeline-out/summary.md >> "$GITHUB_STEP_SUMMARY" || echo "No summary (the extractors did not finish)." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pipeline-candidates
+          path: |
+            .pipeline-out/candidates.json
+            .pipeline-out/problems.json
+            .pipeline-out/pages.json
+            .pipeline-out/summary.md
+          if-no-files-found: warn
+      - name: Save HTTP cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-candidates-${{ github.run_id }}-${{ github.run_attempt }}

@@ -1,0 +1,28 @@
+name: Pipeline page dump
+
+# Debug: prints raw wikitext excerpts of the pages in pipeline/dump-request.json to the log,
+# because the development sandbox cannot open Wikipedia. Read-only.
+on:
+  push:
+    branches: [song-pipeline]
+    paths:
+      - 'pipeline/dump-request.json'
+      - '.github/workflows/pipeline-dump.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PIPELINE_CACHE_DIR: ${{ github.workspace }}/.pipeline-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Dump pages
+        run: node pipeline/candidates/dump.mjs pipeline/dump-request.json

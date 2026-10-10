@@ -1,0 +1,103 @@
+name: Song batch
+
+# Task 3.7: one song batch (pipeline/batch.mjs). Reads pipeline/batch-request.json, writes
+# batch.json, flagged.csv, excluded.csv, provenance.json and report.md as an artifact, and the
+# report to the job summary. Read-only: it never commits; the lead downloads the artifact
+# and merges with pipeline/build/merge.mjs.
+#
+# workflow_dispatch only works once this file is on the default branch, so until then a push
+# to song-pipeline that changes the request file starts a batch. The HTTP cache is kept with
+# actions/cache, and the out dir (selection + per-song progress) is kept too, so a re-run of
+# the same request continues where it stopped and repeats no request.
+on:
+  push:
+    branches: [song-pipeline]
+    paths:
+      - 'pipeline/batch-request.json'
+  workflow_dispatch:
+    inputs:
+      request:
+        description: 'Batch request file (path in the repo)'
+        required: false
+        default: 'pipeline/batch-request.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: song-batch-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PIPELINE_CACHE_DIR: ${{ github.workspace }}/.pipeline-cache
+      REQUEST: ${{ inputs.request || 'pipeline/batch-request.json' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Unit tests
+        run: cd pipeline && node --test
+      - name: Batch name
+        id: req
+        run: |
+          name=$(node -p "require(require('path').resolve(process.env.REQUEST)).name || 'batch'")
+          hash=$(sha256sum "$REQUEST" | cut -c1-12)
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "hash=$hash" >> "$GITHUB_OUTPUT"
+      - name: Restore HTTP cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-sources-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: pipeline-sources-
+      - name: Restore batch progress
+        uses: actions/cache/restore@v4
+        with:
+          path: .pipeline-out
+          key: song-batch-${{ steps.req.outputs.hash }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: song-batch-${{ steps.req.outputs.hash }}-
+      - name: Run the batch
+        run: |
+          # Outputs of an earlier run (restored with the progress) must not pass for this run's.
+          rm -f .pipeline-out/batch.json .pipeline-out/flagged.csv .pipeline-out/excluded.csv .pipeline-out/provenance.json .pipeline-out/report.md
+          node pipeline/batch.mjs --request "$REQUEST" --out .pipeline-out
+      - name: Job summary
+        if: always()
+        run: cat .pipeline-out/report.md >> "$GITHUB_STEP_SUMMARY" || echo "No report (the batch did not finish; re-run it to continue)." >> "$GITHUB_STEP_SUMMARY"
+      - name: Print results to the log
+        if: always()
+        run: |
+          # The lead's sandbox cannot download artifacts; it reads the results from the log.
+          for f in report.md flagged.csv excluded.csv batch.json pending-genre.json; do
+            echo "===== $f ====="; cat ".pipeline-out/$f" || true
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ steps.req.outputs.name }}
+          path: |
+            .pipeline-out/batch.json
+            .pipeline-out/pending-genre.json
+            .pipeline-out/flagged.csv
+            .pipeline-out/excluded.csv
+            .pipeline-out/provenance.json
+            .pipeline-out/report.md
+            .pipeline-out/selection.json
+          if-no-files-found: warn
+      - name: Save batch progress
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .pipeline-out
+          key: song-batch-${{ steps.req.outputs.hash }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Save HTTP cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .pipeline-cache
+          key: pipeline-sources-${{ github.run_id }}-${{ github.run_attempt }}

@@ -23,6 +23,8 @@ export interface NextSongRequest {
   /** One entry per dealt song (duplicates kept); the server counts occurrences per artist. */
   excludeArtists?: string[];
   languages?: Language[];
+  /** 1 = easy songs only, 2 = easy and medium, 3 = all (server default). */
+  maxDifficulty?: 1 | 2 | 3;
 }
 
 const KNOWN_CODES: ApiErrorCode[] = ['NO_SONGS_LEFT', 'INVALID_REQUEST', 'SONG_NOT_FOUND'];

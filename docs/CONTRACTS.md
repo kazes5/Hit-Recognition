@@ -51,22 +51,26 @@ Production: one process serves both the API and the static frontend on `PORT`.
 
 ```ts
 type Language = 'he' | 'en';
-type Genre = 'pop' | 'rock' | 'light-rock' | 'classic-rock';
+type Difficulty = 1 | 2 | 3;   // 1 easy, 2 medium, 3 hard
 
+// The public song: exactly these five fields in every API response.
 interface Song {
   id: number;          // unique, also the printed card number
   artist: string;      // as printed on the card (Hebrew script for Hebrew artists)
   title: string;
   year: number;        // ORIGINAL release year (not remaster / compilation)
   language: Language;
-  genre: Genre;
 }
 ```
 
-**Catalog-only fields** (`server/data/songs.json`, internal; never sent to clients, `toPublicSong` strips them):
+**Genre and difficulty are internal** (owner decisions D3, D9): both are required in `server/data/songs.json` but never sent to clients and never shown to players.
+
+**Catalog-only fields** (`server/data/songs.json`, internal; never sent to clients, `toPublicSong` strips them; `genre` and `difficulty` are required, the rest optional):
 
 | Field | Type | Meaning |
 |---|---|---|
+| `genre` | required: `'pop' \| 'rock' \| 'light-rock' \| 'classic-rock' \| 'classic-hebrew' \| 'army-bands' \| 'hiphop' \| 'soul-rnb' \| 'disco-dance'` | For balancing and reporting on the catalog only. The list is `GENRES` in `server/src/types.ts`. |
+| `difficulty` | required: `1 \| 2 \| 3` | 1 easy, 2 medium, 3 hard. Used only by the `maxDifficulty` filter of `POST /api/songs/next`. |
 | `artistKeys` | `string[]` (non-empty) | Every contributing artist, for the "prefer unused artists" rule (e.g. a featured artist not named in `artist`). |
 | `artistAliases` | `string[]` (non-empty) | Other names a guess may use for the artist: a Latin spelling of a Hebrew name (`"Eyal Golan"`), a short form (`"Pink"`). Used only by `POST /api/songs/:id/guess`. |
 | `titleAliases` | `string[]` (non-empty) | Other titles a guess may use (`"Nothing Compares to You"`). Used only by `POST /api/songs/:id/guess`. |
@@ -82,7 +86,7 @@ All endpoints return JSON. Errors: `{ "error": "<CODE>", "message": "..." }`.
 |---|---|---|
 | `GET /api/health` | – | `200 { "status": "ok" }` |
 | `GET /api/songs/stats` | – | `200 { "total": n, "byLanguage": { "he": n, "en": n }, "byDecade": { "1960": n, ... } }` |
-| `POST /api/songs/next` | `{ "excludeIds": number[], "excludeArtists": string[], "languages": Language[] }` (all optional; `languages` default both) | `200 { "song": Song }` — random song not in `excludeIds`, **preferring** artists not in `excludeArtists`. Each `excludeArtists` entry is one dealt song (duplicates are meaningful, case-insensitive) and counts once for every contributor of its credit. A performer appears at most 2 times per game: songs with no dealt contributor come first, then those under the cap of 2, then (soft fallback) any remaining song. `404 { "error": "NO_SONGS_LEFT" }` if nothing remains. `400 { "error": "INVALID_REQUEST" }` on bad body. |
+| `POST /api/songs/next` | `{ "excludeIds": number[], "excludeArtists": string[], "languages": Language[], "maxDifficulty": 1 \| 2 \| 3 }` (all optional; `languages` default both; `maxDifficulty` default 3: 1 = Easy, 2 = Medium, 3 = Hard) | `200 { "song": { "id", "artist", "title", "year", "language" } }` (never genre or difficulty) — random song not in `excludeIds`, in one of `languages`, with difficulty ≤ `maxDifficulty`. **Difficulty fallback:** if no such song is left, the server tries `maxDifficulty + 1`, then `+ 2` (up to 3) before giving up; the language filter never falls back. Within the chosen set it **prefers** artists not in `excludeArtists`. Each `excludeArtists` entry is one dealt song (duplicates are meaningful, case-insensitive) and counts once for every contributor of its credit. A performer appears at most 2 times per game: songs with no dealt contributor come first, then those under the cap of 2, then (soft fallback) any remaining song. `404 { "error": "NO_SONGS_LEFT" }` if nothing remains at any difficulty. `400 { "error": "INVALID_REQUEST" }` on bad body (including a `maxDifficulty` that is not the integer 1, 2 or 3). |
 | `GET /api/songs/:id/preview` | – | `200 { "previewUrl": string \| null }` — 30-second audio URL. `null` if no preview could be found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. Results cached in memory. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-audio"`. |
 | `GET /api/songs/:id/cover` | – | `200 { "coverUrl": string \| null }` — HTTPS URL of the song's cover picture (Apple artwork, upscaled to 300x300). `null` if none was found. `404 { "error": "SONG_NOT_FOUND" }` for unknown id. It reuses the same cached iTunes lookup as the preview (one search per song, never two). Only `https://*.mzstatic.com/` URLs are accepted; anything else becomes `null`. With `PREVIEW_PROVIDER=mock` always returns `"/api/mock-cover"`. **The preview endpoint's response does not change and never contains the cover.** |
 | `POST /api/songs/:id/guess` | `{ "artist"?: string, "title"?: string }` (each at most 200 characters; a missing or blank field is a wrong guess for that field, not an error; an empty body is allowed) | `200 { "artistCorrect": boolean, "titleCorrect": boolean }` — checks a typed guess with tolerant matching (see §8). **The response never contains the song's artist, title, year or aliases** ("did you mean" is never offered). Stateless; the same id can be checked again. `404 { "error": "SONG_NOT_FOUND" }` for an unknown or non-numeric id. `400 { "error": "INVALID_REQUEST" }` if the body is not a JSON object, a field is not a string, or a field is too long. |
@@ -139,7 +143,7 @@ Tokens, naming and bets (full rules: `docs/TOKENS_AND_BETS.md`). A **"Tokens & b
 | Result (same screen after reveal) | `revealed-card`, `card-artist`, `card-year`, `card-title`, `card-number`, `result-correct` or `result-wrong`, `btn-next` |
 | Scoreboard (overlay) | `scoreboard`, `score-row` (each, with `data-player` and `data-score`), `btn-close-scoreboard` |
 | Winner | `screen-winner`, `winner-name`, `btn-play-again` |
-| Settings | `screen-settings`, `btn-lang-he`, `btn-lang-en`, `btn-songs-he`, `btn-songs-en`, `btn-songs-both`, `btn-back` |
+| Settings | `screen-settings`, `btn-lang-he`, `btn-lang-en`, `btn-songs-he`, `btn-songs-en`, `btn-songs-both`, `btn-difficulty-easy`, `btn-difficulty-medium`, `btn-difficulty-hard`, `btn-back` |
 | Errors | `error-banner` (e.g. server unreachable / no songs left), `btn-retry`, `btn-error-end-game` |
 | Setup: tokens | `toggle-tokens-bets` (`role="switch"`, `aria-checked`) |
 | Turn: tokens | `current-player-tokens` (header chip, with `data-tokens`), `token-meter` (each meter, with `data-tokens`) |
@@ -151,6 +155,7 @@ Tokens, naming and bets (full rules: `docs/TOKENS_AND_BETS.md`). A **"Tokens & b
 | Added during build | `btn-resume` (Home, only with a saved game), `screen-dealing` (while starting cards are dealt), `btn-end-game` (in scoreboard), `btn-home` (Winner), `btn-back` (also on Setup), `final-timeline` / `final-timeline-card` (Winner) |
 
 Song-language setting persisted in `localStorage` key `hitster.songLanguages` (`"he"`, `"en"`, `"both"`; default `both`).
+Difficulty setting persisted in `localStorage` key `hitster.difficulty` (`"easy"`, `"medium"`, `"hard"`; default `easy`), sent as `maxDifficulty` 1 / 2 / 3 with every `POST /api/songs/next`.
 
 ## 7. Cover picture on reveal
 

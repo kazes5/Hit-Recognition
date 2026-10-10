@@ -40,7 +40,7 @@ function normalizeArtistGuess(text: string): string {
 }
 
 /** Typos allowed for an expected text of this many letters (spaces removed). */
-function allowedTypos(length: number): number {
+export function allowedTypos(length: number): number {
   if (length <= 4) return 0;
   if (length <= 8) return 1;
   if (length <= 14) return 2;
@@ -188,6 +188,42 @@ export function judgeGuess(song: GuessSong, guess: GuessInput, known?: KnownName
     artistCorrect: isArtistCorrect(song, guess.artist, known),
     titleCorrect: isTitleCorrect(song, guess.title, known),
   };
+}
+
+/**
+ * Match keys: the compacted strings that closeEnough compares, for indexing a
+ * catalog (the alias test in test/songs-data.test.ts). The contract, which
+ * keeps such an index exact: isArtistCorrect(song, guess) can only be true if
+ * some key of artistGuessKeys(guess) equals some key of artistMatchKeys(song)
+ * or is within allowedTypos(letters of that song key) edits of it (the same
+ * edits as editDistance). Likewise for titles. Keep these in step with
+ * isArtistCorrect / isTitleCorrect.
+ */
+export function artistMatchKeys(song: GuessSong): string[] {
+  const keys = new Set<string>();
+  for (const name of [song.artist, ...(song.artistAliases ?? [])]) {
+    keys.add(compact(normalizeArtistGuess(name))); // the whole credit or alias
+    for (const part of splitContributors(name)) keys.add(compact(part)); // contributors of a multi-name credit
+  }
+  for (const part of soloContributors(song)) keys.add(compact(part));
+  keys.delete('');
+  return [...keys];
+}
+
+/** The whole artist guess and each guessed contributor (a match needs the whole guess or the first part to match). */
+export function artistGuessKeys(guess: string): string[] {
+  const keys = new Set([compact(normalizeArtistGuess(guess)), ...splitContributors(guess).map(compact)]);
+  keys.delete('');
+  return [...keys];
+}
+
+export function titleMatchKeys(song: GuessSong): string[] {
+  return [...new Set(titleCandidates(song).map(compact))].filter((k) => k.length > 0);
+}
+
+export function titleGuessKeys(guess: string): string[] {
+  const key = compact(normalizeGuess(guess));
+  return key.length > 0 ? [key] : [];
 }
 
 /** Builds the KnownNames of a catalog once, at startup. */

@@ -1,12 +1,13 @@
-import type { Song } from '../src/types.js';
+import type { CatalogSong } from '../src/types.js';
 
-export function song(partial: Partial<Song> & { id: number }): Song {
+export function song(partial: Partial<CatalogSong> & { id: number }): CatalogSong {
   return {
     artist: `Artist ${partial.id}`,
     title: `Title ${partial.id}`,
     year: 2000,
     language: 'en',
     genre: 'pop',
+    difficulty: 1,
     ...partial,
   };
 }

@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { isGenre, isLanguage, type CatalogSong } from './types.js';
+import { DIFFICULTIES, GENRES, isDifficulty, isGenre, isLanguage, type CatalogSong } from './types.js';
 
 export const MIN_YEAR = 1950;
 export const MAX_YEAR = 2025;
@@ -54,7 +54,8 @@ export function validateCatalog(data: unknown): CatalogSong[] {
       fail(`year must be an integer between ${MIN_YEAR} and ${MAX_YEAR}`);
     }
     if (!isLanguage(s.language)) fail('language must be "he" or "en"');
-    if (!isGenre(s.genre)) fail('genre must be one of pop, rock, light-rock, classic-rock');
+    if (!isGenre(s.genre)) fail(`genre must be one of ${GENRES.join(', ')}`);
+    if (!isDifficulty(s.difficulty)) fail(`difficulty must be one of ${DIFFICULTIES.join(', ')}`);
     for (const field of ['artistKeys', 'artistAliases', 'titleAliases'] as const) {
       const value = s[field];
       if (value !== undefined && (!Array.isArray(value) || value.length === 0 || !value.every(isNonEmptyString))) {
@@ -82,6 +83,7 @@ export function validateCatalog(data: unknown): CatalogSong[] {
         year: s.year as number,
         language: s.language as CatalogSong['language'],
         genre: s.genre as CatalogSong['genre'],
+        difficulty: s.difficulty as CatalogSong['difficulty'],
       };
       if (Array.isArray(s.artistKeys)) song.artistKeys = (s.artistKeys as string[]).map((k) => k.trim());
       if (typeof s.itunesTrackId === 'number') song.itunesTrackId = s.itunesTrackId;

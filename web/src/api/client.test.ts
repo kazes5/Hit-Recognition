@@ -12,12 +12,22 @@ describe('fetchNextSong', () => {
     const s = song(1965, { id: 227 });
     const fetchMock = vi.fn().mockResolvedValue(jsonResponse(200, { song: s }));
     vi.stubGlobal('fetch', fetchMock);
-    const result = await fetchNextSong({ excludeIds: [1], excludeArtists: ['ABBA'], languages: ['he'] });
+    const result = await fetchNextSong({
+      excludeIds: [1],
+      excludeArtists: ['ABBA'],
+      languages: ['he'],
+      maxDifficulty: 2,
+    });
     expect(result).toEqual(s);
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(url).toBe('/api/songs/next');
     expect(init.method).toBe('POST');
-    expect(JSON.parse(init.body as string)).toEqual({ excludeIds: [1], excludeArtists: ['ABBA'], languages: ['he'] });
+    expect(JSON.parse(init.body as string)).toEqual({
+      excludeIds: [1],
+      excludeArtists: ['ABBA'],
+      languages: ['he'],
+      maxDifficulty: 2,
+    });
   });
 
   it('maps 404 NO_SONGS_LEFT to an ApiError', async () => {

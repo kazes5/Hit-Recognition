@@ -1,17 +1,18 @@
 export type Language = 'he' | 'en';
-export type Genre = 'pop' | 'rock' | 'light-rock' | 'classic-rock';
 
-/** Song as returned by the API (docs/CONTRACTS.md §4). */
+/** Song as returned by the API (docs/CONTRACTS.md §4). Genre and difficulty stay on the server. */
 export interface Song {
   id: number;
   artist: string;
   title: string;
   year: number;
   language: Language;
-  genre: Genre;
 }
 
 export type SongLanguageSetting = 'he' | 'en' | 'both';
+
+/** Settings choice; sent to the server as `maxDifficulty` 1 / 2 / 3. */
+export type DifficultySetting = 'easy' | 'medium' | 'hard';
 
 export interface Player {
   name: string;

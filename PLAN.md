@@ -230,6 +230,10 @@ The full plan is in [docs/TOKENS_AND_BETS.md](docs/TOKENS_AND_BETS.md). The owne
 
 **Still to check by hand:** the keyboard over the footer and iPhone Safari on a real phone (docs/QA.md, TC-47 to TC-53).
 
+### 9.7 Song pipeline: about 1,800 songs, genres and difficulty 🟡 Phase 0 done
+
+The execution plan is in [docs/SONG_PIPELINE.md](docs/SONG_PIPELINE.md). In short: candidates come from the annual hit parades and year-end charts (top 20 per year), years are checked automatically by Wikipedia, Wikidata and MusicBrainz (a person checks only the rest), every song needs an Apple preview, 9 internal genres, no per-performer limit in the list (still 2 per game), no Mizrahi or Jewish/Hasidic songs added, and a difficulty (Easy / Medium / Hard) chosen in Settings. Work happens on branch `song-pipeline`.
+
 ### Suggested order
 
 1. 9.5 is merged. Allow the production domain and run the smoke tests on the live site.

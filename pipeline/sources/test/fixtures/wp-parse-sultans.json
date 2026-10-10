@@ -1,0 +1,21 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://en.wikipedia.org/w/api.php?action=parse&...&page=Sultans%20of%20Swing",
+  "shape": "action=parse formatversion=2. Source-test bug: a re-release year was read. The released field mixes original and re-release segments (1979 written first in the real page varies); a second infobox describes a 1988 re-issue."
+ },
+ "parse": {
+  "title": "Sultans of Swing",
+  "pageid": 200001,
+  "wikitext": "{{Infobox song\n| name     = Sultans of Swing\n| artist   = [[Dire Straits]]\n| album    = [[Dire Straits (album)|Dire Straits]]\n| recorded = 27 July 1977 (demo)<br />February 1978\n| released = {{Start date|df=yes|1978|05|19}} (original)<br />January 1979 (re-release)\n| genre    = [[Rock music|Rock]]\n| label    = [[Vertigo Records|Vertigo]]\n| writer   = [[Mark Knopfler]]\n}}\n'''\"Sultans of Swing\"''' is a song by the British rock band [[Dire Straits]] ...\n{{Infobox song\n| name     = Sultans of Swing\n| type     = single\n| artist   = [[Dire Straits]]\n| released = 1988 (re-issue for ''[[Money for Nothing (album)|Money for Nothing]]'')\n}}\n[[Category:1978 debut singles]]",
+  "properties": {
+   "wikibase_item": "Q1130458"
+  },
+  "categories": [
+   {
+    "sortkey": "",
+    "category": "1978_debut_singles"
+   }
+  ]
+ }
+}

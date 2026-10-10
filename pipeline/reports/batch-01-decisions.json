@@ -1,0 +1,2640 @@
+{
+ "songs": [
+  {
+   "artist": "רבקה זהר",
+   "title": "על כפיו יביא",
+   "action": "add",
+   "year": 1969,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata and store all 1969, #1 in chart 1969; MusicBrainz 1995 is a compilation",
+   "row": 2
+  },
+  {
+   "artist": "להקת פיקוד המרכז",
+   "title": "שירו של צנחן",
+   "action": "add",
+   "year": 1969,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz all 1969 = chart year; store 1993 is a re-release. Credit is a variant of להקת פיקוד מרכז",
+   "catalogArtist": "להקת פיקוד מרכז",
+   "row": 3
+  },
+  {
+   "artist": "אבי טולדנו",
+   "title": "בדרך חזרה",
+   "action": "add",
+   "year": 1969,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "No trusted year; MusicBrainz 1998 and store 2000 are re-releases. Year taken from the chart (1968 also possible)",
+   "row": 4
+  },
+  {
+   "artist": "להקת פיקוד מרכז",
+   "title": "שנינו מאותו הכפר",
+   "action": "add",
+   "year": 1968,
+   "genre": "army-bands",
+   "confidence": "low",
+   "reason": "Only the store (1978, a compilation); from the band's late-1960s programme, charted 1969. 1968 from memory, unverified",
+   "row": 5
+  },
+  {
+   "artist": "להקת הנח\"ל",
+   "title": "החיים היפים",
+   "action": "add-after-preview",
+   "year": 1969,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1969 = chart year (chart confirms); MusicBrainz 1996 re-release. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 6
+  },
+  {
+   "artist": "אבי טולדנו",
+   "title": "עם רדת יום",
+   "action": "add",
+   "year": 1969,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "No trusted year; MusicBrainz 1998 and store 2016 are re-releases. Year taken from the chart",
+   "row": 7
+  },
+  {
+   "artist": "להקת הנח\"ל",
+   "title": "קרנבל בנח\"ל",
+   "action": "add-after-preview",
+   "year": 1969,
+   "genre": "army-bands",
+   "confidence": "low",
+   "reason": "Only MusicBrainz 1989 (compilation); year from the chart. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 8
+  },
+  {
+   "artist": "להקת גייסות השריון",
+   "title": "שריונים 69",
+   "action": "add",
+   "year": 1969,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Title says 1969; store 1969 = chart year; MusicBrainz 1994 is a compilation",
+   "row": 9
+  },
+  {
+   "artist": "להקת הנח\"ל",
+   "title": "בשמלה אדומה",
+   "action": "add-after-preview",
+   "year": 1969,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1969 = chart year; MusicBrainz 1989 re-release. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 10
+  },
+  {
+   "artist": "יגאל בשן",
+   "title": "אין לי יותר מה לומר",
+   "action": "add",
+   "year": 1969,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1969 (upper bound) = chart year; MusicBrainz 1998 re-release",
+   "row": 11
+  },
+  {
+   "artist": "אריק איינשטיין",
+   "title": "פראג",
+   "action": "add",
+   "year": 1969,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "All three trusted sources 1969 = chart year; store says 1968, so check the preview is the same recording",
+   "flags": [
+    "check-preview"
+   ],
+   "row": 12
+  },
+  {
+   "artist": "אילן ואילנית",
+   "title": "בעקבותייך",
+   "action": "add-after-preview",
+   "year": 1968,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1968, inside chart window 1969; MusicBrainz 1970 re-release. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 13
+  },
+  {
+   "artist": "חוה אלברשטיין",
+   "title": "מרדף",
+   "action": "add",
+   "year": 1969,
+   "genre": "light-rock",
+   "confidence": "low",
+   "reason": "Only the store (1970), later than the 1969 chart, so a re-release; Wikipedia page is a different subject. Year from the chart",
+   "row": 14
+  },
+  {
+   "artist": "יורם ארבל",
+   "title": "אני אצבע את השלכת בירוק",
+   "action": "add",
+   "year": 1969,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata and store all 1969 = chart year",
+   "row": 15
+  },
+  {
+   "artist": "עמי שביט",
+   "title": "הפרח הלבן",
+   "action": "add-after-preview",
+   "year": 1969,
+   "genre": "classic-hebrew",
+   "confidence": "low",
+   "reason": "No source and no preview; performer not identified. Year from the chart only; drop if no preview is found. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 16
+  },
+  {
+   "artist": "להקת פיקוד צפון",
+   "title": "על המשמר",
+   "action": "add",
+   "year": 1969,
+   "genre": "army-bands",
+   "confidence": "medium",
+   "reason": "Store 1969 (upper bound) = chart year",
+   "row": 17
+  },
+  {
+   "artist": "להקת חיל הים",
+   "title": "רק בישראל",
+   "action": "add-after-preview",
+   "year": 1968,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1968, inside chart window; MusicBrainz 2010 re-release. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 18
+  },
+  {
+   "artist": "אילנית",
+   "title": "שיר בארבעה בתים",
+   "action": "add",
+   "year": 1969,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1969 = chart year; MusicBrainz 1995 and store 2006 re-releases",
+   "row": 19
+  },
+  {
+   "artist": "אריק איינשטיין ושלום חנוך",
+   "title": "למה לי לקחת ללב",
+   "action": "add-after-preview",
+   "year": 1970,
+   "genre": "light-rock",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1970 = chart year (#1). needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 20
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "פתאום עכשיו, פתאום היום",
+   "action": "add",
+   "year": 1970,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "1970 Israel Song Festival winner; MusicBrainz and store 1970 = chart #1; Wikipedia/Wikidata 1996 are wrong (later item)",
+   "row": 21
+  },
+  {
+   "artist": "יגאל בשן",
+   "title": "מה נשתנה",
+   "action": "ask-owner",
+   "year": 1972,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1972 = chart year (#1). Possible religious/Hasidic-festival song (D5) - owner to confirm",
+   "row": 22
+  },
+  {
+   "artist": "שלישיית פיקוד מרכז",
+   "title": "היום היום",
+   "action": "add",
+   "year": 1971,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1971, inside chart window 1972; store 1972",
+   "row": 23
+  },
+  {
+   "artist": "חדוה ודוד",
+   "title": "אני חולם על נעמי",
+   "action": "add-after-preview",
+   "year": 1970,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1970 (Tokyo festival 1970), inside window; MusicBrainz 1981 re-release. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 24
+  },
+  {
+   "artist": "בעז שרעבי",
+   "title": "חייך וחיי",
+   "action": "add",
+   "year": 1972,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata and store 1972 = chart year. Credit spelling: use catalog name בועז שרעבי",
+   "catalogArtist": "בועז שרעבי",
+   "row": 25
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "אל תשאל ילד",
+   "action": "add",
+   "year": 1971,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store both 1971, inside chart window 1972",
+   "row": 26
+  },
+  {
+   "artist": "הגשש החיוור ונעמי שמר",
+   "title": "לו יהי",
+   "action": "drop",
+   "year": 1973,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Same song as catalog id 253 (Chava Alberstein, לו יהי, 1973); this Naomi Shemer/HaGashash version has no preview either",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 27
+  },
+  {
+   "artist": "חוה אלברשטיין",
+   "title": "את תלכי בשדה",
+   "action": "add",
+   "year": 1975,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store both 1975, inside chart window 1976",
+   "row": 28
+  },
+  {
+   "artist": "חבורת הזמר של פיקוד צפון",
+   "title": "בלילה על הדשא",
+   "action": "add",
+   "year": 1977,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1977 = chart year; MusicBrainz 1996 and store 2012 re-releases",
+   "row": 29
+  },
+  {
+   "artist": "צוות הווי פיקוד מרכז",
+   "title": "שומר החומות",
+   "action": "add-after-preview",
+   "year": 1977,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1977, inside window 1978. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 30
+  },
+  {
+   "artist": "אילנה רובינא",
+   "title": "לך איתה",
+   "action": "add-after-preview",
+   "year": 1971,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz all 1971 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 31
+  },
+  {
+   "artist": "צוות הווי חטיבת הצנחנים ושלישיית פיקוד מרכז",
+   "title": "מסביב למדורה",
+   "action": "add-after-preview",
+   "year": 1972,
+   "genre": "army-bands",
+   "confidence": "low",
+   "reason": "Sources give 1948, the year the song was written; this army-band recording charted 1972 (1971 possible). needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 32
+  },
+  {
+   "artist": "עפרה חזה",
+   "title": "שיר הפריחה",
+   "action": "drop",
+   "year": null,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Duplicate of catalog id 318 (עפרה חזה, שיר הפרחה, 1979) - spelling variant",
+   "row": 33
+  },
+  {
+   "artist": "שוקי ודורית",
+   "title": "גן נעול",
+   "action": "ask-owner",
+   "year": 1979,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Wikipedia/Wikidata 1928 are for the old text/setting; this version charted 1979 (store 1980). Song of Songs lyrics - owner to confirm it is not a religious song (D5)",
+   "row": 34
+  },
+  {
+   "artist": "להקת הנח\"ל",
+   "title": "בלדה ליצחק שדה",
+   "action": "add",
+   "year": 1972,
+   "genre": "army-bands",
+   "confidence": "medium",
+   "reason": "Store 1972 (upper bound) = chart year; MusicBrainz 1989 compilation",
+   "row": 35
+  },
+  {
+   "artist": "צוות הווי חטיבת הצנחנים",
+   "title": "בארץ אהבתי השקד פורח",
+   "action": "add",
+   "year": 1975,
+   "genre": "army-bands",
+   "confidence": "medium",
+   "reason": "Wikidata and store 1975 = chart year; Wikipedia 1951 is the original song, this is the 1975 army-troupe recording",
+   "row": 36
+  },
+  {
+   "artist": "אושיק לוי",
+   "title": "חוזה לך ברח",
+   "action": "add",
+   "year": 1970,
+   "genre": "classic-hebrew",
+   "confidence": "medium",
+   "reason": "Store 1970 = chart year; MusicBrainz 1971 is later than store (re-release); Wikidata 1910 is the Bialik poem",
+   "row": 37
+  },
+  {
+   "artist": "אילנית",
+   "title": "אהבתה של תרזה די-מון",
+   "action": "add-after-preview",
+   "year": 1970,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1970 = chart year; MusicBrainz 2003 re-release. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 38
+  },
+  {
+   "artist": "אושיק לוי",
+   "title": "לישון לישון",
+   "action": "add",
+   "year": 1971,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "All four sources 1971 = chart year",
+   "row": 39
+  },
+  {
+   "artist": "ששי קשת",
+   "title": "ומתוק האור בעיניים",
+   "action": "add",
+   "year": 1971,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1971 = chart year; MusicBrainz 1999 re-release",
+   "row": 40
+  },
+  {
+   "artist": "להקת חיל הים",
+   "title": "על אם הדרך",
+   "action": "add",
+   "year": 1971,
+   "genre": "army-bands",
+   "confidence": "medium",
+   "reason": "Store 1971, inside chart window 1972; MusicBrainz 1994 compilation",
+   "row": 41
+  },
+  {
+   "artist": "גבי שושן",
+   "title": "שש עשרה מלאו לנער",
+   "action": "add",
+   "year": 1973,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1973 = chart year; MusicBrainz 2011 re-release",
+   "row": 42
+  },
+  {
+   "artist": "גזוז",
+   "title": "תשע בכיכר",
+   "action": "add",
+   "year": 1978,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1978, inside window 1979; MusicBrainz/store 1979",
+   "row": 43
+  },
+  {
+   "artist": "צליל מכוון",
+   "title": "צליל מכוון",
+   "action": "add",
+   "year": 1979,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "All four sources 1979 = chart year",
+   "row": 44
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "דמדומים",
+   "action": "add",
+   "year": 1975,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Wikidata 2011 is a different item (a book); MusicBrainz/store 1980 are later than the 1976 chart (re-releases). 1975 from memory, 1976 possible",
+   "row": 45
+  },
+  {
+   "artist": "מוטי פליישר",
+   "title": "עפרה",
+   "action": "add-after-preview",
+   "year": 1970,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1970 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 46
+  },
+  {
+   "artist": "אילן ואילנית",
+   "title": "חופשי ומאושר",
+   "action": "add-after-preview",
+   "year": 1971,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1971 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 47
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "לא אני הוא האיש",
+   "action": "add",
+   "year": 1978,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1978 (upper bound) inside window 1979; Wikidata 1929 is a different item, MusicBrainz 2004 re-release",
+   "row": 48
+  },
+  {
+   "artist": "עוזי פוקס",
+   "title": "אין לך מה לדאוג",
+   "action": "add",
+   "year": 1974,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikidata, MusicBrainz, store 1974 = chart year (Wikipedia 1973)",
+   "row": 49
+  },
+  {
+   "artist": "דורית ראובני, דודו זכאי והגבעטרון",
+   "title": "הללויה",
+   "action": "add-after-preview",
+   "year": 1976,
+   "genre": "classic-hebrew",
+   "confidence": "low",
+   "reason": "Sources are for Milk & Honey's 1979 Eurovision song (catalog id 128), a different song; this one charted 1976. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 50
+  },
+  {
+   "artist": "עוזי חיטמן ועודד בן חור",
+   "title": "אדון עולם",
+   "action": "exclude",
+   "year": null,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "\"אדון עולם\" - Hasidic Song Festival song (D5)",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 51
+  },
+  {
+   "artist": "עוזי חיטמן",
+   "title": "רציתי שתדע",
+   "action": "add",
+   "year": 1977,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1977, inside window 1978; MusicBrainz 1994 re-release",
+   "row": 52
+  },
+  {
+   "artist": "חוה אלברשטיין",
+   "title": "משירי ארץ אהבתי",
+   "action": "ask-owner",
+   "year": 1970,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1970 = chart year; Wikipedia 1951 is for the old songs. It is a medley of old songs - owner to decide if a medley fits the game",
+   "row": 53
+  },
+  {
+   "artist": "אריק איינשטיין, ג'וזי כץ וחבורת לול",
+   "title": "מה איתי",
+   "action": "add-after-preview",
+   "year": 1970,
+   "genre": "light-rock",
+   "confidence": "low",
+   "reason": "Wikipedia/Wikidata 2022 are a different item; from the Lool recordings, chart 1971 (1971 also possible). needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 54
+  },
+  {
+   "artist": "אלי מגן",
+   "title": "עד סוף הקיץ",
+   "action": "add",
+   "year": 1972,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1972 = chart year; MusicBrainz/store 1990 compilation",
+   "row": 55
+  },
+  {
+   "artist": "אילנית",
+   "title": "גוליבר",
+   "action": "add-after-preview",
+   "year": 1973,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1973 = chart year; MusicBrainz 1976 re-release. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 56
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "סימנים",
+   "action": "add",
+   "year": 1973,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Only the store (1999, re-release); year from the chart (1972 possible)",
+   "row": 57
+  },
+  {
+   "artist": "הגשש החיוור",
+   "title": "נא",
+   "action": "add-after-preview",
+   "year": 1975,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "No source and no preview; year from the chart only. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 58
+  },
+  {
+   "artist": "ג'וזי כץ",
+   "title": "תני לי להחליט",
+   "action": "add-after-preview",
+   "year": 1976,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "Wikipedia and Wikidata 1976, inside window 1977. The found preview is dated 1971, earlier than the song: likely the wrong recording - check it",
+   "flags": [
+    "check-preview"
+   ],
+   "row": 59
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "רק עלה",
+   "action": "add",
+   "year": 1978,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1978 = chart year",
+   "row": 60
+  },
+  {
+   "artist": "דדי בן עמי",
+   "title": "דזדמונה",
+   "action": "add-after-preview",
+   "year": 1970,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Only MusicBrainz 2003 (re-release); year from the chart. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 61
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "שני תפוחים",
+   "action": "add",
+   "year": 1971,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1971 = chart year; MusicBrainz 1975 later than store (re-release)",
+   "row": 62
+  },
+  {
+   "artist": "יהורם גאון",
+   "title": "אני זוכר",
+   "action": "add",
+   "year": 1970,
+   "genre": "classic-hebrew",
+   "confidence": "medium",
+   "reason": "Store 1970 = chart year; MusicBrainz 1971 later than store (re-release)",
+   "row": 63
+  },
+  {
+   "artist": "אילנית",
+   "title": "לאורך השדרה שאין בה איש",
+   "action": "add-after-preview",
+   "year": 1972,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1972 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 64
+  },
+  {
+   "artist": "יוני נמרי",
+   "title": "שושנת פלאים",
+   "action": "add-after-preview",
+   "year": 1973,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1973 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 65
+  },
+  {
+   "artist": "להקת פיקוד מרכז",
+   "title": "האיש מן הבקעה",
+   "action": "add",
+   "year": 1971,
+   "genre": "army-bands",
+   "confidence": "medium",
+   "reason": "Wikipedia 1971 and store 1972 inside window 1973; Wikipedia preferred (96% exact in the test)",
+   "row": 66
+  },
+  {
+   "artist": "דודו זכאי",
+   "title": "חייכי לי בשירים",
+   "action": "add-after-preview",
+   "year": 1974,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1974, inside window 1975. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 67
+  },
+  {
+   "artist": "רוחמה רז",
+   "title": "רקפת",
+   "action": "add-after-preview",
+   "year": 1977,
+   "genre": "classic-hebrew",
+   "confidence": "medium",
+   "reason": "Wikipedia and Wikidata 1977 = chart year; the found preview is dated 1970, earlier than the song: likely the wrong recording - check it",
+   "flags": [
+    "check-preview"
+   ],
+   "row": 68
+  },
+  {
+   "artist": "הכבש השישה עשר",
+   "title": "גן סגור",
+   "action": "add",
+   "year": 1978,
+   "genre": "light-rock",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1978, inside window 1979; MusicBrainz 2008 re-release",
+   "row": 69
+  },
+  {
+   "artist": "מוטי פליישר",
+   "title": "אבשלום",
+   "action": "add",
+   "year": 1970,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "All four sources 1970 = chart year",
+   "row": 70
+  },
+  {
+   "artist": "עדנה לב",
+   "title": "רגע לפני",
+   "action": "add",
+   "year": 1970,
+   "genre": "classic-hebrew",
+   "confidence": "low",
+   "reason": "Wikipedia/Wikidata 2008 are a different song; MusicBrainz 1972 and store 2005 are later than the 1970 chart. Year from the chart",
+   "row": 71
+  },
+  {
+   "artist": "אילנה רובינא",
+   "title": "בלדה על נערי שגדל",
+   "action": "add",
+   "year": 1972,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia and store 1972 = chart year; MusicBrainz 1999 re-release",
+   "row": 72
+  },
+  {
+   "artist": "הנשמות הטהורות",
+   "title": "אחכה לך",
+   "action": "add",
+   "year": 1973,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1973 = chart year; Wikipedia and store 1974 are after the 1973 chart (see chart-year note)",
+   "row": 73
+  },
+  {
+   "artist": "רותי נבון",
+   "title": "בין האצבעות",
+   "action": "add",
+   "year": 1973,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "MusicBrainz and store 1974 are after the 1973 chart; year set to chart year. Check chart-year mapping (see rule note)",
+   "row": 74
+  },
+  {
+   "artist": "שרי",
+   "title": "למה לא",
+   "action": "add",
+   "year": 1978,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Wikipedia/Wikidata 1971 are a different song (\"למה לא סיפרת לי\"); MusicBrainz 1996/store 2019 re-releases. Year from the chart",
+   "row": 75
+  },
+  {
+   "artist": "אחרית הימים",
+   "title": "יש לי יום הולדת",
+   "action": "add",
+   "year": 1972,
+   "genre": "light-rock",
+   "confidence": "high",
+   "reason": "All four sources 1972",
+   "row": 76
+  },
+  {
+   "artist": "כוורת",
+   "title": "טנגו צפרדעים",
+   "action": "add",
+   "year": 1975,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "MusicBrainz and store 1975 = chart year (album צעצועים מתנגשים, 1975)",
+   "row": 77
+  },
+  {
+   "artist": "כוורת",
+   "title": "לו-לו",
+   "action": "add",
+   "year": 1975,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "MusicBrainz and store 1975, inside window 1976 (album צעצועים מתנגשים, 1975)",
+   "row": 78
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "מסיבת יום שישי",
+   "action": "add",
+   "year": 1979,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1979 = chart year",
+   "row": 79
+  },
+  {
+   "artist": "רבקה זהר",
+   "title": "בן יפה נולד",
+   "action": "add",
+   "year": 1970,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1970 = chart year; MusicBrainz 1991 re-release",
+   "row": 80
+  },
+  {
+   "artist": "להקת פיקוד צפון",
+   "title": "סיירת אגוז",
+   "action": "add",
+   "year": 1970,
+   "genre": "army-bands",
+   "confidence": "medium",
+   "reason": "Store 1970 inside window 1971; MusicBrainz 2010 re-release",
+   "row": 81
+  },
+  {
+   "artist": "אחרית הימים",
+   "title": "פתחי לי את הדלת",
+   "action": "add",
+   "year": 1972,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1972 = chart year",
+   "row": 82
+  },
+  {
+   "artist": "דני גרנות",
+   "title": "לאהוב את החיים",
+   "action": "add",
+   "year": 1968,
+   "genre": "classic-hebrew",
+   "confidence": "medium",
+   "reason": "Wikipedia and Wikidata 1968, inside window 1970; store 1969",
+   "row": 83
+  },
+  {
+   "artist": "שלום חנוך",
+   "title": "מאיה",
+   "action": "add",
+   "year": 1971,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1971 = chart year; store 1980 re-release",
+   "row": 84
+  },
+  {
+   "artist": "שוקולד מנטה מסטיק",
+   "title": "שירים הם חברים",
+   "action": "add",
+   "year": 1975,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1975 = chart year; MusicBrainz 2003 re-release",
+   "row": 85
+  },
+  {
+   "artist": "אריק סיני",
+   "title": "שיר פרידה",
+   "action": "add",
+   "year": 1978,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "Store 1978 = chart year; MusicBrainz 1980 re-release; Wikipedia page is unrelated",
+   "row": 86
+  },
+  {
+   "artist": "עירית בולקא",
+   "title": "מוכרת הפרחים הקטנה",
+   "action": "add-after-preview",
+   "year": 1978,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "No source and no preview; performer not identified. Year from the chart only. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 87
+  },
+  {
+   "artist": "סקסטה",
+   "title": "נולדתי לשלום",
+   "action": "add",
+   "year": 1979,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1979 = chart year; MusicBrainz 1999/store 2003 re-releases",
+   "row": 88
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "אין לי איש מלבדי",
+   "action": "add",
+   "year": 1979,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1979 = chart year; MusicBrainz 1980 later than store (re-release)",
+   "row": 89
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "נרקוד נשכח",
+   "action": "add",
+   "year": 1986,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1986 = chart year",
+   "row": 90
+  },
+  {
+   "artist": "איזולירבנד",
+   "title": "מלודי",
+   "action": "add-after-preview",
+   "year": 1982,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1982 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 91
+  },
+  {
+   "artist": "בנזין",
+   "title": "בית משותף",
+   "action": "add",
+   "year": 1983,
+   "genre": "rock",
+   "confidence": "low",
+   "reason": "MusicBrainz and store 1984 are after the 1983 chart; Wikipedia page is the TV series. Year set to chart year; check chart-year mapping",
+   "row": 92
+  },
+  {
+   "artist": "תיסלם",
+   "title": "בוקר של כיף",
+   "action": "add",
+   "year": 1982,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "Store 1982 inside window 1983; MusicBrainz 1990 compilation",
+   "row": 93
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "רוב הזמן את אשתי",
+   "action": "add",
+   "year": 1984,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1984 = chart year; store 2003 re-release",
+   "row": 94
+  },
+  {
+   "artist": "אבי טולדנו",
+   "title": "כל חיי",
+   "action": "add",
+   "year": 1980,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "MusicBrainz 1998 and store 2016 re-releases; year from the chart",
+   "row": 95
+  },
+  {
+   "artist": "ירדנה ארזי",
+   "title": "שוב בתמונה",
+   "action": "add",
+   "year": 1985,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1985 inside window 1986; Wikidata 1986 (store is an upper bound, so 1985)",
+   "row": 96
+  },
+  {
+   "artist": "ענת עצמון",
+   "title": "בחלום",
+   "action": "add-after-preview",
+   "year": 1989,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1989 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 97
+  },
+  {
+   "artist": "בנזין",
+   "title": "חופשי זה לגמרי לבד",
+   "action": "add",
+   "year": 1982,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1982 = chart year; store 1993 re-release",
+   "row": 98
+  },
+  {
+   "artist": "דויד ברוזה",
+   "title": "הרומבה",
+   "action": "add",
+   "year": 1983,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1983 = chart year",
+   "row": 99
+  },
+  {
+   "artist": "בעז שרעבי",
+   "title": "אצלי הכל בסדר",
+   "action": "drop",
+   "year": 1984,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Duplicate of catalog id 393 (בועז שרעבי, אצלי הכל בסדר, 1984) - performer spelling variant",
+   "catalogArtist": "בועז שרעבי",
+   "row": 100
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "אני שומע שוב (שיר חייל)",
+   "action": "add",
+   "year": 1980,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Only the store (1985, re-release); year from the chart (1979 possible)",
+   "row": 101
+  },
+  {
+   "artist": "משינה",
+   "title": "בדרך אל הים",
+   "action": "add",
+   "year": 1989,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1989 = chart year",
+   "row": 102
+  },
+  {
+   "artist": "ירדנה ארזי ולהקת הנח\"ל",
+   "title": "דרישת שלום",
+   "action": "add-after-preview",
+   "year": 1985,
+   "genre": "army-bands",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1985 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 103
+  },
+  {
+   "artist": "חלב ודבש וגלי עטרי",
+   "title": "שיר לשירים",
+   "action": "add-after-preview",
+   "year": 1980,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "No usable source (Wikipedia page is a generic one); year from the chart. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 104
+  },
+  {
+   "artist": "גלי עטרי ומני בגר",
+   "title": "דואט פרידה",
+   "action": "add-after-preview",
+   "year": 1981,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Wikipedia 1981 inside window 1982. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 105
+  },
+  {
+   "artist": "תיסלם",
+   "title": "שנה שנייה",
+   "action": "add-after-preview",
+   "year": 1982,
+   "genre": "rock",
+   "confidence": "low",
+   "reason": "Only MusicBrainz 2009 (re-release); same period as Tislam's 1982 hits. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 106
+  },
+  {
+   "artist": "גלי עטרי",
+   "title": "עד שנשיב",
+   "action": "add",
+   "year": 1981,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1981 = chart year",
+   "row": 107
+  },
+  {
+   "artist": "יאיר ניצני",
+   "title": "האשם תמיד",
+   "action": "add-after-preview",
+   "year": 1986,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Wikipedia and Wikidata 1986 = chart year (page is the show/album of the same name). needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 108
+  },
+  {
+   "artist": "מנגו",
+   "title": "גרה בשינקין",
+   "action": "add",
+   "year": 1988,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1988 inside window 1989; store 1989",
+   "row": 109
+  },
+  {
+   "artist": "עפרה חזה",
+   "title": "מכתב אהבה",
+   "action": "add",
+   "year": 1982,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1982 = chart year",
+   "row": 110
+  },
+  {
+   "artist": "גרי אקשטיין",
+   "title": "אני הולך לבית שאן",
+   "action": "add",
+   "year": 1979,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1979 inside window 1980",
+   "row": 111
+  },
+  {
+   "artist": "ירדנה ארזי",
+   "title": "האיש מן החלום",
+   "action": "add",
+   "year": 1989,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1989 = chart year; MusicBrainz 1998 re-release",
+   "row": 112
+  },
+  {
+   "artist": "ירדנה ארזי",
+   "title": "מוזיקה נשארת",
+   "action": "add-after-preview",
+   "year": 1982,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1982 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 113
+  },
+  {
+   "artist": "מני בגר",
+   "title": "הולך למערב",
+   "action": "add",
+   "year": 1982,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1982 inside window 1983",
+   "row": 114
+  },
+  {
+   "artist": "דויד ברוזה",
+   "title": "סניוריטה",
+   "action": "add",
+   "year": 1979,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1979 inside window 1980; store 1980",
+   "row": 115
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "השתקפות",
+   "action": "add",
+   "year": 1978,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "MusicBrainz and store both 1978, three years before the 1981 chart (outside the window); store is an upper bound so not later than 1978",
+   "row": 116
+  },
+  {
+   "artist": "תיסלם",
+   "title": "השריקה הזאת",
+   "action": "add",
+   "year": 1982,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "Store 1982 inside window 1983; MusicBrainz 1990 compilation",
+   "row": 117
+  },
+  {
+   "artist": "ירדנה ארזי",
+   "title": "ההצגה הגדולה",
+   "action": "add",
+   "year": 1984,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1984 inside window 1985",
+   "row": 118
+  },
+  {
+   "artist": "מני בגר",
+   "title": "אהבה בוערת",
+   "action": "add",
+   "year": 1982,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1982 = chart year; Wikipedia/Wikidata 1972 are a different song of the same name",
+   "row": 119
+  },
+  {
+   "artist": "אפרים שמיר",
+   "title": "רוקד לקול הבנות",
+   "action": "add",
+   "year": 1983,
+   "genre": "light-rock",
+   "confidence": "high",
+   "reason": "Wikipedia, MusicBrainz, store 1983 = chart year",
+   "row": 120
+  },
+  {
+   "artist": "הקליק",
+   "title": "כל האמת",
+   "action": "add",
+   "year": 1983,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1983 = chart year",
+   "row": 121
+  },
+  {
+   "artist": "צביקה פיק",
+   "title": "המראה",
+   "action": "add",
+   "year": 1980,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1980 = chart year",
+   "row": 122
+  },
+  {
+   "artist": "חנה לסלאו וג'קי מקייטן",
+   "title": "מריומה יומה",
+   "action": "ask-owner",
+   "year": 1985,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Wikipedia 1985 = chart year; no preview. Comedy duet that may be a Mizrahi-style parody (D5) - owner to decide. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 123
+  },
+  {
+   "artist": "ירדנה ארזי",
+   "title": "מחוזות האהבה",
+   "action": "add",
+   "year": 1987,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "MusicBrainz and store 1988 are after the 1987 chart; year set to chart year. Check chart-year mapping",
+   "row": 124
+  },
+  {
+   "artist": "יגאל בשן",
+   "title": "האמיני לי",
+   "action": "add",
+   "year": 1982,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1982 (upper bound) = chart year",
+   "row": 125
+  },
+  {
+   "artist": "יעל לוי",
+   "title": "בלדה לנאיבית",
+   "action": "add",
+   "year": 1979,
+   "genre": "light-rock",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1979 inside window 1980; MusicBrainz 1981/store 1982 re-releases",
+   "row": 126
+  },
+  {
+   "artist": "שימי תבורי",
+   "title": "תני לי את הלב",
+   "action": "add",
+   "year": 1981,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "MusicBrainz 2007 and store 1996 re-releases; year from the chart",
+   "row": 127
+  },
+  {
+   "artist": "אבי טולדנו",
+   "title": "תרקדי את הלילה",
+   "action": "add",
+   "year": 1986,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Wikipedia/Wikidata 2023 are a different song; MusicBrainz 1998 and store 2016 re-releases. Year from the chart",
+   "row": 128
+  },
+  {
+   "artist": "ירדנה ארזי ויהורם גאון",
+   "title": "אדם אחר",
+   "action": "add-after-preview",
+   "year": 1988,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Wikipedia/Wikidata 2016 are a different song; year from the chart. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 129
+  },
+  {
+   "artist": "גלי עטרי",
+   "title": "בעקבותיו",
+   "action": "add",
+   "year": 1984,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1984 = chart year",
+   "row": 130
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "צוותא",
+   "action": "add",
+   "year": 1979,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1979 inside window 1980",
+   "row": 131
+  },
+  {
+   "artist": "יצחק קלפטר",
+   "title": "אני ואת אז",
+   "action": "add",
+   "year": 1980,
+   "genre": "light-rock",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1980 inside window 1981; MusicBrainz/store 1981",
+   "row": 132
+  },
+  {
+   "artist": "עפרה חזה",
+   "title": "כל יום מתחילה שנה",
+   "action": "add",
+   "year": 1982,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1982 = chart year",
+   "row": 133
+  },
+  {
+   "artist": "גלי עטרי",
+   "title": "עוד מעט",
+   "action": "add",
+   "year": 1988,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1988 = chart year; Wikipedia page is a different song",
+   "row": 134
+  },
+  {
+   "artist": "ירדנה ארזי",
+   "title": "אלף לילה ולילה",
+   "action": "add",
+   "year": 1989,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1989 = chart year",
+   "row": 135
+  },
+  {
+   "artist": "הכל עובר חביבי",
+   "title": "תלווי אותי",
+   "action": "add",
+   "year": 1983,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1983 = chart year",
+   "row": 136
+  },
+  {
+   "artist": "מיסטר הרי",
+   "title": "אל תשכחי אותנו",
+   "action": "add-after-preview",
+   "year": 1980,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "No source and no preview; performer not identified. Year from the chart only. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 137
+  },
+  {
+   "artist": "דודה",
+   "title": "אלף כבאים",
+   "action": "add",
+   "year": 1980,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1980 inside window 1981; Wikipedia 1981 (store is an upper bound, so 1980)",
+   "row": 138
+  },
+  {
+   "artist": "תיסלם",
+   "title": "כבר הסתיו עכשיו",
+   "action": "add",
+   "year": 1982,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "Store 1982 inside window 1983; MusicBrainz 1990 compilation",
+   "row": 139
+  },
+  {
+   "artist": "דפנה ארמוני",
+   "title": "אלה",
+   "action": "add",
+   "year": 1984,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1984 = chart year; MusicBrainz/store 1986 re-release",
+   "row": 140
+  },
+  {
+   "artist": "רמי קלינשטיין וריטה",
+   "title": "שבועה",
+   "action": "add-after-preview",
+   "year": 1986,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Wikipedia 1986 inside window 1987. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 141
+  },
+  {
+   "artist": "תיסלם",
+   "title": "כוכבים",
+   "action": "add",
+   "year": 1983,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "Store 1983 inside window 1984; MusicBrainz 1990 compilation",
+   "row": 142
+  },
+  {
+   "artist": "נוער שוליים",
+   "title": "ציירי לך שפם",
+   "action": "add",
+   "year": 1990,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "All four sources 1990 = chart year",
+   "row": 143
+  },
+  {
+   "artist": "אתניקס",
+   "title": "כתם הפרי",
+   "action": "add",
+   "year": 1991,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1991 = chart year; Wikidata 2006 is a different item (a journal)",
+   "row": 144
+  },
+  {
+   "artist": "אתניקס",
+   "title": "בובה",
+   "action": "add",
+   "year": 1993,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1993 = chart year; Wikipedia/Wikidata 2022 are Noam Bettan's different song",
+   "row": 145
+  },
+  {
+   "artist": "אתניקס",
+   "title": "לא לבד",
+   "action": "add",
+   "year": 1994,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1994 = chart year; Wikipedia/Wikidata 2016 are Hanan Ben Ari's different song",
+   "row": 146
+  },
+  {
+   "artist": "אורנה ומשה דץ",
+   "title": "כאן",
+   "action": "drop",
+   "year": 1991,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Duplicate of catalog id 185 (דואו דאץ, כאן, 1991) - same act under its members' names",
+   "row": 147
+  },
+  {
+   "artist": "שלמה ארצי ועמיר לב",
+   "title": "אני בא",
+   "action": "add",
+   "year": 1992,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1992 = chart year; Wikipedia/Wikidata 1927 are a different page (\"אני\")",
+   "row": 148
+  },
+  {
+   "artist": "שרון חזיז",
+   "title": "קח אותי לשם",
+   "action": "add",
+   "year": 1993,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1993 inside window 1994",
+   "row": 149
+  },
+  {
+   "artist": "אביב גפן",
+   "title": "אהבנו",
+   "action": "add",
+   "year": 1995,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1995 = chart year; Wikipedia/Wikidata 2006 are a different song",
+   "row": 150
+  },
+  {
+   "artist": "אביב גפן והתעויוט",
+   "title": "עונות",
+   "action": "add-after-preview",
+   "year": 1995,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "Wikipedia 1995, Wikidata 1996, chart 1996; Wikipedia preferred. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 151
+  },
+  {
+   "artist": "נוער שוליים",
+   "title": "ענוג",
+   "action": "add",
+   "year": 1990,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1990 = chart year; Wikipedia/Wikidata 1934 are the original old song, this is the 1990 version",
+   "row": 152
+  },
+  {
+   "artist": "אתניקס",
+   "title": "קלנדיה",
+   "action": "add",
+   "year": 1992,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1992 = chart year",
+   "row": 153
+  },
+  {
+   "artist": "ללדין",
+   "title": "יעקב",
+   "action": "add",
+   "year": 1994,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1994 = chart year; MusicBrainz 1998 re-release",
+   "row": 154
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "מנגב לך ת'דמעות",
+   "action": "add",
+   "year": 1996,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1996 inside window 1996; store 1997 re-release",
+   "row": 155
+  },
+  {
+   "artist": "רונית שחר",
+   "title": "אהוב יקר",
+   "action": "ask-owner",
+   "year": 1996,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "All four sources 1996, inside window 1997. Only question is the performer's style (D5)",
+   "row": 156
+  },
+  {
+   "artist": "בן ארצי ושלמה ארצי",
+   "title": "17",
+   "action": "add-after-preview",
+   "year": 1998,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1998 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 157
+  },
+  {
+   "artist": "אילנה אביטל",
+   "title": "טוב שבאתם",
+   "action": "add-after-preview",
+   "year": 1990,
+   "genre": "classic-hebrew",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1990 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 158
+  },
+  {
+   "artist": "ירון חדד",
+   "title": "זודיאק",
+   "action": "ask-owner",
+   "year": 1992,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1992 = chart year. Only question is the performer's style (D5)",
+   "row": 159
+  },
+  {
+   "artist": "תופעת דופלר",
+   "title": "ליפול על גן עדן",
+   "action": "add",
+   "year": 1993,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1993 = chart year",
+   "row": 160
+  },
+  {
+   "artist": "טיפקס",
+   "title": "עוד שבת",
+   "action": "add",
+   "year": 1997,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1997 = chart year; store 2003 re-release",
+   "row": 161
+  },
+  {
+   "artist": "אלי לוזון",
+   "title": "גשם",
+   "action": "exclude",
+   "year": 1997,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "אלי לוזון is a Mizrahi performer (D5); also a cover of Benzin's 1982 song",
+   "row": 162
+  },
+  {
+   "artist": "נוער שוליים",
+   "title": "סיזיפה",
+   "action": "add",
+   "year": 1990,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1990 = chart year",
+   "row": 163
+  },
+  {
+   "artist": "גלי עטרי",
+   "title": "חזקה מהרוח",
+   "action": "add",
+   "year": 1991,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1991 inside window 1992; store 1992",
+   "row": 164
+  },
+  {
+   "artist": "אביב גפן והתעויוט",
+   "title": "בוכה על הקבר",
+   "action": "add-after-preview",
+   "year": 1993,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1993 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 165
+  },
+  {
+   "artist": "אתניקס",
+   "title": "ילד מרקש",
+   "action": "add",
+   "year": 1994,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1994 = chart year",
+   "row": 166
+  },
+  {
+   "artist": "אבטיפוס",
+   "title": "תשאירי לי מקום לחבק אותך",
+   "action": "add",
+   "year": 1995,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1995 = chart year; MusicBrainz 1998 re-release",
+   "row": 167
+  },
+  {
+   "artist": "סיון שביט",
+   "title": "נשקי אותי",
+   "action": "add",
+   "year": 1996,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "All four sources 1996 = chart year",
+   "row": 168
+  },
+  {
+   "artist": "ירמי קפלן",
+   "title": "כבר עכשיו",
+   "action": "add",
+   "year": 1995,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1995, Wikipedia/Wikidata 1996, chart 1997; store is an upper bound so 1995",
+   "row": 169
+  },
+  {
+   "artist": "היי פייב",
+   "title": "כולם רוקדים עכשיו",
+   "action": "add",
+   "year": 1998,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1998 = chart year",
+   "row": 170
+  },
+  {
+   "artist": "נורית גלרון",
+   "title": "אתה פה חסר לי",
+   "action": "add",
+   "year": 1992,
+   "genre": "light-rock",
+   "confidence": "high",
+   "reason": "All four sources 1992, inside window 1993",
+   "row": 171
+  },
+  {
+   "artist": "זקני צפת",
+   "title": "שישי שבת",
+   "action": "ask-owner",
+   "year": 1994,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia and MusicBrainz 1994 = chart year; no preview. Band with Shabbat/Jewish themes - owner to decide (D5). needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 172
+  },
+  {
+   "artist": "היי פייב",
+   "title": "יום מעונן",
+   "action": "add",
+   "year": 1997,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1997 = chart year; MusicBrainz 1998 re-release",
+   "row": 173
+  },
+  {
+   "artist": "אורי פיינמן",
+   "title": "שלושים בצל",
+   "action": "add",
+   "year": 1990,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1990 (upper bound) = chart year",
+   "row": 174
+  },
+  {
+   "artist": "יהודית תמיר",
+   "title": "רומיאו",
+   "action": "add",
+   "year": 1991,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1991 = chart year; store 1990 is earlier, so check the preview is the same recording",
+   "flags": [
+    "check-preview"
+   ],
+   "row": 175
+  },
+  {
+   "artist": "בעז שרעבי",
+   "title": "כשתבוא",
+   "action": "add",
+   "year": 1993,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, store 1993 inside window 1994. Credit spelling: use catalog name בועז שרעבי",
+   "catalogArtist": "בועז שרעבי",
+   "row": 176
+  },
+  {
+   "artist": "אביב גפן והתעויוט",
+   "title": "המכתב",
+   "action": "add-after-preview",
+   "year": 1996,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1996 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 177
+  },
+  {
+   "artist": "יהודה פוליקר",
+   "title": "פנים אל מול פנים",
+   "action": "add-after-preview",
+   "year": 1997,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1997 = chart year. The found preview is dated 1984, long before the song: likely the wrong recording - find the right one",
+   "flags": [
+    "check-preview"
+   ],
+   "row": 178
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "אנחנו לא צריכים",
+   "action": "add-after-preview",
+   "year": 1999,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Wikipedia/Wikidata 1970 are a different song; MusicBrainz 2000 later than chart; store 1992 is earlier than the chart, so the preview may be a different recording. Year from the chart",
+   "flags": [
+    "check-preview"
+   ],
+   "row": 179
+  },
+  {
+   "artist": "שרון חזיז",
+   "title": "השמים של יוליה",
+   "action": "add",
+   "year": 1993,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1993 (upper bound) inside window 1994; MusicBrainz 1994",
+   "row": 180
+  },
+  {
+   "artist": "שרון חזיז",
+   "title": "הולכת ממך",
+   "action": "add",
+   "year": 1995,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1995 = chart year",
+   "row": 181
+  },
+  {
+   "artist": "טיפקס",
+   "title": "סתם",
+   "action": "add",
+   "year": 1997,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1997 = chart year; Wikipedia/Wikidata 2016 are a different song",
+   "row": 182
+  },
+  {
+   "artist": "בן ארצי",
+   "title": "חיים משל עצמי",
+   "action": "add",
+   "year": 1998,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "All four sources 1998 = chart year",
+   "row": 183
+  },
+  {
+   "artist": "נוער שוליים",
+   "title": "אמסטרדם",
+   "action": "add",
+   "year": 1990,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "All four sources 1990 = chart year",
+   "row": 184
+  },
+  {
+   "artist": "גידי גוב",
+   "title": "אני שוב מתאהב",
+   "action": "add",
+   "year": 1989,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1989 inside window 1991; store 1991",
+   "row": 185
+  },
+  {
+   "artist": "גן חיות",
+   "title": "ירח כחול",
+   "action": "add",
+   "year": 1992,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1992 = chart year",
+   "row": 186
+  },
+  {
+   "artist": "אתי אנקרי",
+   "title": "לולו",
+   "action": "add",
+   "year": 1993,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1993 = chart year",
+   "row": 187
+  },
+  {
+   "artist": "ג'ינג'יות",
+   "title": "L.A",
+   "action": "add",
+   "year": 1994,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1994 = chart year; store 2012 re-release",
+   "row": 188
+  },
+  {
+   "artist": "אתניקס והקומדי סטור",
+   "title": "שיר הטרטע",
+   "action": "add-after-preview",
+   "year": 1995,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "No source and no preview (comedy recording); year from the chart. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 189
+  },
+  {
+   "artist": "פבלו רוזנברג",
+   "title": "בדמעות שאת בוכה",
+   "action": "add",
+   "year": 1996,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1996 = chart year",
+   "row": 190
+  },
+  {
+   "artist": "בעז שרעבי",
+   "title": "כשאת נוגעת בי",
+   "action": "add",
+   "year": 1998,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1998 = chart year. Credit spelling: use catalog name בועז שרעבי",
+   "catalogArtist": "בועז שרעבי",
+   "row": 191
+  },
+  {
+   "artist": "אורי פיינמן",
+   "title": "נערת הכפר",
+   "action": "add-after-preview",
+   "year": 1990,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Wikidata 1954 is the original song; this is a 1990 cover, year from the chart. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 192
+  },
+  {
+   "artist": "אתניקס",
+   "title": "אמונה",
+   "action": "add",
+   "year": 1991,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1991 = chart year",
+   "row": 193
+  },
+  {
+   "artist": "יזהר אשדות",
+   "title": "איש השוקולד",
+   "action": "add",
+   "year": 1992,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "All four sources 1992 = chart year",
+   "row": 194
+  },
+  {
+   "artist": "דני רובס",
+   "title": "הבן של הקוסם",
+   "action": "add",
+   "year": 1993,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1993 = chart year",
+   "row": 195
+  },
+  {
+   "artist": "אביב גפן",
+   "title": "כבוד",
+   "action": "add",
+   "year": 1994,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1994 = chart year",
+   "row": 196
+  },
+  {
+   "artist": "אתניקס",
+   "title": "לחיות בניו זילנד",
+   "action": "add",
+   "year": 1995,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1995 = chart year",
+   "row": 197
+  },
+  {
+   "artist": "שלמה ארצי",
+   "title": "היא לא יודעת מה עובר עלי",
+   "action": "add",
+   "year": 1996,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1996 = chart year; store 2019 re-release",
+   "row": 198
+  },
+  {
+   "artist": "מיקה קרני",
+   "title": "מיטשל",
+   "action": "add",
+   "year": 1997,
+   "genre": "pop",
+   "confidence": "high",
+   "reason": "All four sources 1997 = chart year",
+   "row": 199
+  },
+  {
+   "artist": "כנסיית השכל",
+   "title": "למיה יש אקדח",
+   "action": "add",
+   "year": 1999,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz 1999 = chart year; store 2007 re-release",
+   "row": 200
+  },
+  {
+   "artist": "ירדנה ארזי",
+   "title": "כאבים רחוקים",
+   "action": "add",
+   "year": 1989,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1989 (upper bound) inside window 1990",
+   "row": 201
+  },
+  {
+   "artist": "דוד ד'אור",
+   "title": "אני עף",
+   "action": "add",
+   "year": 1993,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "Store 1993 = chart year; MusicBrainz 1998 re-release",
+   "row": 202
+  },
+  {
+   "artist": "אריק איינשטיין",
+   "title": "בגללך",
+   "action": "add",
+   "year": 1995,
+   "genre": "light-rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1995 = chart year; Wikipedia/Wikidata 2009 are a compilation album",
+   "row": 203
+  },
+  {
+   "artist": "אתניקס",
+   "title": "תביא קצת דינרוס",
+   "action": "add",
+   "year": 1996,
+   "genre": "pop",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1996 = chart year",
+   "row": 204
+  },
+  {
+   "artist": "איגי וקסמן",
+   "title": "לא מחכה יותר לדוור",
+   "action": "add-after-preview",
+   "year": 1997,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia, Wikidata, MusicBrainz 1997 = chart year. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 205
+  },
+  {
+   "artist": "דודי לוי ואהוד בנאי",
+   "title": "כל הזמן שבעולם",
+   "action": "add-after-preview",
+   "year": 1997,
+   "genre": "rock",
+   "confidence": "high",
+   "reason": "Wikipedia and Wikidata 1997 inside window 1998. needs-preview",
+   "flags": [
+    "needs-preview"
+   ],
+   "row": 206
+  },
+  {
+   "artist": "ליליה",
+   "title": "גבר באמבטיה",
+   "action": "add",
+   "year": 1989,
+   "genre": "pop",
+   "confidence": "low",
+   "reason": "Store 1989 (upper bound) inside window 1990; performer not identified",
+   "row": 207
+  },
+  {
+   "artist": "יזהר אשדות",
+   "title": "הלילות שלנו",
+   "action": "add",
+   "year": 1992,
+   "genre": "rock",
+   "confidence": "medium",
+   "reason": "MusicBrainz and store 1992 = chart year",
+   "row": 208
+  },
+  {
+   "artist": "משינה",
+   "title": "נגעה בשמיים",
+   "action": "add",
+   "year": 1993,
+   "genre": "rock",
+   "confidence": "low",
+   "reason": "MusicBrainz 2003 and store 1995 are later than the 1993 chart (re-releases); year from the chart (1992 possible)",
+   "row": 209
+  }
+ ],
+ "performers": {
+  "אבטיפוס": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1990s pop band; genre unsure (pop or light-rock)"
+  },
+  "אורי פיינמן": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "actor-singer; 1990 pop songs and a cover of an old song"
+  },
+  "אורנה ומשה דץ": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "same act as דואו דאץ (already labelled pop); add as an alias of דואו דאץ"
+  },
+  "אושיק לוי": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "1970s Israeli singer and actor (classic Israeli song)"
+  },
+  "אחרית הימים": {
+   "genre": "light-rock",
+   "exclude": false,
+   "note": "unsure: early-1970s Israeli band; genre could be pop or rock",
+   "unsure": true
+  },
+  "איגי וקסמן": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1990s singer-songwriter, rock"
+  },
+  "איזולירבנד": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1980s new-wave/rock band"
+  },
+  "אילנה אביטל": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "classic Israeli singer"
+  },
+  "אילנה רובינא": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "early-1970s singer of classic Israeli songs"
+  },
+  "אלי לוזון": {
+   "genre": "pop",
+   "exclude": true,
+   "note": "Mizrahi-style performer (D5)"
+  },
+  "אלי מגן": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "early-1970s singer/actor, classic Israeli song"
+  },
+  "אפרים שמיר": {
+   "genre": "light-rock",
+   "exclude": false,
+   "note": "Kaveret member; solo pop/light rock"
+  },
+  "בן ארצי": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "pop singer (son of Shlomo Artzi)"
+  },
+  "בעז שרעבי": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "spelling variant of בועז שרעבי (pop, not excluded, owner-reviewed borderline); add as alias"
+  },
+  "ג'וזי כץ": {
+   "genre": "light-rock",
+   "exclude": false,
+   "note": "folk/light rock singer (Lool, Arik Einstein circle)"
+  },
+  "ג'ינג'יות": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1990s girl pop group"
+  },
+  "גבי שושן": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "1970s singer/actor, classic Israeli song"
+  },
+  "גזוז": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "late-1970s pop group"
+  },
+  "גן חיות": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1990s rock band"
+  },
+  "גרי אקשטיין": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "pop singer/entertainer"
+  },
+  "דדי בן עמי": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: little-known 1970 performer; genre guessed",
+   "unsure": true
+  },
+  "דודה": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "unsure: early-1980s band; rock guessed",
+   "unsure": true
+  },
+  "דודו זכאי": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "1970s singer of Israeli songs"
+  },
+  "דורית ראובני, דודו זכאי והגבעטרון": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "collaboration with the Gevatron choir"
+  },
+  "דני גרנות": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "late-1960s singer; genre guessed from era",
+   "unsure": true
+  },
+  "דפנה ארמוני": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1980s pop singer"
+  },
+  "היי פייב": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1990s boy band, dance-pop"
+  },
+  "הכבש השישה עשר": {
+   "genre": "light-rock",
+   "exclude": false,
+   "note": "the 1978 children's album (Yoni Rechter and others)"
+  },
+  "הנשמות הטהורות": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1970s pop group"
+  },
+  "הקליק": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1980s new-wave/rock band"
+  },
+  "זקני צפת": {
+   "genre": "rock",
+   "exclude": true,
+   "note": "unsure: 1990s band with Shabbat/Jewish themes (\"שישי שבת\"); excluded until the owner decides (D5)",
+   "unsure": true
+  },
+  "חבורת הזמר של פיקוד צפון": {
+   "genre": "army-bands",
+   "exclude": false,
+   "note": "army ensemble"
+  },
+  "חדוה ודוד": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "pop duo (1970 Tokyo festival winners)"
+  },
+  "חנה לסלאו וג'קי מקייטן": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: comedy duet; the song may be a Mizrahi-style parody (D5) - owner to decide",
+   "unsure": true
+  },
+  "יאיר ניצני": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "satirical pop/rock (HaAshem Tamid)"
+  },
+  "יהודית תמיר": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1990s pop singer"
+  },
+  "יוני נמרי": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "unsure: little-known early-1970s performer; genre guessed from era",
+   "unsure": true
+  },
+  "יורם ארבל": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "1969 festival-era song; genre from era"
+  },
+  "יזהר אשדות": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "ex-Tislam; pop-rock solo"
+  },
+  "יעל לוי": {
+   "genre": "light-rock",
+   "exclude": false,
+   "note": "singer; existing duet with David Broza is light-rock"
+  },
+  "יצחק קלפטר": {
+   "genre": "light-rock",
+   "exclude": false,
+   "note": "Kaveret guitarist; solo light rock"
+  },
+  "ירון חדד": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: could not place this performer or rule out Mizrahi style - owner to decide",
+   "unsure": true
+  },
+  "ירמי קפלן": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1990s rock singer"
+  },
+  "ליליה": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: could not identify this act; genre guessed",
+   "unsure": true
+  },
+  "ללדין": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1990s rock band"
+  },
+  "מוטי פליישר": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "around-1970 singer of classic Israeli songs"
+  },
+  "מיסטר הרי": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: could not identify this act",
+   "unsure": true
+  },
+  "מיקה קרני": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1990s pop/rock singer"
+  },
+  "מנגו": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "late-1980s rock band"
+  },
+  "מני בגר": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "pop singer (1970s-80s)"
+  },
+  "נוער שוליים": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1990s rock band"
+  },
+  "נורית גלרון": {
+   "genre": "light-rock",
+   "exclude": false,
+   "note": "singer, light rock/ballads"
+  },
+  "סיון שביט": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1990s pop singer"
+  },
+  "סקסטה": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "late-1970s vocal group"
+  },
+  "עוזי חיטמן": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "pop songwriter/singer; his \"אדון עולם\" (Hasidic Song Festival) is excluded per song"
+  },
+  "עוזי חיטמן ועודד בן חור": {
+   "genre": "pop",
+   "exclude": true,
+   "note": "only credit is \"אדון עולם\", a Hasidic Song Festival song (D5)"
+  },
+  "עוזי פוקס": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1970s pop singer"
+  },
+  "עירית בולקא": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: could not identify this performer",
+   "unsure": true
+  },
+  "עמי שביט": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "unsure: could not identify this performer; genre from era",
+   "unsure": true
+  },
+  "ענת עצמון": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "actress and pop singer"
+  },
+  "פבלו רוזנברג": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "pop ballad singer"
+  },
+  "צוות הווי חטיבת הצנחנים": {
+   "genre": "army-bands",
+   "exclude": false,
+   "note": "army entertainment troupe"
+  },
+  "צוות הווי חטיבת הצנחנים ושלישיית פיקוד מרכז": {
+   "genre": "army-bands",
+   "exclude": false,
+   "note": "two army ensembles"
+  },
+  "צוות הווי פיקוד מרכז": {
+   "genre": "army-bands",
+   "exclude": false,
+   "note": "army entertainment troupe"
+  },
+  "צליל מכוון": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "late-1970s pop group"
+  },
+  "רבקה זהר": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "classic Israeli singer (רבקה זהר ולהקת חיל הים is army-bands)"
+  },
+  "רוחמה רז": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "classic Israeli singer"
+  },
+  "רונית שחר": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: 1990s pop singer, possibly Mediterranean/Mizrahi style - owner to decide (D5)",
+   "unsure": true
+  },
+  "רותי נבון": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1970s pop singer"
+  },
+  "שוקי ודורית": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: duo not identified with certainty",
+   "unsure": true
+  },
+  "שלישיית פיקוד מרכז": {
+   "genre": "army-bands",
+   "exclude": false,
+   "note": "army trio"
+  },
+  "שרון חזיז": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "1990s pop singer"
+  },
+  "שרי": {
+   "genre": "pop",
+   "exclude": false,
+   "note": "unsure: 1970s singer known by first name only; not identified with certainty",
+   "unsure": true
+  },
+  "ששי קשת": {
+   "genre": "classic-hebrew",
+   "exclude": false,
+   "note": "actor-singer, classic Israeli song"
+  },
+  "תופעת דופלר": {
+   "genre": "rock",
+   "exclude": false,
+   "note": "1990s rock band"
+  }
+ }
+}

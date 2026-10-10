@@ -27,7 +27,6 @@ function fakeServer() {
         title: `Song ${n}`,
         year: 1950 + n,
         language: 'en',
-        genre: 'pop',
       };
       return Promise.resolve(json({ song: s }));
     }
@@ -76,7 +75,6 @@ describe('App flow', () => {
             title: `Song ${n}`,
             year: 1950 + n,
             language: 'en',
-            genre: 'pop',
           };
           return Promise.resolve(json({ song: s }));
         }
@@ -196,6 +194,64 @@ describe('App flow', () => {
 
     await user.click(screen.getByTestId('btn-scoreboard'));
     await user.click(screen.getByTestId('btn-close-scoreboard'));
+  });
+
+  it('difficulty defaults to Easy and is sent as maxDifficulty 1', async () => {
+    const { bodies } = fakeServer();
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByTestId('btn-settings'));
+    expect(screen.getByRole('group', { name: 'Difficulty' })).toBeInTheDocument();
+    expect(screen.getByTestId('btn-difficulty-easy')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('btn-difficulty-medium')).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByTestId('btn-difficulty-hard')).toHaveAttribute('aria-pressed', 'false');
+    await user.click(screen.getByTestId('btn-back'));
+
+    await user.click(screen.getByTestId('btn-new-game'));
+    await user.type(screen.getByTestId('input-player-name'), 'Ann{Enter}');
+    await user.click(screen.getByTestId('btn-start-game'));
+    await screen.findByTestId('screen-turn');
+    await waitFor(() => expect(bodies.length).toBeGreaterThanOrEqual(2));
+    // the deal and the first turn's song both carry it
+    expect(bodies.map((b) => b.maxDifficulty)).toEqual(bodies.map(() => 1));
+  });
+
+  it('switching difficulty is saved on the phone and survives a remount', async () => {
+    const { bodies } = fakeServer();
+    const user = userEvent.setup();
+    const { unmount } = render(<App />);
+    await user.click(screen.getByTestId('btn-settings'));
+    await user.click(screen.getByTestId('btn-difficulty-medium'));
+    expect(screen.getByTestId('btn-difficulty-medium')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('btn-difficulty-medium')).toHaveClass('chip--active');
+    expect(screen.getByTestId('btn-difficulty-easy')).toHaveAttribute('aria-pressed', 'false');
+    expect(localStorage.getItem('hitster.difficulty')).toBe('medium');
+    await user.click(screen.getByTestId('btn-difficulty-hard'));
+    expect(localStorage.getItem('hitster.difficulty')).toBe('hard');
+    unmount();
+
+    render(<App />);
+    await user.click(screen.getByTestId('btn-settings'));
+    expect(screen.getByTestId('btn-difficulty-hard')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('btn-difficulty-easy')).toHaveAttribute('aria-pressed', 'false');
+    await user.click(screen.getByTestId('btn-back'));
+    await user.click(screen.getByTestId('btn-new-game'));
+    await user.type(screen.getByTestId('input-player-name'), 'Ann{Enter}');
+    await user.click(screen.getByTestId('btn-start-game'));
+    await screen.findByTestId('screen-turn');
+    await waitFor(() => expect(bodies.length).toBeGreaterThanOrEqual(1));
+    expect(bodies[0]?.maxDifficulty).toBe(3);
+  });
+
+  it('shows the Hebrew difficulty labels', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByTestId('btn-settings'));
+    await user.click(screen.getByTestId('btn-lang-he'));
+    expect(screen.getByRole('group', { name: 'רמת קושי' })).toBeInTheDocument();
+    expect(screen.getByTestId('btn-difficulty-easy')).toHaveTextContent('קל');
+    expect(screen.getByTestId('btn-difficulty-medium')).toHaveTextContent('בינוני');
+    expect(screen.getByTestId('btn-difficulty-hard')).toHaveTextContent('קשה');
   });
 
   it('with "Tokens & bets" off, turns use Reveal and show no tokens', async () => {

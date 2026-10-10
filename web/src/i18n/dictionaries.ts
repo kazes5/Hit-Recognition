@@ -72,6 +72,11 @@ const en = {
   songsHe: 'Hebrew',
   songsEn: 'English',
   songsBoth: 'Both',
+  difficulty: 'Difficulty',
+  difficultyHint: 'Easy plays only the best-known songs.',
+  difficultyEasy: 'Easy',
+  difficultyMedium: 'Medium',
+  difficultyHard: 'Hard',
 
   errorNetwork: "Can't reach the server. Check your connection and try again.",
   errorNoSongs: 'No songs left! End the game to see who won.',
@@ -243,6 +248,11 @@ const he: Dictionary = {
   songsHe: 'עברית',
   songsEn: 'אנגלית',
   songsBoth: 'שתיהן',
+  difficulty: 'רמת קושי',
+  difficultyHint: 'ברמה קלה מושמעים רק השירים המוכרים ביותר.',
+  difficultyEasy: 'קל',
+  difficultyMedium: 'בינוני',
+  difficultyHard: 'קשה',
 
   errorNetwork: 'אין חיבור לשרת. בדקו את החיבור ונסו שוב.',
   errorNoSongs: 'נגמרו השירים! סיימו את המשחק כדי לראות מי ניצח.',

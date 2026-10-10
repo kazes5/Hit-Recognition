@@ -1,0 +1,31 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://en.wikipedia.org/w/api.php?action=parse&format=json&formatversion=2&redirects=1&prop=wikitext%7Cproperties%7Ccategories&page=Proud%20Mary",
+  "shape": "MediaWiki action=parse, formatversion=2: parse = {title,pageid,wikitext:string,properties:{wikibase_item},categories:[{sortkey,category,hidden?}]}. Source-test bug: \"recorded\" (1968) came before \"released\" (1969)."
+ },
+ "parse": {
+  "title": "Proud Mary",
+  "pageid": 100003,
+  "wikitext": "{{Short description|1969 single by Creedence Clearwater Revival}}\n{{Other uses}}\n{{Infobox song\n| name       = Proud Mary\n| cover      = Proud Mary CCR.jpg\n| type       = single\n| artist     = [[Creedence Clearwater Revival]]\n| album      = [[Bayou Country]]\n| B-side     = \"[[Born on the Bayou]]\"\n| recorded   = October 1968<ref>{{cite web |title=Session log |access-date=2015-03-02}}</ref>\n| released   = {{Start date|1969|01|06}}\n| studio     = RCA, [[Hollywood]]\n| genre      = {{flatlist|[[Swamp rock]]|[[roots rock]]}}\n| length     = 3:07\n| label      = [[Fantasy Records|Fantasy]]\n| writer     = [[John Fogerty]]\n| prev_title = [[Suzie Q]]\n| prev_year  = 1968\n| next_title = [[Bad Moon Rising]]\n| next_year  = 1969\n}}\n\"'''Proud Mary'''\" is a song written by [[John Fogerty]] ...\n[[Category:1969 singles]]\n[[Category:Creedence Clearwater Revival songs]]",
+  "properties": {
+   "wikibase_item": "Q1543879",
+   "defaultsort": "Proud Mary"
+  },
+  "categories": [
+   {
+    "sortkey": "",
+    "category": "1969_singles"
+   },
+   {
+    "sortkey": "",
+    "category": "Creedence_Clearwater_Revival_songs"
+   },
+   {
+    "sortkey": "",
+    "category": "Articles_with_short_description",
+    "hidden": true
+   }
+  ]
+ }
+}

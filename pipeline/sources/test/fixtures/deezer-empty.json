@@ -1,0 +1,9 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://api.deezer.com/search?q=artist%3A%22Oasis%22%20track%3A%22Wonderwall%22 (what the POC got for English songs)",
+  "shape": "{data:[],total:0}"
+ },
+ "data": [],
+ "total": 0
+}

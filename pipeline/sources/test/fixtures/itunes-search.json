@@ -1,0 +1,60 @@
+{
+ "_fixture": {
+  "handWritten": true,
+  "source": "GET https://itunes.apple.com/search?entity=song&limit=25&country=US&term=Creedence%20Clearwater%20Revival%20Proud%20Mary",
+  "shape": "{resultCount, results:[{wrapperType,kind,trackId,artistName,trackName,collectionName,previewUrl,releaseDate,primaryGenreName,country}]}"
+ },
+ "resultCount": 4,
+ "results": [
+  {
+   "wrapperType": "track",
+   "kind": "song",
+   "artistId": 1,
+   "collectionId": 11,
+   "trackId": 1440842312,
+   "artistName": "Creedence Clearwater Revival",
+   "collectionName": "Chronicle: The 20 Greatest Hits",
+   "trackName": "Proud Mary",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview/proud.m4a",
+   "releaseDate": "1976-01-01T08:00:00Z",
+   "primaryGenreName": "Rock",
+   "country": "USA"
+  },
+  {
+   "wrapperType": "track",
+   "kind": "song",
+   "artistId": 1,
+   "collectionId": 12,
+   "trackId": 1440842999,
+   "artistName": "Creedence Clearwater Revival",
+   "collectionName": "Bayou Country (Expanded Edition)",
+   "trackName": "Proud Mary (Live At Royal Albert Hall)",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview/proud-live.m4a",
+   "releaseDate": "1969-01-05T08:00:00Z",
+   "primaryGenreName": "Rock",
+   "country": "USA"
+  },
+  {
+   "wrapperType": "track",
+   "kind": "song",
+   "artistId": 2,
+   "collectionId": 13,
+   "trackId": 1111,
+   "artistName": "Ike & Tina Turner",
+   "collectionName": "Workin Together",
+   "trackName": "Proud Mary",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview/tina.m4a",
+   "releaseDate": "1960-12-01T08:00:00Z",
+   "primaryGenreName": "R&B/Soul",
+   "country": "USA"
+  },
+  {
+   "wrapperType": "track",
+   "kind": "music-video",
+   "trackId": 2222,
+   "artistName": "Creedence Clearwater Revival",
+   "trackName": "Proud Mary",
+   "releaseDate": "1950-01-01T08:00:00Z"
+  }
+ ]
+}
