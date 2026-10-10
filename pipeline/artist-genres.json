@@ -3087,5 +3087,805 @@
     "genre": "pop",
     "exclude": true,
     "note": "owner 2026-10-10: leave out"
+  },
+  "Morgan Wallen": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Usher": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "TLC": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Kendrick Lamar": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "En Vogue": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Flo Rida": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Matchbox Twenty": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Drake": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Jack Harlow": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Color Me Badd": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Monica": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Janet": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "50 Cent": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Gwen Stefani": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Sean Paul": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Nelly": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Jennifer Lopez": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Ciara": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Destiny's Child": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Kanye West": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Chris Brown": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Macklemore & Ryan Lewis": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "The Chainsmokers": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Nicki Minaj": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Taio Cruz": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Future": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Zach Bryan": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Wilson Phillips": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Coolio": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Sir Mix-a-Lot": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Tag Team": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "All-4-One": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Brandy and Monica": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "C+C Music Factory": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Kris Kross": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Puff Daddy and Faith Evans": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Shania Twain": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Bell Biv DeVoe": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Paula Abdul": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Vanessa Williams": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Janet Jackson": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Seal": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "The Tony Rich Project": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "LeAnn Rimes": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Timmy T": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Silk": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Puff Daddy": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Eric Clapton": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "SWV": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lisa Loeb and Nine Stories": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Real McCoy": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Tracy Chapman": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "R. Kelly": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Sixpence None the Richer": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Extreme": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Shai": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Bone Thugs-n-Harmony": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "K-Ci & JoJo": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Hi-Five": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Donna Lewis": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Mark Morrison": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Sugar Ray": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Billy Idol": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Surface": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Wreckx-n-Effect": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Deborah Cox": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Jon Bon Jovi": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Faith Hill": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lifehouse": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Ashanti": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Mario": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "James Blunt": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Fergie": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lil Wayne": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Vertical Horizon": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "The Calling": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "3 Doors Down": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "T-Pain": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Hoobastank": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Natasha Bedingfield": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Carrie Underwood": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Jordin Sparks and Chris Brown": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Eve": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Chingy": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Mario Winans": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Plain White T's": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Sara Bareilles": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lonestar": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Dido": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Fat Joe": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Aaliyah": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Chamillionaire": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Akon": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lenny Kravitz": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Kid Rock": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "The Pussycat Dolls": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Puddle of Mudd": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Terror Squad": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Kesha": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lady Antebellum": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Robin Thicke": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Luis Fonsi and Daddy Yankee": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Fun": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "John Legend": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Wiz Khalifa": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Bebe Rexha": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Halsey": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Baauer": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Iggy Azalea": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Fetty Wap": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Camila Cabello": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Pitbull": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "B.o.B": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "The Wanted": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Jason Derulo": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Walk the Moon": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Desiigner": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Migos": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Marshmello and Bastille": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Eminem": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Cardi B, Bad Bunny and J Balvin": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Silentó": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Sam Hunt": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Zedd, Maren Morris and Grey": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Khalid": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Florida Georgia Line": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Travis Scott": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "One Direction": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Jonas Brothers": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Roddy Ricch": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "DaBaby": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Rema and Selena Gomez": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Silk Sonic (Bruno Mars and Anderson .Paak)": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Latto": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Tommy Richman": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Maren Morris": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Kodak Black": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "David Guetta and Bebe Rexha": {
+    "genre": "disco-dance",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Gabby Barrett": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lizzo": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Drake and 21 Savage": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Future, Metro Boomin and Kendrick Lamar": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Gracie Abrams": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Megan Thee Stallion": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Arizona Zervas": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Lil Nas X and Jack Harlow": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Bailey Zimmerman": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "The Kid Laroi": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Luke Combs": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Masked Wolf": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Bad Bunny and Chencho Corleone": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "PinkPantheress and Ice Spice": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "batch 3 (labelled by the lead)"
+  },
+  "Mariah Carey and Boyz II Men": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from Mariah Carey + Boyz II Men"
+  },
+  "Bryan Adams, Rod Stewart and Sting": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "from Bryan Adams + Rod Stewart"
+  },
+  "Post Malone and Swae Lee": {
+    "genre": "hiphop",
+    "exclude": false,
+    "note": "from Post Malone"
+  },
+  "The Chainsmokers and Coldplay": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "from The Chainsmokers + Coldplay"
+  },
+  "Kendrick Lamar and SZA": {
+    "genre": "soul-rnb",
+    "exclude": false,
+    "note": "from Kendrick Lamar + SZA"
+  },
+  "Elton John and Dua Lipa": {
+    "genre": "light-rock",
+    "exclude": false,
+    "note": "from Elton John + Dua Lipa"
+  },
+  "Imagine Dragons and JID": {
+    "genre": "rock",
+    "exclude": false,
+    "note": "from Imagine Dragons"
+  },
+  "The Weeknd and Playboi Carti": {
+    "genre": "pop",
+    "exclude": false,
+    "note": "from The Weeknd"
   }
 }

@@ -245,6 +245,13 @@ All network work runs in GitHub Actions (`workflow_dispatch` with inputs). The c
 - **Result:** 174 added, **catalog 921 → 1,095** (Hebrew 521 → 688).
 - **Owner decision on the 19 borderline performers:** add מרגי, סטפן לגר and לירן דנינו (8 songs, **catalog → 1,103**); leave the other 16 out (D5).
 
+**Batch 3 (English 1990–2025, Billboard Year-End top 20), 2026-10-10:**
+- **Run:** 300 of 577 new songs looked up: 84 accepted, 197 year settled with an unknown performer, 19 flagged (only 2 without a preview).
+- **Labels:** the lead labelled 152 English performers by genre (no country genre: country is pop). "Janet" is stored as Janet Jackson.
+- **Duplicates:** none. Same-title matches (The Power of Love, Creep, Dynamite, Roxanne …) are different songs.
+- **Fix:** song 1048 (איה כורם – שיר אהבה פשוט) had the loose alias "love song", which clashed with Sara Bareilles' "Love Song"; replaced with "Shir Ahava Pashut".
+- **Result:** 281 added, **catalog 1,103 → 1,384** (English 407 → 688). Difficulty 94 / 94 / 93.
+
 For each batch:
 1. Run `song-batch.yml` for the next slice of years and languages.
 2. The research team resolves `flagged.csv`. One agent checks each flagged song with web searches, a second confirms. Decisions are written to `pipeline/sources.json`.
