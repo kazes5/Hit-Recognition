@@ -159,7 +159,9 @@ async function extractSource(id, { fromYear, toYear, top, getJson }) {
       for (let r = 1; r <= top; r++) if (!ranks.includes(r)) missing.push(r);
       if (missing.length) problem(url, `year ${y}: ${missing.length} of the top ${top} ranks missing (${missing.length > 8 ? `${missing.slice(0, 8).join(', ')}, …` : missing.join(', ')})`);
     } else if (cfg.rankFromPlacing) {
-      kept = kept.map((e) => ({ ...e, rank: e.placing ?? 1 })).filter((e) => e.rank >= 1 && e.rank <= top);
+      // No placing column: rank 1 (the entry). A placing column but no placing for this song
+      // (only the first places were announced): the lowest rank, `top`.
+      kept = kept.map((e) => ({ ...e, rank: !('placing' in e) ? 1 : e.placing ?? top })).filter((e) => e.rank >= 1 && e.rank <= top);
     }
     entries.push(...kept);
   }

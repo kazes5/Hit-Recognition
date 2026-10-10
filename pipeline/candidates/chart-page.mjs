@@ -156,13 +156,19 @@ export function parseChartPage(o) {
         const rowDesc = `${where(b)} row "${texts.join(' | ').slice(0, 100)}"`;
         const rowYear = roles.year !== undefined ? yearFromText(texts[roles.year]) : year;
         if (!rowYear) { problem(`no chart year for ${rowDesc}`); continue; }
+        if (row[roles.title] && row[roles.title] === row[roles.artist]) {
+          // One merged (colspan) cell across title and performer: "did not participate", "cancelled", …
+          if (rankMode === 'entry') notes.push(`no entry in ${rowDesc}`);
+          else problem(`title and performer share one merged cell in ${rowDesc}`);
+          continue;
+        }
         const title = stripQuotes(texts[roles.title] ?? '');
         const credit = texts[roles.artist] ?? '';
         let rank;
         let placing;
         if (rankMode === 'entry') {
           rank = 1;
-          placing = roles.rank !== undefined ? parseRank(texts[roles.rank]) : null;
+          placing = roles.rank !== undefined ? parseRank(texts[roles.rank]) : undefined;
         } else if (roles.rank !== undefined) {
           rank = parseRank(texts[roles.rank]);
           if (rank == null) { problem(`no rank in ${rowDesc}`); continue; }
@@ -178,7 +184,7 @@ export function parseChartPage(o) {
           continue;
         }
         const e = { chartYear: rowYear, rank, title, ...splitCredit(credit) };
-        if (rankMode === 'entry') e.placing = placing;
+        if (rankMode === 'entry' && placing !== undefined) e.placing = placing;
         if (roles.language !== undefined) e.languageText = texts[roles.language];
         add(roles.year !== undefined ? `${blockId}:${rowYear}` : blockId, b, e);
       }
