@@ -1,12 +1,8 @@
 {
-  "name": "batch-01-he-1969-1999",
-  "sources": [
-    "reshet-gimel",
-    "galgalatz"
-  ],
+  "name": "batch-02-he-2000-2025",
+  "sources": ["reshet-gimel", "galgalatz"],
   "language": "he",
-  "fromYear": 1969,
-  "toYear": 1999,
-  "size": 300,
-  "note": "third run: chart-year rules, owner decisions, possible duplicates left out"
+  "fromYear": 2000,
+  "toYear": 2025,
+  "size": 300
 }
