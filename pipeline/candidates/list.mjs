@@ -43,6 +43,10 @@ export function summarize({ candidates, problems, pages }, { sources, from, to, 
     const langs = [...new Set(cs.map((c) => c.language))].join(', ') || '–';
     L.push(`| ${s} | ${langs} | ${years.length ? `${years.length} (${compactYears(years)})` : '0'} | ${cs.length} | ${problems.filter((p) => p.source === s).length} |`);
   }
+  // Problems that belong to no single source (e.g. airplay rankings on the shared Hebrew pages)
+  for (const s of [...new Set(problems.map((p) => p.source))].filter((s) => !sources.includes(s))) {
+    L.push(`| ${s} | – | – | – | ${problems.filter((p) => p.source === s).length} |`);
+  }
   L.push('');
   for (const s of sources) {
     const cs = candidates.filter((c) => c.source === s);
@@ -62,7 +66,7 @@ export function summarize({ candidates, problems, pages }, { sources, from, to, 
   if (!problems.length) L.push('None.');
   else {
     L.push('| Source | Page | Problem |', '|---|---|---|');
-    for (const p of problems.slice(0, 300)) L.push(`| ${p.source} | ${esc(decodeURIComponent(String(p.page).replace(/^https:\/\/(\w+)\.wikipedia\.org\/wiki\//, '$1:')))} | ${esc(p.reason)} |`);
+    for (const p of problems.slice(0, 300)) L.push(`| ${p.source} | ${esc(decodeURIComponent(String(p.page).replace(/^https:\/\/(\w+)\.wikipedia\.org\/wiki\//, '$1:')))} | ${esc(p.detail ? `${p.reason}: ${p.detail}` : p.reason)} |`);
     if (problems.length > 300) L.push('', `… and ${problems.length - 300} more (see problems.json).`);
   }
   const notes = pages.flatMap((p) => p.notes.map((n) => ({ p, n })));

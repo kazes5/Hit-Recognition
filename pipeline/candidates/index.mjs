@@ -2,7 +2,9 @@
 //
 //   extract({ sources, fromYear, toYear, top = 20, getJson? }) → { candidates, problems, pages }
 //
-// candidates: { source, chartYear, rank, artist, title, language, page, creditRaw[, placing] }
+// candidates: { source, chartYear, rank, artist, title, language, page, creditRaw[, placing][, soloist] }
+//   - Hebrew annual parades (annual.mjs): both stations' rankings come from the same yearly
+//     pages; a military band credit "להקה, סולן: X" gives artist = the band, soloist = X.
 //   - artist is the main performer: a "feat."/"featuring"/"בהשתתפות" suffix is cut off;
 //     creditRaw keeps the full credit as written (cleaned of links and refs).
 //   - Hebrew-calendar charts: chartYear = the civil year the Hebrew year ended in (תשמ"ג → 1983).
@@ -16,6 +18,7 @@
 // through the shared client of sources/http.mjs (cache, retries, rate limits).
 import { errorText, getJson as defaultGetJson } from '../sources/http.mjs';
 import { yearsIn } from '../sources/normalize.mjs';
+import { parseAnnualPage } from './annual.mjs';
 import { parseChartPage, yearFromText } from './chart-page.mjs';
 import { hebrewYearsIn } from './hebrew-year.mjs';
 import { ALL_SOURCES, SOURCES } from './sources.mjs';
@@ -80,7 +83,7 @@ async function discover(cfg, getJson, problem) {
 /**
  * Read one source. → { entries (with page url), problems, pages }
  */
-async function extractSource(id, { fromYear, toYear, top, getJson }) {
+async function extractSource(id, { fromYear, toYear, top, getJson, memo = new Map() }) {
   const cfg = SOURCES[id];
   const problems = [];
   const pages = [];
@@ -125,8 +128,24 @@ async function extractSource(id, { fromYear, toYear, top, getJson }) {
     if (seen.has(got.title)) continue; // a redirect to a page already read
     seen.add(got.title);
     const url = pageUrl(cfg.wiki, got.title);
-    const r = parseChartPage({ wikitext: got.wikitext, page: url, pageYear: job.pageYear, skip: cfg.skip ?? null, rankMode });
-    for (const p of r.problems) problems.push({ source: id, ...p });
+    let r;
+    if (cfg.annual) {
+      // The annual Hebrew pages hold both stations' rankings: parse each page once per run.
+      let parsed = memo.get(got.title);
+      const first = !parsed;
+      if (first) memo.set(got.title, (parsed = parseAnnualPage({ wikitext: got.wikitext, page: url })));
+      const all = parsed.entries;
+      r = { entries: all.filter((e) => e.source === id), problems: [], notes: parsed.notes };
+      for (const p of parsed.problems) {
+        if (p.source === id) problems.push(p);
+        else if (!p.source && first) problems.push({ source: 'hebrew-annual', ...p });
+      }
+      if (!all.length && !parsed.problems.length) problem(url, 'no ranking list found on the page');
+    } else {
+      r = parseChartPage({ wikitext: got.wikitext, page: url, pageYear: job.pageYear, skip: cfg.skip ?? null, rankMode });
+      for (const p of r.problems) problems.push({ source: id, ...p });
+      if (!r.entries.length && !r.problems.length) problem(url, `no chart table or list found on the page${r.notes.length ? ` (${r.notes.length} tables/lists ignored, see summary)` : ''}`);
+    }
     const years = new Map();
     for (const e of r.entries) {
       if (!years.has(e.chartYear)) years.set(e.chartYear, []);
@@ -137,7 +156,6 @@ async function extractSource(id, { fromYear, toYear, top, getJson }) {
       byYear.get(y).push({ url, entries: es });
     }
     pages.push({ source: id, title: got.title, url, years: [...years.keys()].sort((a, b) => a - b), entries: r.entries.length, notes: r.notes });
-    if (!r.entries.length && !r.problems.length) problem(url, `no chart table or list found on the page${r.notes.length ? ` (${r.notes.length} tables/lists ignored, see summary)` : ''}`);
   }
 
   const entries = [];
@@ -153,7 +171,8 @@ async function extractSource(id, { fromYear, toYear, top, getJson }) {
     if (rankMode === 'rank') {
       kept = kept.filter((e) => e.rank >= 1 && e.rank <= top);
       const ranks = kept.map((e) => e.rank);
-      const dup = [...new Set(ranks.filter((r, i) => ranks.indexOf(r) !== i))];
+      const single = kept.filter((e) => !e.tie).map((e) => e.rank); // "7א"/"7ב" ties are expected
+      const dup = [...new Set(single.filter((r, i) => single.indexOf(r) !== i))];
       if (dup.length) problem(url, `year ${y}: rank ${dup.join(', ')} appears more than once (ties or a parsing error)`);
       const missing = [];
       for (let r = 1; r <= top; r++) if (!ranks.includes(r)) missing.push(r);
@@ -207,17 +226,19 @@ export async function extract({ sources = ALL_SOURCES, fromYear = 1900, toYear =
   const candidates = [];
   const problems = [];
   const pages = [];
+  const memo = new Map();
   for (const id of sources) {
     if (!SOURCES[id]) {
       problems.push({ source: id, page: id, reason: `unknown source (known: ${ALL_SOURCES.join(', ')})` });
       continue;
     }
-    const r = await extractSource(id, { fromYear, toYear, top, getJson });
+    const r = await extractSource(id, { fromYear, toYear, top, getJson, memo });
     problems.push(...r.problems);
     pages.push(...r.pages);
     for (const e of r.entries) {
       const c = { source: id, chartYear: e.chartYear, rank: e.rank, artist: e.artist, title: e.title, language: languageOf(SOURCES[id], e), page: e.page, creditRaw: e.creditRaw };
       if ('placing' in e) c.placing = e.placing;
+      if (e.soloist) c.soloist = e.soloist;
       candidates.push(c);
     }
   }

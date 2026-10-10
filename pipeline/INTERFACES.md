@@ -14,7 +14,10 @@ fixtures and run live from GitHub Actions.
   artist: 'יהודית רביץ',  // as written on the source page
   title: 'באה מאהבה',
   language: 'he' | 'en',
-  page: 'https://he.wikipedia.org/wiki/…' // the list page it came from
+  page: 'https://he.wikipedia.org/wiki/…', // the list page it came from
+  creditRaw: 'להקת הנח"ל, סולנית: מירי אלוני', // the full performer credit as written (cleaned of links)
+  soloist: 'מירי אלוני',  // optional: military-band credits "להקה, סולן/סולנית: X" (artist = the band)
+  placing: 4              // optional: Eurovision / festival final place
 }
 ```
 

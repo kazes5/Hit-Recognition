@@ -57,33 +57,6 @@ describe('Billboard pages', () => {
   });
 });
 
-describe('Hebrew parade pages', () => {
-  test('Reshet Gimel: a section per Hebrew year, tables and numbered lists', () => {
-    const r = parse('reshet-gimel-5743-5752');
-    const years = [...new Set(r.entries.map((e) => e.chartYear))];
-    assert.deepEqual(years, [1983, 1984, 1985]);
-    assert.deepEqual(brief(r.entries.slice(0, 4)), ['1983 1. באה מאהבה – יהודית רביץ', '1983 2. עטור מצחך – אריק איינשטיין', '1983 3. סע לאט – שלום חנוך', '1983 4. ימים טובים – גידי גוב ושלום חנוך']);
-    const list = r.entries.filter((e) => e.chartYear === 1984);
-    assert.deepEqual(list.map((e) => e.rank), [1, 2, 3, 4, 6]);
-    assert.equal(list[3].artist, 'כוורת');
-    assert.equal(list[3].creditRaw, 'כוורת מארחת את גידי גוב');
-  });
-  test('unreadable rows are reported, not dropped; other tables are noted', () => {
-    const r = parse('reshet-gimel-5743-5752');
-    assert.equal(r.problems.length, 2);
-    assert.match(r.problems[0].reason, /cannot split title\/performer in list item 5 .*שיר בלי מבצע/);
-    assert.match(r.problems[1].reason, /no rank in .*תשמ"ה.*שיר בלי מקום/);
-    assert.ok(r.problems.every((p) => p.page === 'https://x/reshet-gimel-5743-5752'));
-    assert.match(r.notes.join('\n'), /זמר השנה/);
-  });
-  test('Galgalatz: the international chart is skipped; a caption gives the year', () => {
-    const r = parse('galgalatz', { skip: /לועז|בינלאומ/ });
-    assert.deepEqual(brief(r.entries), ['2021 1. בית משוגעים – רן דנקר', '2021 2. טרמינל 3 – נועה קירל', '2021 3. מתוקה – חנן בן ארי', '2022 1. שיר אלף – סטטיק ובן אל', '2022 2. שיר בית – עומר אדם']);
-    assert.deepEqual(r.problems, []);
-    assert.match(r.notes.join('\n'), /בינלאומי.*skipped/);
-  });
-});
-
 describe('robustness', () => {
   test('a song table without any year is a problem', () => {
     const r = parseChartPage({ wikitext: '{|\n! מקום !! שיר !! מבצע\n|-\n| 1 || א || ב\n|}', page: 'p' });

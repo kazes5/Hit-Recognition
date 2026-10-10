@@ -15,35 +15,23 @@ const lastHebrewChart = now.getUTCMonth() >= 9 ? thisYear : thisYear - 1;
 /** Billboard publishes its year-end chart in December. */
 const lastBillboard = now.getUTCMonth() === 11 ? thisYear : thisYear - 1;
 
-const NOT_GALGALATZ = /גלגלצ|גלי צה"ל|גלי צה״ל|גל"צ|גל״צ/;
+const ANNUAL = {
+  annual: true,
+  prefixes: ['מצעד הפזמונים העברי השנתי'],
+  searches: ['intitle:"מצעד הפזמונים העברי השנתי"'],
+  // the decade pages only; the main article has no lists
+  accept: (t) => /^מצעד הפזמונים העברי השנתי \(/.test(t),
+};
 
 export const SOURCES = {
-  // Reshet Gimel (Kol Yisrael / Kan) annual Hebrew hit parade, 1969– (Hebrew years from תשכ"ט).
-  // Known title (web search, 2026-10): "מצעד הפזמונים העברי השנתי (תשמ"ג - תשנ"ב)", i.e. pages
-  // split by ten-year ranges with a section per Hebrew year.
-  'reshet-gimel': {
-    wiki: 'he',
-    language: 'he',
-    firstYear: 1969,
-    lastYear: lastHebrewChart,
-    prefixes: ['מצעד הפזמונים העברי השנתי', 'המצעד העברי השנתי של רשת ג', 'מצעד הפזמונים השנתי של רשת ג'],
-    searches: ['intitle:"מצעד הפזמונים העברי השנתי"', 'מצעד הפזמונים העברי השנתי רשת ג'],
-    accept: (t) => /מצעד/.test(t) && /שנתי/.test(t) && !NOT_GALGALATZ.test(t),
-    fallbackPages: ['מצעד הפזמונים העברי השנתי (תשמ"ג - תשנ"ב)'],
-  },
-  // Galgalatz annual Israeli chart, from תשנ"ו (1996). Galgalatz also runs an international
-  // annual chart; tables under a "foreign/international" heading or caption are skipped.
-  galgalatz: {
-    wiki: 'he',
-    language: 'he',
-    firstYear: 1996,
-    lastYear: lastHebrewChart,
-    prefixes: ['המצעד השנתי של גלגלצ', 'המצעד העברי השנתי של גלגלצ', 'המצעד הישראלי השנתי של גלגלצ', 'מצעד גלגלצ השנתי', 'מצעד הפזמונים השנתי של גלגלצ', 'המצעד הרשמי של גלגלצ'],
-    searches: ['intitle:גלגלצ מצעד שנתי'],
-    accept: (t) => /גלגלצ/.test(t) && /מצעד/.test(t),
-    fallbackPages: ['המצעד הרשמי של גלגלצ'],
-    skip: /לועז|בינלאומ|international|foreign|עולמי/i,
-  },
+  // The annual Hebrew hit parades. he.wikipedia keeps them on decade pages,
+  // "מצעד הפזמונים העברי השנתי (ה'תש"ל–ה'תשל"ט)" … "(ה'תש"ף ואילך)", one section per year
+  // ("=== ה'תש"ל-1970 ===") with several labelled rankings each (annual.mjs). Both sources read
+  // the same pages; the label above each list decides the station:
+  //   Kol Yisrael / Reshet Gimel / Kan Gimel → reshet-gimel (also an unlabelled list),
+  //   Galei Tzahal / Galgalatz → galgalatz, Media Forest / ACUM airplay lists → skipped (problem).
+  'reshet-gimel': { wiki: 'he', language: 'he', firstYear: 1969, lastYear: lastHebrewChart, ...ANNUAL },
+  galgalatz: { wiki: 'he', language: 'he', firstYear: 1970, lastYear: lastHebrewChart, ...ANNUAL },
   // Billboard Year-End Hot 100 (1959–). Before the Hot 100 (August 1958) Billboard's
   // year-end lists ranked other charts; Wikipedia has them as "Billboard year-end top 50
   // singles of 1956/1957/1958" (retail sales) and a top 30 for 1955. Those are used for
