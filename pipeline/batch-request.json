@@ -1,8 +1,8 @@
 {
-  "name": "batch-02-he-2000-2025",
-  "sources": ["reshet-gimel", "galgalatz"],
-  "language": "he",
-  "fromYear": 2000,
+  "name": "batch-03-en-1990-2025",
+  "sources": ["billboard"],
+  "language": "en",
+  "fromYear": 1990,
   "toYear": 2025,
   "size": 300
 }
